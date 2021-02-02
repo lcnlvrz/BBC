@@ -14,6 +14,8 @@ import { Fade } from '@material-ui/core';
 const SignUp = ( ) => {
 
 
+    const [isLoading, setIsLoading] = useState( false );
+
     useEffect(() => {
         
         setTimeout(function () {
@@ -22,13 +24,32 @@ const SignUp = ( ) => {
             let viewport = document.querySelector("meta[name=viewport]");
             viewport.setAttribute("content", "height=" + viewheight + "px, width=" + viewwidth + "px, initial-scale=1.0");
         }, 300);
+
+
+        setTimeout(() => {
+
+            setIsLoading( true );
+            
+        }, 2000);
      
 
     }, []);
 
 
+
         return (
-            <Fade in={true}>
+            <>
+            { !isLoading && 
+            <div class="divLoader">
+            <h1 class='point-hidden'> . </h1>
+            <div class="sk-folding-cube">
+              <div class="sk-cube1 sk-cube"></div>
+              <div class="sk-cube2 sk-cube"></div>
+              <div class="sk-cube4 sk-cube"></div>
+              <div class="sk-cube3 sk-cube"></div>
+            </div>
+          </div> }
+            <Fade in={isLoading}>
                 <div 
                 className='flex flex-col items-center justify-center h-screen'>
                     <img
@@ -39,6 +60,7 @@ const SignUp = ( ) => {
                     <SecondStep/>
                 </div>
             </Fade>
+            </>
         );
         
     
