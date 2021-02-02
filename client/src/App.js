@@ -7,6 +7,8 @@ import {
   Link
 } from "react-router-dom";
 import Home from './components/uniqueComponents/Home';
+import SignUp from './components/uniqueComponents/SignUp';
+import { signUpLink } from './constants';
 
 function App() {
   return (
@@ -15,6 +17,11 @@ function App() {
         <Route path='/' exact>
 
           <Home/>
+
+        </Route>
+        <Route path={ signUpLink } exact>
+
+          <SignUp/>
 
         </Route>
       </Switch>

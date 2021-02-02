@@ -1,0 +1,15 @@
+svg.github__link:hover {
+  fill: white;
+}
+
+svg.email__link:hover {
+  fill: white;
+}
+
+img.linkedin__link {
+  filter: brightness(0.7);
+}
+
+img.linkedin__link:hover {
+  filter: brightness(1);
+}

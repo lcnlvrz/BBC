@@ -5,7 +5,7 @@ import logoBBC from '../../../../../images/bccLogo.png';
 
 const HeaderDesktop = () => {
     return (
-        <header className='p-4'>
+        <header className='p-4 sticky top-0 z-40 bg-white'>
             <div className='flex flex-row items-center justify-between'>
                 <img 
                 className='w-32'
