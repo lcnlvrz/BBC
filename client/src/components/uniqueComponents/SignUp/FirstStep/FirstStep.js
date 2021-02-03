@@ -3,11 +3,12 @@ import BCClogo from '../../../../images/bccLogo.png';
 import Input from '../../../reusableComponents/Input';
 import emailValidator from 'email-validator';
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
-import { defaultTransiton } from '../../../../constants';
+import { defaultTransiton } from '../../../../constants/styles';
 import { Link } from 'react-router-dom';
 import PropagateLoader from "react-spinners/PropagateLoader";
 import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
 import { useMediaQuery } from 'react-responsive';
+import { signInLink } from '../../../../constants/pathsRouter';
 
 const FirstStep = () => {
 
@@ -30,11 +31,13 @@ const FirstStep = () => {
         <div 
         style={{ overflow:'hidden' }}
         className='text-center flex flex-col items-center justify-center w-3/4 bg-white rounded p-5 space-y-10 absolute'>
-            <img 
-            className='w-28'
-            alt=''
-            src={BCClogo}
-            />
+            <Link to='/'>
+                <img 
+                className='w-28'
+                alt=''
+                src={BCClogo}
+                />
+            </Link>
             <p className={ `font-semibold text-center ${ mobileResolution ? 'text-sm' : 'text-lg' }` }> 
                 By having a BCC account, you can create a perfil business and change everything.
             </p>
@@ -55,7 +58,7 @@ const FirstStep = () => {
                     inputEmailRef.current.focus();
                     setInitialColorInput( '#FF0000' );
 
-                    setAlert( { type:'input', message:"The email isn't valid" } );
+                    setAlert( { type:'email', message:"The email isn't valid" } );
 
                     return false;
                 };
@@ -65,7 +68,8 @@ const FirstStep = () => {
             } }
             className='space-y-4 w-full flex flex-col'>
                 <Input
-                IconEndAdornment={ EmailRoundedIcon }
+                alert={ alert }
+                StartIcon={ EmailRoundedIcon }
                 refInput={ inputEmailRef }
                 type='text'
                 required={ true }
@@ -89,6 +93,7 @@ const FirstStep = () => {
                 </div> 
                 : 
                 <button 
+                style={ defaultTransiton }
                 type='submit'
                 className='text-gray-500 bg-transparent border border-solid border-gray-400 hover:bg-black hover:text-white active:bg-gray-600 font-bold uppercase px-8 py-2 rounded outline-none focus:outline-none w-full'>
                     NEXT
@@ -96,7 +101,7 @@ const FirstStep = () => {
             </form>
             <h3 className='text-md font-light flex flex-row flex-wrap items-center justify-center'> 
                 Already have an account?
-                <Link className='break-words' to='/sign-in'>
+                <Link className='break-words' to={ signInLink }>
                     <span 
                     style={ defaultTransiton }
                     className='text-red-400 font-semibold hover:text-red-600 cursor-pointer ml-1'> 

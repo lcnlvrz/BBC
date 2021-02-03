@@ -3,7 +3,7 @@ import BCClogo from '../../../../images/bccLogo.png';
 import Input from '../../../reusableComponents/Input';
 import emailValidator from 'email-validator';
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
-import { defaultTransiton } from '../../../../constants';
+import { defaultTransiton } from '../../../../constants/styles';
 import { Link } from 'react-router-dom';
 import PropagateLoader from "react-spinners/PropagateLoader";
 import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
@@ -20,8 +20,6 @@ const SecondStep = () => {
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
 
-    const [timer, setTimer] = useState('');
-
     const inputEmailRef = useRef( null );
 
     const [initialColorInput, setInitialColorInput] = useState( '#000000' );
@@ -33,31 +31,22 @@ const SecondStep = () => {
         <div 
         style={{ overflow:'hidden' }}
         className='text-center flex flex-col items-center justify-center w-3/4 bg-white rounded p-5 space-y-10 absolute'>
-            <ImageContainer
-            src={ BCClogo }
-            heightPX={ '50px' }
-            widthMobile='w-28'
-            widthDesktop='w-28'
-            />
-            {/* <img 
-            className='w-28'
-            alt=''
-            src={BCClogo}
-            /> */}
             <p className={ `font-semibold text-center ${ mobileResolution ? 'text-sm' : 'text-lg' }` }> 
-                We send an email to lucianoalvarez1212@gmail.com with the code for confirm your account
+                We send an email to <span className='text-green-500'> lucianoalvarez1212@gmail.com </span> 
+                with the code for confirm your account
             </p>
             <form 
-            onChange={ (e) => setInput({ email:e.target.value }) }
+            onChange={ (e) => setInput({ code:e.target.value }) }
             onSubmit={ (e) => { 
 
+                e.preventDefault();
 
                 setInitialColorInput( '#000000' );
                 setAlert( { type:'', message:'' } );
 
-                e.preventDefault() 
+                console.log( input.code );
 
-                const isValid = validateCode( input.code );
+                const isValid = validateCode( Number(input.code) );
 
                 console.log( isValid );
 
@@ -76,8 +65,9 @@ const SecondStep = () => {
             } }
             className='space-y-4 w-full flex flex-col'>
                 <Input
+                alert={ alert }
                 maxLength={ 4 }
-                IconEndAdornment={ VpnKeyRoundedIcon }
+                StartIcon={ VpnKeyRoundedIcon }
                 refInput={ inputEmailRef }
                 type='text'
                 required={ true }
@@ -101,23 +91,14 @@ const SecondStep = () => {
                 </div> 
                 : 
                 <button 
+                style={ defaultTransiton }
                 type='submit'
                 className='text-gray-500 bg-transparent border border-solid border-gray-400 hover:bg-black hover:text-white active:bg-gray-600 font-bold uppercase px-8 py-2 rounded outline-none focus:outline-none w-full'>
                     VERIFY
                 </button> }
             </form>
-            <h3 className='text-md font-light flex flex-row flex-wrap items-center justify-center'> 
-                Already have an account?
-                <Link className='break-words' to='/sign-in'>
-                    <span 
-                    style={ defaultTransiton }
-                    className='text-red-400 font-semibold hover:text-red-600 cursor-pointer ml-1'> 
-                        SIGN IN 
-                    </span>
-                </Link>  
-            </h3>
         </div>
-    )
-}
+    );
+};
 
-export default SecondStep
+export default SecondStep;

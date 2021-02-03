@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { defaultTransiton } from '../../../../constants';
+import { defaultTransiton } from '../../../../constants/styles';
 import womenSearchingOnMobile from '../../../../images/homeDrawVector.jpg';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
 import TimerRoundedIcon from '@material-ui/icons/TimerRounded';
 import SearcherInput from '../../../reusableComponents/SearcherInput';
 import { useMediaQuery } from 'react-responsive';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { LazyLoadComponent, LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import ImageContainer from '../../../reusableComponents/ImageContainer';
+import 'react-lazy-load-image-component/src/effects/blur.css';
+import PlaceHolderImage from '../../../../images/placeHolderHomeDrawVector.jpg';
 
 const Body = () => {
 
@@ -48,9 +50,9 @@ const Body = () => {
                     searcherRef={ searcher }
                     />
                 </div>
-            </div>   
+            </div>  
             <ImageContainer
-            heightPX='300px'
+            heightPX='400px'
             altDescription='Women Searching Something on Mobile'
             widthMobile='w-full'
             widthDesktop='w-2/4'

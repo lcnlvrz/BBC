@@ -23,7 +23,7 @@ const ImageContainer = ( props ) => {
         className={ mobileResolution ?  widthMobile : widthDesktop  }>
             { !isImageLoaded &&  
             <div 
-            style={{ paddingBottom:'40px' }}
+            style={{ paddingBottom:heightPX }}
             id='image__skeleton__loading'
             className='w-full my-2'
             ></div> }
@@ -31,7 +31,7 @@ const ImageContainer = ( props ) => {
             ref={ ref }
             in={ inView }>
                     <img 
-                    style={{ opacity:opacity }}
+                    style={{ opacity:opacity, height:heightPX }}
                     onLoad={ () => setIsImageLoaded( true ) }
                     className={ `w-full my-2 object-contain` }
                     alt={ altDescription }

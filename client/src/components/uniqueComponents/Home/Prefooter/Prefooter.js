@@ -1,7 +1,9 @@
 import React from 'react'
 import ImageContainer from '../../../reusableComponents/ImageContainer'
 import businessIMG from '../../../../images/business.jpg';
-import { defaultTransiton, fillButton, signUpLink } from '../../../../constants'
+import { defaultTransiton, fillButton } from '../../../../constants/styles'
+import { signUpLink } from '../../../../constants/pathsRouter';
+
 import { Link } from 'react-router-dom';
 
 const Prefooter = () => {

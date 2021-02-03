@@ -5,18 +5,22 @@ import './SignUp.css';
 import BackGroundImage from '../../../images/background.jpg';
 import { grey } from '@material-ui/core/colors';
 import { createMuiTheme, ThemeProvider, } from '@material-ui/core/styles';
-import { outlineButton } from '../../../constants';
+import { outlineButton } from '../../../constants/styles';
 import FirstStep from './FirstStep';
 import SecondStep from './SecondStep';
 import ImageContainer from '../../reusableComponents/ImageContainer';
 import { Fade } from '@material-ui/core';
+import ThirdStep from './ThirdStep';
 
 const SignUp = ( ) => {
 
 
-    const [isLoading, setIsLoading] = useState( false );
+    const [isLoadingComponents, setIsLoadingComponents] = useState( true );
 
     useEffect(() => {
+
+        window.scrollTo(0, 0);
+
         
         setTimeout(function () {
             let viewheight = window.innerHeight;
@@ -28,9 +32,9 @@ const SignUp = ( ) => {
 
         setTimeout(() => {
 
-            setIsLoading( true );
+            setIsLoadingComponents( false );
             
-        }, 2000);
+        }, 1000);
      
 
     }, []);
@@ -39,25 +43,26 @@ const SignUp = ( ) => {
 
         return (
             <>
-            { !isLoading && 
-            <div class="divLoader">
-            <h1 class='point-hidden'> . </h1>
-            <div class="sk-folding-cube">
-              <div class="sk-cube1 sk-cube"></div>
-              <div class="sk-cube2 sk-cube"></div>
-              <div class="sk-cube4 sk-cube"></div>
-              <div class="sk-cube3 sk-cube"></div>
-            </div>
-          </div> }
-            <Fade in={isLoading}>
+            { isLoadingComponents && 
+                <div className="divLoader h-scren z-50 absolute bg-white">
+                    <h1 className='point-hidden'> . </h1>
+                    <div className="sk-folding-cube">
+                    <div className="sk-cube1 sk-cube"></div>
+                    <div className="sk-cube2 sk-cube"></div>
+                    <div className="sk-cube4 sk-cube"></div>
+                    <div className="sk-cube3 sk-cube"></div>
+                    </div>
+                </div> }
+            <Fade in={ isLoadingComponents === false }>
                 <div 
                 className='flex flex-col items-center justify-center h-screen'>
                     <img
                     className='h-screen w-screen object-cover backgroundSignUp'
                     alt=''
                     src={BackGroundImage}/>
-                    {/* <FirstStep/> */}
-                    <SecondStep/>
+                    <FirstStep/>
+                    {/* <SecondStep/> */}
+                    {/* <ThirdStep/> */}
                 </div>
             </Fade>
             </>

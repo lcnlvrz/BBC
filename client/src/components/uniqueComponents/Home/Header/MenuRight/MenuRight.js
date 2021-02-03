@@ -1,17 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import { defaultTransiton } from '../../../../../constants';
+import { defaultTransiton } from '../../../../../constants/styles';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import { IconButton } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 
 const MenuRight = ( props ) => {
@@ -26,7 +19,8 @@ const MenuRight = ( props ) => {
     setState({ ...state, [anchor]: open });
     };
 
-    const options = [ 'search engine', 'real time data', 'about us', 'sign in' ];
+    const options = [ { title:'Search Engine', route:'/search-engine' }, { title:'Real Time Data', route:'/real-time-data' }, { title:'About Us', route:'/about-us' }, { title:'Sign In', route:'/sign-in' } ];
+
 
   return (
         <Drawer 
@@ -36,12 +30,13 @@ const MenuRight = ( props ) => {
             <div className='w-full py-10 px-10 space-y-10 flex flex-col items-center justify-center'>
                 { options.map( ( option, index ) => (
 
-                    <h1 
-                    style={ defaultTransiton }
-                    className='font-semibold cursor-pointer text-gray-400 hover:text-gray-700 text-2xl capitalize'
-                    key={ index }> 
-                        { option } 
-                    </h1>
+                    <Link to={ option.route } key={ index }>
+                        <h1 
+                        style={ defaultTransiton }
+                        className='font-semibold cursor-pointer text-gray-400 hover:text-gray-700 text-2xl capitalize'> 
+                            { option.title } 
+                        </h1>
+                    </Link>
 
                 ) ) }
                 <IconButton

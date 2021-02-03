@@ -1,5 +1,5 @@
 import React from 'react'
-import { defaultTransiton, outlineButton } from '../../../constants';
+import { defaultTransiton, outlineButton } from '../../../constants/styles';
 
 const OutlineButtonCircle = ( props ) => {
 

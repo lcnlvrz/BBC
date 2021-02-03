@@ -8,7 +8,9 @@ import {
 } from "react-router-dom";
 import Home from './components/uniqueComponents/Home';
 import SignUp from './components/uniqueComponents/SignUp';
-import { signUpLink } from './constants';
+import { myBusinessLink, signInLink, signUpLink } from './constants/pathsRouter';
+import SignIn from './components/uniqueComponents/SignIn';
+import MyBusiness from './components/uniqueComponents/MyBusiness';
 
 function App() {
   return (
@@ -22,6 +24,16 @@ function App() {
         <Route path={ signUpLink } exact>
 
           <SignUp/>
+
+        </Route>
+        <Route path={ signInLink } exact>
+
+          <SignIn/>
+
+        </Route>
+        <Route path={ myBusinessLink } exact>
+
+          <MyBusiness/>
 
         </Route>
       </Switch>

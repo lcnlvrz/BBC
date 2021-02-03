@@ -4,7 +4,7 @@ import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import TimerRoundedIcon from '@material-ui/icons/TimerRounded';
 import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRounded';
-import { outlineButton, defaultTransiton } from '../../../../constants';
+import { outlineButton, defaultTransiton } from '../../../../constants/styles';
 import SentimentVerySatisfiedRoundedIcon from '@material-ui/icons/SentimentVerySatisfiedRounded';
 import winWin from '../../../../images/winWin.jpg';
 import ArrowDownwardRoundedIcon from '@material-ui/icons/ArrowDownwardRounded';
