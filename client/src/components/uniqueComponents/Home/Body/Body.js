@@ -30,26 +30,19 @@ const Body = () => {
 
         }
           
-    }, [ test ])
+    }, [ test ]);
 
     
     
     return (
-        <div className='w-full flex flex-col items-center justify-center p-4 w-full'>
-            <div className='flex items-center justify-center h-full flex flex-col space-y-5 w-full'>
+        <div className='w-full flex flex-col items-center justify-center p-4'>
+            <div className='flex items-center justify-center h-full flex-col space-y-5 w-full'>
                 <h1 
                 className={`font-light ${ mobileResolution ? 'text-lg' : 'text-3xl' } text-center text-gray-400`}> 
                     <span className='text-gray-800 font-bold'>Search</span> whats <span className='text-gray-800 font-bold'> happening </span> in any <span className='text-gray-800 font-bold'>business</span> right now 
                 </h1>
-                <div 
-                ref={ searcher }
-                style={ defaultTransiton }
-                className='flex flex-row items-center outline-none border-2 rounded-full py-2 px-2 active:border-gray-500 w-full'>
-                    <SearchRoundedIcon/>
-                    <SearcherInput
-                    searcherRef={ searcher }
-                    />
-                </div>
+                <SearcherInput
+                placeholder='Business Name&#39;s'/>
             </div>  
             <ImageContainer
             heightPX='400px'

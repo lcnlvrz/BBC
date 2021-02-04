@@ -1,0 +1,12 @@
+.background {
+  background: linear-gradient(to bottom, transparent 0%, black 250%);
+}
+
+.padding-inner {
+  position: absolute;
+  top: auto;
+  padding: 0px 20px !important;
+  padding: inherit;
+  left: 0;
+  right: 0;
+}

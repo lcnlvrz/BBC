@@ -1,16 +1,27 @@
-import React from 'react'
+import React, { useRef } from 'react'
+import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
+import { defaultTransiton } from '../../../constants/styles';
 
 const SearcherInput = ( props ) => {
 
-    const { searcherRef:searcher } = props;
+    const { placeholder } = props;
+
+    const searcherRef = useRef( null );
 
     return (
-        <input
-        placeholder='Business Name&#39;s'
-        onBlur={ () => searcher.current.classList.remove( 'border-black' )  }
-        onFocus={ () => searcher.current.classList.add( 'border-black' )  }
-        className='w-full outline-none px-2'
-        />
+        <div 
+        ref={ searcherRef }
+        style={ defaultTransiton }
+        className='flex flex-row items-center outline-none border-2 rounded-full py-2 px-2 active:border-gray-500 w-full'>
+            <SearchRoundedIcon/>
+            <input
+            placeholder={ placeholder }
+            onBlur={ () => searcherRef.current.classList.remove( 'border-black' )  }
+            onFocus={ () => searcherRef.current.classList.add( 'border-black' )  }
+            className='w-full outline-none px-2'
+            />
+        </div>
+        
     );
 };
 

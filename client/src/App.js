@@ -8,9 +8,11 @@ import {
 } from "react-router-dom";
 import Home from './components/uniqueComponents/Home';
 import SignUp from './components/uniqueComponents/SignUp';
-import { myBusinessLink, signInLink, signUpLink } from './constants/pathsRouter';
+import { myBusinessLink, signInLink, signUpLink, welcomeUserLink } from './constants/pathsRouter';
 import SignIn from './components/uniqueComponents/SignIn';
 import MyBusiness from './components/uniqueComponents/MyBusiness';
+import WelcomeBusiness from './components/uniqueComponents/WelcomeBusiness';
+import OneProductPage from './components/uniqueComponents/OneProductPage';
 
 function App() {
   return (
@@ -34,6 +36,15 @@ function App() {
         <Route path={ myBusinessLink } exact>
 
           <MyBusiness/>
+
+        </Route>
+        <Route path={ welcomeUserLink } exact>
+          <WelcomeBusiness/>
+        </Route>
+        
+        <Route path='/business/'>
+        
+          <OneProductPage/>
 
         </Route>
       </Switch>
