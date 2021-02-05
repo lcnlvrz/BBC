@@ -12,6 +12,7 @@ const Products = () => {
                 { products.map( ( product, index ) => (
 
                     <ProductCard
+                    key={ index }
                     index={ index }
                     title={ product.title }
                     image={ product.image }

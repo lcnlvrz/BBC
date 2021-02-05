@@ -64,6 +64,7 @@ const Input = ( props ) => {
         theme={ theme.muitheme }>
             <div className='space-y-2'>
                 <TextField 
+                
                 inputProps={{ maxLength, style:alert.type === name ? { color:'red' } : { color:'black' } }}
                 InputProps={{
                     startAdornment:( 

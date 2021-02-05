@@ -6,7 +6,7 @@ import { Avatar } from '@material-ui/core';
 
 const Banner = ( props ) => {
 
-    const { profilePhoto, nameBusiness, bannerPhoto } = props;
+    const { profilePhoto, nameBusiness, bannerPhoto, topPositionAvatar } = props;
 
     const StyledBadge = withStyles((theme) => ({
         badge: {
@@ -54,7 +54,7 @@ const Banner = ( props ) => {
     return (
         <div className='my__business__container border-solid border-b-8 border-green-400'>
             <div className='h-44 w-full'>
-                <div className='h-44 w-full absolute z-50 top-32 flex items-center justify-end flex-col space-y-5'>
+                <div className={ `h-44 w-full absolute z-50 top-32 flex items-center justify-end flex-col space-y-5` }>
                     <StyledBadge
                     overlap="circle"
                     anchorOrigin={{

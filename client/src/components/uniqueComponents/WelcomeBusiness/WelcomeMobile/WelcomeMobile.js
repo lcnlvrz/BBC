@@ -6,9 +6,6 @@ import HeaderMobile from '../../HeaderForBusiness/HeaderMobile/HeaderMobile';
 
 const WelcomeMobile = () => {
 
- 
-
-
     return (
         <div>
             <HeaderMobile/>

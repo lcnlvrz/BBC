@@ -13,8 +13,10 @@ import SignIn from './components/uniqueComponents/SignIn';
 import MyBusiness from './components/uniqueComponents/MyBusiness';
 import WelcomeBusiness from './components/uniqueComponents/WelcomeBusiness';
 import OneProductPage from './components/uniqueComponents/OneProductPage';
+import BusinessRouteConfig from './components/uniqueComponents/BusinessRouteConfig';
 
 function App() {
+
   return (
     <Router>
       <Switch>
@@ -42,11 +44,18 @@ function App() {
           <WelcomeBusiness/>
         </Route>
         
-        <Route path='/business/'>
+        <Route path='/nike/product/' exact>
         
           <OneProductPage/>
 
         </Route>
+
+        <Route path='/business/'>
+
+          <BusinessRouteConfig/>
+
+        </Route>
+
       </Switch>
     </Router>
   );

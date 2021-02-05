@@ -9,7 +9,9 @@ import { Avatar, IconButton } from '@material-ui/core';
 import LeftMenu from '../../../reusableComponents/LeftMenu';
 
 
-const HeaderMobile = () => {
+const HeaderMobile = (props) => {
+
+    const { setChangeSection } = props;
 
     const [state, setState] = React.useState({ left:false });
 
@@ -34,12 +36,14 @@ const HeaderMobile = () => {
    
   
     const list = (anchor) => (
-      <LeftMenu width='w-52'/>
+      <LeftMenu 
+      setChangeSection={ setChangeSection }
+      width='w-52'/>
     );
   
 
     return (
-        <header className='p-5 flex flex-row w-full justify-between items-center'>
+        <header className='p-5 flex flex-row w-full justify-between items-center sticky top-0 bg-white z-30'>
                 <IconButton
                 onClick={toggleDrawer('left', true)}
                 style={{ outline:'none' }}

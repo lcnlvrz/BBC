@@ -14,14 +14,16 @@ import LeftMenu from '../../../reusableComponents/LeftMenu';
 
 const WelcomeDesktop = () => {
 
+    const HtmlData = () => {
+
+        return ( <WelcomeMessage emojiWidth='w-16' welcomeWidth='text-6xl'/> )
+
+    };
+
     return (
-        <div className='welcome__page flex flex-row'>
-            <LeftMenu width='w-1/5'/>
-            <div className='w-4/5 right__part'>
-                <HeaderForBusiness/>
-                <WelcomeMessage emojiWidth='w-16' welcomeWidth='text-6xl'/>
-            </div>
-        </div>
+        <>
+            <HeaderForBusiness HtmlData={ HtmlData }/>
+        </>
     );
 };
 

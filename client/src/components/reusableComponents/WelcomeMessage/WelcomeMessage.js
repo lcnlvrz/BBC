@@ -8,6 +8,7 @@ import TimelineRoundedIcon from '@material-ui/icons/TimelineRounded';
 import BusinessRoundedIcon from '@material-ui/icons/BusinessRounded';
 import ShoppingBasketRoundedIcon from '@material-ui/icons/ShoppingBasketRounded';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
+import { Link } from 'react-router-dom';
 
 
 const WelcomeMessage = ( props ) => {
@@ -32,11 +33,13 @@ const WelcomeMessage = ( props ) => {
                 <h2 className='font-semibold'> 
                     The clients are waiting for your business. 
                 </h2>
-                <button
-                style={ defaultTransiton }
-                className={ fillButton }>
-                    Open Business
-                </button>
+                <Link to='/business/?section=panel'>
+                    <button
+                    style={ defaultTransiton }
+                    className={ fillButton }>
+                        Open Business
+                    </button>
+                </Link>
             </div>
         </div>
     );
