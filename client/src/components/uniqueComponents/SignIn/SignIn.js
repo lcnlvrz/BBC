@@ -4,7 +4,7 @@ import Input from '../../reusableComponents/Input';
 import emailValidator from 'email-validator';
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
 import { defaultTransiton } from '../../../constants/styles';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import PropagateLoader from "react-spinners/PropagateLoader";
 import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
 import { useMediaQuery } from 'react-responsive';
@@ -14,12 +14,21 @@ import VpnKeyRoundedIcon from '@material-ui/icons/VpnKeyRounded';
 import { Fade } from '@material-ui/core';
 import { signInUserAPI } from '../../../api/userAPI';
 import { signUpLink } from '../../../constants/pathsRouter';
+import { useDispatch } from 'react-redux';
 
 const SignIn = () => {
+
+    const dispatch = useDispatch();
 
     const [input, setInput] = useState( { emailOrUsername:'', password:'' } );
 
     const [alert, setAlert] = useState( { type:'', message:'' } );
+
+    const history = useHistory();
+
+    const url = new URL( window.location.href );
+
+    const accountCreated = url.searchParams.get( 'account__created' );
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
 
@@ -31,12 +40,13 @@ const SignIn = () => {
 
     const [isLoadingComponents, setIsLoadingComponents] = useState( true );
 
+    const passwordRef = useRef( null );
+
     
     useEffect(() => {
 
         window.scrollTo(0, 0);
 
-        
         setTimeout(function () {
             let viewheight = window.innerHeight;
             let viewwidth = window.innerWidth;
@@ -83,11 +93,11 @@ const SignIn = () => {
                             />
                         </Link>
                         <p className={ `font-semibold text-center ${ mobileResolution ? 'text-sm' : 'text-lg' }` }> 
-                            Sign in as soon as possible, the clients are waiting information about your business
+                            { accountCreated === 'true' ? 'Account created successfully. You can sign-in now!' : 'Sign in as soon as possible, the clients are waiting information about your business' }
                         </p>
                         <form 
                         onChange={ (e) => setInput({...input, [ e.target.name ]:e.target.value }) }
-                        onSubmit={ (e) => signInUserAPI( input, setAlert, setLoading, e ) }
+                        onSubmit={ (e) => signInUserAPI( input, setAlert, setLoading, e, history, dispatch ) }
                         className='space-y-4 w-full flex flex-col'>
                             <Input
                             alert={ alert }
@@ -102,6 +112,7 @@ const SignIn = () => {
                             variant='outlined'
                             />
                             <Input
+                            refInput={ passwordRef }
                             alert={ alert }
                             StartIcon={ VpnKeyRoundedIcon }
                             isPassword={ true }

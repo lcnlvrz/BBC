@@ -9,9 +9,12 @@ import PropagateLoader from "react-spinners/PropagateLoader";
 import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
 import { useMediaQuery } from 'react-responsive';
 import { signInLink } from '../../../../constants/pathsRouter';
+import axiosInstance from '../../../../api/axiosConfig';
 
-const FirstStep = () => {
+const FirstStep = ( props ) => {
 
+
+    const { setSteps, setUserData, userData } = props;
 
     const [input, setInput] = useState( { email:'' } );
 
@@ -62,6 +65,25 @@ const FirstStep = () => {
 
                     return false;
                 };
+
+                setLoading( true );
+
+                axiosInstance.post( '/temporary-user', { email:input.email } )
+                .then( response => {
+
+                    setLoading( false );
+                    setUserData( { ...userData, email:input.email } );
+                    setSteps( { firstStep:false, secondStep:true, thirdStep:false } );
+                    
+
+                } )
+                .catch( err => {
+
+                    setLoading( false );
+
+                    setAlert( { type:'email', message:err.response.data.message } );
+
+                } );
 
 
                 

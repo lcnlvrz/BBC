@@ -8,13 +8,28 @@ export const validateCode = ( code ) => {
 
 };
 
+function isInt(n){
+    return Number(n) === n && n % 1 === 0;
+}
+
+function isFloat(n){
+    return Number(n) === n && n % 1 !== 0;
+}
+
+
+export const validateNumber = ( number ) => {
+
+    const isInteger = isInt( number );
+    const isDecimal = isFloat ( number );
+
+    if ( !isInteger && !isDecimal ) return false;
+
+    return true;
+
+};
+
+
 export const validateBusinessName = ( businessName ) => {
-
-    const regBusinessName = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9 ]*$/;
-
-    const valueAfterValidation = regBusinessName.test( businessName );
-
-    if ( !valueAfterValidation ) return false;
 
     return true;
 

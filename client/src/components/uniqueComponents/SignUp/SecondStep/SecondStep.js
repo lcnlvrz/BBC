@@ -11,8 +11,11 @@ import { useMediaQuery } from 'react-responsive';
 import VpnKeyRoundedIcon from '@material-ui/icons/VpnKeyRounded';
 import { validateCode } from '../../../../helpers/validations';
 import ImageContainer from '../../../reusableComponents/ImageContainer';
+import axiosInstance from '../../../../api/axiosConfig';
 
-const SecondStep = () => {
+const SecondStep = ( props ) => {
+
+    const { userData, setUserData, setSteps } = props;
 
     const [input, setInput] = useState( { code:'' } );
 
@@ -32,8 +35,8 @@ const SecondStep = () => {
         style={{ overflow:'hidden' }}
         className='text-center flex flex-col items-center justify-center w-3/4 bg-white rounded p-5 space-y-10 absolute'>
             <p className={ `font-semibold text-center ${ mobileResolution ? 'text-sm' : 'text-lg' }` }> 
-                We send an email to <span className='text-green-500'> lucianoalvarez1212@gmail.com </span> 
-                with the code for confirm your account
+                We send an email to <span className='text-green-500'> { userData.email } </span> 
+                with a code of 4 digits for confirm your account
             </p>
             <form 
             onChange={ (e) => setInput({ code:e.target.value }) }
@@ -44,22 +47,36 @@ const SecondStep = () => {
                 setInitialColorInput( '#000000' );
                 setAlert( { type:'', message:'' } );
 
-                console.log( input.code );
-
                 const isValid = validateCode( Number(input.code) );
 
-                console.log( isValid );
-
-                if ( !isValid ){
+                if ( !isValid || input.code.length < 4 ){
 
                     inputEmailRef.current.focus();
                     setInitialColorInput( '#FF0000' );
 
-                    setAlert( { type:'code', message:"The code are numbers" } );
+                    setAlert( { type:'code', message:"The code is a number with 4 digits" } );
 
                     return false;
                 };
 
+                setLoading( true );
+
+                axiosInstance.post( '/validate-otp', { email:userData.email, otp:Number(input.code) } )
+                .then( ( response ) => {
+
+                    setLoading( false );
+
+                    setUserData({ ...userData, otp:Number( input.code ) });
+
+                    setSteps( { firstStep:false, secondStep:false, thirdStep:true } );
+
+                } )
+                .catch( (err) => {
+
+                    setLoading( false );
+                    setAlert( { type:'code', message:err.response.data.message } );
+
+                } );
 
                 
             } }

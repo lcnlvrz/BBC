@@ -17,10 +17,13 @@ const SignUp = ( ) => {
 
     const [isLoadingComponents, setIsLoadingComponents] = useState( true );
 
+    const [steps, setSteps] = useState( { firstStep:true, secondStep:false, thirdStep:false } );
+
+    const [userData, setUserData] = useState( { email:'', otp:0 } );
+
     useEffect(() => {
 
         window.scrollTo(0, 0);
-
         
         setTimeout(function () {
             let viewheight = window.innerHeight;
@@ -39,34 +42,32 @@ const SignUp = ( ) => {
 
     }, []);
 
-
-
-        return (
-            <>
-            { isLoadingComponents && 
-                <div className="divLoader h-scren z-50 absolute bg-white">
-                    <h1 className='point-hidden'> . </h1>
-                    <div className="sk-folding-cube">
-                    <div className="sk-cube1 sk-cube"></div>
-                    <div className="sk-cube2 sk-cube"></div>
-                    <div className="sk-cube4 sk-cube"></div>
-                    <div className="sk-cube3 sk-cube"></div>
-                    </div>
-                </div> }
-            <Fade in={ isLoadingComponents === false }>
-                <div 
-                className='flex flex-col items-center justify-center h-screen'>
-                    <img
-                    className='h-screen w-screen object-cover backgroundSignUp'
-                    alt=''
-                    src={BackGroundImage}/>
-                    <FirstStep/>
-                    {/* <SecondStep/> */}
-                    {/* <ThirdStep/> */}
+    return (
+        <>
+        { isLoadingComponents && 
+            <div className="divLoader h-scren z-50 absolute bg-white">
+                <h1 className='point-hidden'> . </h1>
+                <div className="sk-folding-cube">
+                <div className="sk-cube1 sk-cube"></div>
+                <div className="sk-cube2 sk-cube"></div>
+                <div className="sk-cube4 sk-cube"></div>
+                <div className="sk-cube3 sk-cube"></div>
                 </div>
-            </Fade>
-            </>
-        );
+            </div> }
+        <Fade in={ isLoadingComponents === false }>
+            <div 
+            className='flex flex-col items-center justify-center h-screen'>
+                <img
+                className='h-screen w-screen object-cover backgroundSignUp'
+                alt=''
+                src={BackGroundImage}/>
+                { steps.firstStep && <FirstStep setSteps={ setSteps } setUserData={ setUserData } userData={ userData }/> }
+                { steps.secondStep && <SecondStep setSteps={ setSteps } setUserData={ setUserData } userData={ userData }/> }
+                { steps.thirdStep && <ThirdStep setSteps={ setSteps } setUserData={ setUserData } userData={ userData }/> }
+            </div>
+        </Fade>
+        </>
+    );
         
     
 };

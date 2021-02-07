@@ -8,12 +8,18 @@ import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import { defaultTransiton } from '../../../constants/styles';
 import { Link } from 'react-router-dom';
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
+import MessageRoundedIcon from '@material-ui/icons/MessageRounded';
+import MeetingRoomRoundedIcon from '@material-ui/icons/MeetingRoomRounded';
+import { setClearUser } from '../../../actions/user';
+import { useDispatch } from 'react-redux';
 
 const LeftMenu = ( props ) => {
 
+    const dispatch = useDispatch();
+
     const { width, setChangeSection } = props;
 
-    const options = [ { title:'Home', Icon:HomeRoundedIcon, route:'/business/?section=panel' }, { title:'Real-Time Data', Icon:TimelineRoundedIcon, route:'/business/?section=real-time-data' },{ title:'Business Profile', Icon:BusinessRoundedIcon, route:'/business/?section=business-profile' }, { title:'Products', Icon:ShoppingBasketRoundedIcon, route:'/business/?section=products' }, { title:'Add Product', Icon:AddCircleRoundedIcon, route:'/business/?section=add-product' } ];
+    const options = [ { title:'Home', Icon:HomeRoundedIcon, route:'/business/?section=panel' }, { title:'Real-Time Data', Icon:TimelineRoundedIcon, route:'/business/?section=real-time-data' },{ title:'Business Profile', Icon:BusinessRoundedIcon, route:'/business/?section=business-profile' }, { title:'Products', Icon:ShoppingBasketRoundedIcon, route:'/business/?section=products' }, { title:'Add Product', Icon:AddCircleRoundedIcon, route:'/business/?section=add-product' }, { title:'Live Chat', Icon:MessageRoundedIcon, route:'/business/?section=live-chat' }, { title:'Logout', Icon:MeetingRoomRoundedIcon, route:'/' } ];
 
     const url = new URL( window.location.href );
 
@@ -32,6 +38,8 @@ const LeftMenu = ( props ) => {
         if ( currentSection === 'products' ) return setCurrentOption( 3 );
 
         if ( currentSection === 'add-product' ) return setCurrentOption( 4 );
+
+        if ( currentSection === 'live-chat' ) return setCurrentOption( 5 );
         
     }, []);
 
@@ -40,9 +48,9 @@ const LeftMenu = ( props ) => {
           width: theme.spacing(10),
           height: theme.spacing(10)
         },
-      }));
+    }));
     
-      const classes = useStyles();
+    const classes = useStyles();
 
     return (
         <div className={ `left__part bg-green-400 p-5 flex h-screen justify-start flex-col space-y-5 ${ width } sticky top-0 z-30` }>
@@ -62,6 +70,8 @@ const LeftMenu = ( props ) => {
                         <Link 
                         key={ index }
                         onClick={ () => {
+
+                            if ( option.title === 'Logout' ) return dispatch( setClearUser() );
 
                             setChangeSection( [ true ] );
 

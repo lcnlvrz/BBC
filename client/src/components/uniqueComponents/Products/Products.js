@@ -11,6 +11,7 @@ import { Fragment } from 'react';
 import { IconButton, TextareaAutosize } from '@material-ui/core';
 import ChangeProfilePhoto from '../BusinessProfile/ChangeProfilePhoto/ChangeProfilePhoto';
 import RemoveCircleRoundedIcon from '@material-ui/icons/RemoveCircleRounded';
+import ImageRoundedIcon from '@material-ui/icons/ImageRounded';
 
 const Products = () => {
 
@@ -103,12 +104,12 @@ const Products = () => {
                 <div className='my-10'>
                     <div 
                     className={ `${ !mobileResolution && 'flex items-center justify-center' }` }>
-                        <div className={ `w-full flex flex-row p-5 justify-evenly ${ mobileResolution ? 'space-y-5 flex-wrap' : 'space-x-5' }` }>
+                        <div 
+                        className={ `w-full flex flex-row p-5 justify-evenly ${ mobileResolution ? 'space-y-5 flex-wrap' : 'space-x-5' }` }>
                             <div className={ `flex flex-row  ${ mobileResolution ? 'space-y-5 flex-wrap' : 'space-x-5' } rounded-3xl shadow-2xl h-full` }>
                                 <div className={ `${ mobileResolution ? 'w-full' : 'w-80' } one__product__image__container` }>
                                     <div className={ `h-96 absolute flex items-end justify-center ${ mobileResolution ? 'w-full padding-inner' : 'w-80' }` }>
                                         <div 
-                                        onClick={ () => setIsOpenChangePhoto( true ) }
                                         className={ `w-full h-96 flex items-end background ${ !mobileResolution && 'rounded-bl-3xl' }` }>
                                             <input
                                             defaultValue='$750 ars'
@@ -123,7 +124,7 @@ const Products = () => {
                                     />
                                 </div>
                                 <div className={ `${ mobileResolution ? 'w-full' : 'w-80' } second__part flex flex-col space-y-5 h-96<` }>
-                                    <div className={ `${ mobileResolution && 'px-5' }` }>
+                                    <div className={ `${ mobileResolution && 'px-5' } flex flex-col` }>
                                         <input
                                         type='text'
                                         className='outline-none bg-transparent uppercase font-bold text-lg'
@@ -148,7 +149,7 @@ const Products = () => {
                                                     style={ defaultTransiton }
                                                     onClick={ (e) => handleSelectItem( e ) }
                                                     ref={ itemsMenu.ref }
-                                                    className={ `${ index === 0 ? 'border-b-4 border-green-400' : 'text-green-200' } cursor-pointer` }> 
+                                                    className={ `${ index === 0 ? 'border-b-4 border-green-400' : 'text-green-200' } cursor-pointer text-sm` }> 
                                                         { itemsMenu.title }
                                                     </h1>
                                                 </div>
@@ -180,6 +181,16 @@ const Products = () => {
                                                             
                                                             <RemoveCircleRoundedIcon
                                                             className='text-red-500'
+                                                            />
+
+                                                        </IconButton>
+                                                        <IconButton
+                                                        onClick={ () => setIsOpenChangePhoto( true ) }
+                                                        style={{ outline:'none' }}
+                                                        >
+                                                            
+                                                            <ImageRoundedIcon
+                                                            className='text-green-400'
                                                             />
 
                                                         </IconButton>

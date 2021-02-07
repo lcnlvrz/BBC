@@ -14,50 +14,56 @@ import MyBusiness from './components/uniqueComponents/MyBusiness';
 import WelcomeBusiness from './components/uniqueComponents/WelcomeBusiness';
 import OneProductPage from './components/uniqueComponents/OneProductPage';
 import BusinessRouteConfig from './components/uniqueComponents/BusinessRouteConfig';
+import ClientRouteConfig from './components/uniqueComponents/ClientRouteConfig';
+import AuthProvider from './providers/AuthProvider';
 
 function App() {
 
   return (
-    <Router>
-      <Switch>
-        <Route path='/' exact>
+    <AuthProvider>
+      <Router>
+        <Switch>
 
-          <Home/>
+          {/* <Route path={ signUpLink } exact>
 
-        </Route>
-        <Route path={ signUpLink } exact>
+            <SignUp/>
 
-          <SignUp/>
+          </Route>
+          <Route path={ signInLink } exact>
 
-        </Route>
-        <Route path={ signInLink } exact>
+            <SignIn/>
 
-          <SignIn/>
+          </Route>
+          <Route path={ myBusinessLink } exact>
 
-        </Route>
-        <Route path={ myBusinessLink } exact>
+            <MyBusiness/>
 
-          <MyBusiness/>
+          </Route>
+          <Route path={ welcomeUserLink } exact>
+            <WelcomeBusiness/>
+          </Route>
+          
+          <Route path='/nike/product/' exact>
+          
+            <OneProductPage/>
 
-        </Route>
-        <Route path={ welcomeUserLink } exact>
-          <WelcomeBusiness/>
-        </Route>
-        
-        <Route path='/nike/product/' exact>
-        
-          <OneProductPage/>
+          </Route> */}
 
-        </Route>
+          <Route path='/business/'>
 
-        <Route path='/business/'>
+            <BusinessRouteConfig/>
 
-          <BusinessRouteConfig/>
+          </Route>
 
-        </Route>
+          <Route path='/'>
 
-      </Switch>
-    </Router>
+            <ClientRouteConfig/>
+
+          </Route>
+
+        </Switch>
+      </Router>
+    </AuthProvider>
   );
 }
 

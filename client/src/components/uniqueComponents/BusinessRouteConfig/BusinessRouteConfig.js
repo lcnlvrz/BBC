@@ -9,14 +9,30 @@ import RealTimeData from '../RealTimeData/RealTimeData';
 import BusinessProfile from '../BusinessProfile';
 import Products from '../Products';
 import AddProduct from '../AddProduct';
+import LiveChat from '../LiveChat';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 const BusinessRouteConfig = () => {
+
+    const history = useHistory();
 
     const url = new URL( window.location.href );
 
     const currentSection = url.searchParams.get( 'section' );
 
     const [changeSection, setChangeSection] = useState( [] );
+
+    const user = useSelector(state => state.user);
+
+    useEffect(() => {
+
+        const { isLoading, userID } = user;
+
+        if ( !isLoading && !userID ) return history.push( '/' );
+        
+    }, [ user, history ]);
+
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 800px )' });
 
@@ -34,7 +50,10 @@ const BusinessRouteConfig = () => {
 
         if ( currentSection === 'add-product' ) return <AddProduct/>
 
+        if ( currentSection === 'live-chat' ) return <LiveChat/>
+
     };
+
 
 
     if ( mobileResolution ) return ( 
@@ -51,6 +70,7 @@ const BusinessRouteConfig = () => {
     return <HeaderForBusiness 
     setChangeSection={ setChangeSection } 
     HtmlData={ HtmlData }/>
+
 
 };
 

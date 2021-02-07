@@ -5,7 +5,7 @@ import Input from '../../../reusableComponents/Input';
 import emailValidator from 'email-validator';
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
 import { defaultTransiton } from '../../../../constants/styles';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import PropagateLoader from "react-spinners/PropagateLoader";
 import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
 import { useMediaQuery } from 'react-responsive';
@@ -17,7 +17,11 @@ import LockRoundedIcon from '@material-ui/icons/LockRounded';
 import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
 import { createAccountAPI } from '../../../../api/userAPI';
 
-const ThirdStep = () => {
+const ThirdStep = ( props ) => {
+
+    const history = useHistory();
+
+    const { userData, setUserData, setSteps } = props;
 
     const [input, setInput] = useState( { businessName:'', username:'', password:'', repeatPassword:'' } );
 
@@ -44,7 +48,7 @@ const ThirdStep = () => {
         style={{ overflow:'hidden' }}
         className='text-center flex flex-col items-center justify-center w-3/4 bg-white rounded p-5 space-y-10 absolute'>
             <form
-            onSubmit={ (e) => createAccountAPI( input, setLoading, setAlert, e ) }
+            onSubmit={ (e) => createAccountAPI( input, setLoading, setAlert, e, history, userData ) }
             className='space-y-5 w-full flex flex-col'
             onChange={ (e) => setInput({ ...input, [ e.target.name ]:e.target.value }) }
             >
@@ -70,6 +74,10 @@ const ThirdStep = () => {
                     />
 
                 ) ) }
+                { alert.type === 'general' &&  
+                <p className='font-semibold text-red-500'> 
+                    { alert.message } 
+                </p> }
                 { loading ?
                 <div className='py-5'>
                     <PropagateLoader/> 

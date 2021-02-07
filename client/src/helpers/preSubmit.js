@@ -1,4 +1,4 @@
-import { validateBusinessName, validatePassword, validateUsername } from "./validations";
+import { validateBusinessName, validateNumber, validatePassword, validateUsername } from "./validations";
 import emailValidator from 'email-validator';
 
 export const preSubmitSignIn = ( inputData, setAlert, event ) => {
@@ -74,5 +74,30 @@ export const preSubmitCreateAccount = ( inputData, setAlert, event ) => {
 
 
     return { isWasValidated:true, inputData };
+
+};
+
+export const preSubmitPublishProduct = ( inputData, setAlert ) => {
+
+    const { price, stock } = inputData;
+
+    const isPriceValid = validateNumber( Number(price) );
+    const isStockValid = validateNumber( Number(stock) );
+
+    if ( !isPriceValid ){
+
+        setAlert( { type:'price', message:'The price is not valid' } );
+        return false;
+
+    };
+    
+    if ( !isStockValid ){
+
+        setAlert( { type:'stock', message:'The stock is not valid' } );
+        return false;
+
+    };
+
+    return true;
 
 };

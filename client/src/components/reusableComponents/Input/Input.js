@@ -7,12 +7,10 @@ import VisibilityOffRoundedIcon from '@material-ui/icons/VisibilityOffRounded';
 import InfoRoundedIcon from '@material-ui/icons/InfoRounded';
 import { focusInputLastCharacter } from '../../../helpers/input';
 
-
-
 const Input = ( props ) => {
 
 
-    const { label, value, variant, isFullWidth, name, color, required, type, refInput, StartIcon, maxLength, isPassword, conditions, alert, indexInput } = props;
+    const { label, value, variant, isFullWidth, name, color, required, type, refInput, StartIcon, maxLength, isPassword, conditions, alert, indexInput, placeholder } = props;
 
     const [theme, setTheme] = useState( { muitheme:createMuiTheme({
         palette: {
@@ -53,7 +51,6 @@ const Input = ( props ) => {
         await setInitialPasswordIcon( { Icon:VisibilityOffRoundedIcon, type:'visibilityOff' } );
 
         focusInputLastCharacter( refInput );    
-    
 
     };
 
@@ -64,7 +61,7 @@ const Input = ( props ) => {
         theme={ theme.muitheme }>
             <div className='space-y-2'>
                 <TextField 
-                
+                placeholder={ placeholder }
                 inputProps={{ maxLength, style:alert.type === name ? { color:'red' } : { color:'black' } }}
                 InputProps={{
                     startAdornment:( 
@@ -122,7 +119,7 @@ const Input = ( props ) => {
                     className={ `${ alert.type === name ? 'text-red-500' : 'text-blue-500' }` }
                     />
                     <p className={ `text-xs font-semibold ${ alert.type === name && 'text-red-500' }` }> 
-                        { conditions }
+                        { alert.message ? alert.message : conditions }
                     </p>
                 </div> }
             </div>

@@ -138,6 +138,7 @@ const BusinessProfile = () => {
                 <div className='h-44 w-full flex items-center justify-center'>
                     <div className={ `h-44 w-max-full absolute z-20 ${ mobileResolution ? 'top-48' : 'top-44' } flex items-center justify-end flex-col space-y-5` }>
                         <StyledBadge
+                        style={ defaultTransiton }
                         overlap="circle"
                         anchorOrigin={{
                         vertical: 'bottom',
