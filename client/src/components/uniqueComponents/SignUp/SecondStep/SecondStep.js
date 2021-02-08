@@ -1,34 +1,32 @@
-import React, { useEffect, useRef, useState } from 'react'
-import BCClogo from '../../../../images/bccLogo.png';
+import React, { useEffect, useState } from 'react'
 import Input from '../../../reusableComponents/Input';
-import emailValidator from 'email-validator';
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
 import { defaultTransiton } from '../../../../constants/styles';
-import { Link } from 'react-router-dom';
 import PropagateLoader from "react-spinners/PropagateLoader";
-import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
 import { useMediaQuery } from 'react-responsive';
 import VpnKeyRoundedIcon from '@material-ui/icons/VpnKeyRounded';
-import { validateCode } from '../../../../helpers/validations';
-import ImageContainer from '../../../reusableComponents/ImageContainer';
-import axiosInstance from '../../../../api/axiosConfig';
+import { useValidOTP } from '../../../../hooks/useValidOTP';
 
 const SecondStep = ( props ) => {
 
     const { userData, setUserData, setSteps } = props;
 
-    const [input, setInput] = useState( { code:'' } );
+    const { alertFetch, setData, isLoading, isSuccess, initialColorInput, inputEmailRef } = useValidOTP();
 
-    const [alert, setAlert] = useState( { type:'', message:'' } );
+    const [input, setInput] = useState( { code:'' } );
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
 
-    const inputEmailRef = useRef( null );
+    useEffect(() => {
 
-    const [initialColorInput, setInitialColorInput] = useState( '#000000' );
-    
-    const [loading, setLoading] = useState( false );
+        if ( isSuccess.fetched && isSuccess.success ) {
 
+            setUserData( { ...userData, otp:input.code } );
+            setSteps( { firstStep:false, secondeStep:false, thirdStep:true } );
+
+        };
+        
+    }, [ input, isSuccess, setUserData, setSteps ]);
 
     return (
         <div 
@@ -44,39 +42,7 @@ const SecondStep = ( props ) => {
 
                 e.preventDefault();
 
-                setInitialColorInput( '#000000' );
-                setAlert( { type:'', message:'' } );
-
-                const isValid = validateCode( Number(input.code) );
-
-                if ( !isValid || input.code.length < 4 ){
-
-                    inputEmailRef.current.focus();
-                    setInitialColorInput( '#FF0000' );
-
-                    setAlert( { type:'code', message:"The code is a number with 4 digits" } );
-
-                    return false;
-                };
-
-                setLoading( true );
-
-                axiosInstance.post( '/validate-otp', { email:userData.email, otp:Number(input.code) } )
-                .then( ( response ) => {
-
-                    setLoading( false );
-
-                    setUserData({ ...userData, otp:Number( input.code ) });
-
-                    setSteps( { firstStep:false, secondStep:false, thirdStep:true } );
-
-                } )
-                .catch( (err) => {
-
-                    setLoading( false );
-                    setAlert( { type:'code', message:err.response.data.message } );
-
-                } );
+                setData( { ...input, ...userData } );
 
                 
             } }
@@ -95,14 +61,14 @@ const SecondStep = ( props ) => {
                 isFullWidth={ true }
                 variant='outlined'
                 />
-                { alert.type && 
+                { alertFetch.type && 
                 <div className='flex flex-row text-left space-x-2 items-center'>
                     <ErrorRoundedIcon className='text-red-500'/>
                     <h1 className='text-red-500 font-semibold text-sm'> 
-                        { alert.message }
+                        { alertFetch.message }
                     </h1> 
                 </div> }
-                { loading ?
+                { isLoading ?
                 <div className='py-5'>
                     <PropagateLoader/> 
                 </div> 

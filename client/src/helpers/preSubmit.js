@@ -1,9 +1,7 @@
 import { validateBusinessName, validateNumber, validatePassword, validateUsername } from "./validations";
 import emailValidator from 'email-validator';
 
-export const preSubmitSignIn = ( inputData, setAlert, event ) => {
-
-    event.preventDefault();
+export const preSubmitSignIn = ( inputData, setAlert ) => {
 
     setAlert({ type:'', message:'' });
 
@@ -26,9 +24,7 @@ export const preSubmitSignIn = ( inputData, setAlert, event ) => {
 
 };
 
-export const preSubmitCreateAccount = ( inputData, setAlert, event ) => {
-
-    event.preventDefault();
+export const preSubmitCreateAccount = ( inputData, setAlert ) => {
 
     setAlert({ type:'', message:'' });
 

@@ -1,8 +1,9 @@
 import { setUser } from "../actions/user";
 import { preSubmitCreateAccount, preSubmitSignIn } from "../helpers/preSubmit"
 import axiosInstance from "./axiosConfig";
+import axios from 'axios';
 
-export const signInUserAPI = ( inputData, setAlert, setLoading, event, history, dispatch ) => {
+export const signInUserAPI = ( inputData, setAlert, setLoading, event, history, dispatch, setCancelTokenSource ) => {
 
     const isFormValid = preSubmitSignIn( inputData, setAlert, event );
 
@@ -10,25 +11,28 @@ export const signInUserAPI = ( inputData, setAlert, setLoading, event, history, 
 
     setLoading( true );
 
-    axiosInstance.post( '/sign-in', inputData )
+    const cancelToken = axiosInstance.CancelToken.source();
+
+    setCancelTokenSource( cancelToken );
+
+    axiosInstance.post( '/sign-in', inputData, { cancelToken:cancelToken.token } )
     .then( (response) => {
 
         setLoading( false );
 
         localStorage.setItem( 'token', response.data.token );
 
-        history.push( '/business/?section=panel' );
-
         dispatch( setUser( response.data.userData ) );
-
 
     } )
     .catch( (err) => {
 
         setLoading( false );
 
-        setAlert( { type:'user', message:err.response.data.message } );
+        if ( axios.isCancel( err )) return console.log( 'request canceled' ); 
 
+        setAlert( { type:'user', message:err.response.data.message } );
+        
     } );
 
 };

@@ -1,5 +1,7 @@
 const { userObject, usernameAndPasswordObject } = require('../helpers/joiObjects');
 const User = require( '../models/users' );
+const jwt = require( 'jsonwebtoken' );
+require( 'dotenv' ).config( { path:'../' } ); 
 
 const validateSignUpData = ( req, res, next ) => {
 
@@ -51,5 +53,26 @@ const validateIfUsernameAlreadyExist = ( req, res, next ) => {
 
 };
 
+const validateToken = ( req, res, next ) => {
 
-module.exports = { validateSignUpData, validateIfUsernameAlreadyExist, validateSignInData };
+    const { authorization } = req.headers;
+    
+    if ( !authorization ) return res.status( 404 ).send( { message:'The token is empty' } );
+
+    jwt.verify( authorization, process.env.SECRET_TOKEN, ( err, decoded ) => {
+
+        if ( err ) return res.status( 401 ).send( { message:err.message } );
+
+        if ( !decoded ) return res.status( 500 ).send( { message:'Error from server to decode the token' } );
+
+        const { userID } = decoded;
+
+        res.locals.userID = userID;
+
+        next();
+
+    } );
+
+};
+
+module.exports = { validateSignUpData, validateIfUsernameAlreadyExist, validateSignInData, validateToken };

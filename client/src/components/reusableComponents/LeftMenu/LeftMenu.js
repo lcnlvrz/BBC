@@ -1,31 +1,26 @@
 import { Avatar } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import TimelineRoundedIcon from '@material-ui/icons/TimelineRounded';
-import BusinessRoundedIcon from '@material-ui/icons/BusinessRounded';
-import ShoppingBasketRoundedIcon from '@material-ui/icons/ShoppingBasketRounded';
-import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import { defaultTransiton } from '../../../constants/styles';
 import { Link } from 'react-router-dom';
-import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
-import MessageRoundedIcon from '@material-ui/icons/MessageRounded';
-import MeetingRoomRoundedIcon from '@material-ui/icons/MeetingRoomRounded';
-import { setClearUser } from '../../../actions/user';
-import { useDispatch } from 'react-redux';
+import { useLogout } from '../../../hooks/useLogout';
+import { Fragment } from 'react';
+import { optionsLeftMenu } from '../../../constants/content';
+import { useSelector } from 'react-redux';
 
 const LeftMenu = ( props ) => {
 
-    const dispatch = useDispatch();
+    const logoutUser = useLogout();
 
     const { width, setChangeSection } = props;
-
-    const options = [ { title:'Home', Icon:HomeRoundedIcon, route:'/business/?section=panel' }, { title:'Real-Time Data', Icon:TimelineRoundedIcon, route:'/business/?section=real-time-data' },{ title:'Business Profile', Icon:BusinessRoundedIcon, route:'/business/?section=business-profile' }, { title:'Products', Icon:ShoppingBasketRoundedIcon, route:'/business/?section=products' }, { title:'Add Product', Icon:AddCircleRoundedIcon, route:'/business/?section=add-product' }, { title:'Live Chat', Icon:MessageRoundedIcon, route:'/business/?section=live-chat' }, { title:'Logout', Icon:MeetingRoomRoundedIcon, route:'/' } ];
 
     const url = new URL( window.location.href );
 
     const currentSection = url.searchParams.get( 'section' );
 
     const [currentOption, setCurrentOption] = useState( 0 );
+
+    const user = useSelector(state => state.user);
 
     useEffect(() => {
 
@@ -41,7 +36,7 @@ const LeftMenu = ( props ) => {
 
         if ( currentSection === 'live-chat' ) return setCurrentOption( 5 );
         
-    }, []);
+    }, [ currentSection ]);
 
     const useStyles = makeStyles((theme) => ({
         large: {
@@ -59,26 +54,19 @@ const LeftMenu = ( props ) => {
                 src='https://i.pinimg.com/originals/4d/96/2d/4d962dee72fa76f023d411e20d30690c.jpg'
                 className={ classes.large }
                 />
-                <h3 className='font-semibold text-white text-lg'> 
-                    Nike 
+                <h3 className='font-semibold text-white text-lg truncate w-full text-center'> 
+                    { user.businessName }
                 </h3>
             </div>
             <div className='all__options flex flex-col'>
                 <div className='group__one flex-col flex space-y-5'>
-                    { options.map( ( option, index ) => (
+                    { optionsLeftMenu.map( ( option, index ) => (
 
-                        <Link 
-                        key={ index }
-                        onClick={ () => {
-
-                            if ( option.title === 'Logout' ) return dispatch( setClearUser() );
-
-                            setChangeSection( [ true ] );
-
-                        } }
-                        to={ option.route }>
+                        <Fragment key={ index }>
+                            { option.title === 'Logout' 
+                            ?  
                             <div 
-                            onClick={ () => setCurrentOption( index ) }
+                            onClick={ logoutUser }
                             style={ defaultTransiton }
                             className={ `one__option flex flex-row w-full space-x-2 ${ currentOption === index ? 'text-white' : 'text-blue-900' } hover:text-white cursor-pointer` }>
                                 { currentOption === index && 
@@ -90,15 +78,30 @@ const LeftMenu = ( props ) => {
                                     { option.title }
                                 </h3>
                             </div>
-                        </Link>
-
+                            :
+                            <Link 
+                            onClick={ () => setChangeSection( [ true ] ) }
+                            to={ option.route }>
+                                <div 
+                                onClick={ () => setCurrentOption( index ) }
+                                style={ defaultTransiton }
+                                className={ `one__option flex flex-row w-full space-x-2 ${ currentOption === index ? 'text-white' : 'text-blue-900' } hover:text-white cursor-pointer` }>
+                                    { currentOption === index && 
+                                    <h3> | </h3> }
+                                    <option.Icon
+                                    />
+                                    <h3 
+                                    className={ `text-sm ${ index === currentOption ? 'font-semibold' : 'font-light' }` }> 
+                                        { option.title }
+                                    </h3>
+                                </div>
+                            </Link>
+                            }
+                        </Fragment>
                     ) ) } 
-
                 </div>
-
             </div>
-
-    </div>
+        </div>
     );
 };
 

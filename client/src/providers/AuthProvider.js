@@ -1,26 +1,18 @@
 import { createContext } from "react";
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { setClearUser } from "../actions/user";
-import axiosInstance from "../api/axiosConfig";
+import { useAuth } from "../hooks/useAuth";
 
 export const AuthContext = createContext();
 
 export default function AuthProvider( props ){
 
-    const [user, setUser] = useState( { user:false, isLoading:false } );
+    const [isUserValid, setIsUserValid] = useState( { user:false, isLoading:false } );
 
-    const dispatch = useDispatch();
+    const authUser = useAuth();
 
-    useEffect(() => {
+    useEffect(() => authUser(), [ authUser ]);
 
-        const token = localStorage.getItem( 'token' );
-
-        if ( !token ) return dispatch( setClearUser() )
-        
-    }, []);
-
-    return <AuthContext.Provider value={ user }> 
+    return <AuthContext.Provider value={ isUserValid }> 
     { props.children } </AuthContext.Provider>
 
 

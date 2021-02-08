@@ -3,6 +3,7 @@ const bcrypt = require( 'bcryptjs' );
 const moment = require( 'moment' );
 const jwt = require( 'jsonwebtoken' );
 require( 'dotenv' ).config({ path:'../' });
+const validator = require( 'validator' );
 
 const createUser = ( req, res ) => {
 
@@ -48,7 +49,7 @@ const signInUser = ( req, res ) => {
 
         bcrypt.compare( password, userStored.password, ( err, success ) => {
 
-            const { businessName, username, _id } = userStored;
+            const { businessName, username, _id, profilePhoto } = userStored;
 
             if ( err ) throw err;
 
@@ -62,7 +63,7 @@ const signInUser = ( req, res ) => {
 
                 if ( !token ) return res.status( 500 ).send( { message:'Error from server to encoded the token' } );
 
-                const userData = { businessName, username, userID:_id, isLoading:true }
+                const userData = { businessName, username, userID:_id, isLoading:false, condition:'business', profilePhoto };
 
                 res.status( 200 ).send( { message:'User logged successfully', token, userData } );
 
@@ -74,4 +75,54 @@ const signInUser = ( req, res ) => {
 
 };
 
-module.exports = { createUser, signInUser };
+const getUserInfo = ( req, res ) => {
+
+    const userID = res.locals.userID;
+
+    const filter = { _id:userID };
+
+    User.findOne( filter, ( err, userStored ) => {
+
+        if ( err ) throw err;
+
+        if ( !userStored ) return res.status( 404 ).send( { message:"The user doesn't exist" } );
+
+        const { businessName, username, profilePhoto } = userStored;
+
+        const userData = { businessName, username, userID, isLoading:false, condition:'business', profilePhoto };
+
+        res.status( 200 ).send( { message:'User login successfully', userData } );
+
+    } ).select( 'businessName username profilePhoto' );
+
+};
+
+const uploadProfilePhoto = ( req, res ) => {
+
+    const { url } = req.body;
+
+    if ( !url ) return res.status( 404 ).send( { message:'The url is empy' } );
+
+    const isURLvalid = validator.isURL( url );
+
+    if ( !isURLvalid ) return res.status( 422 ).send({ message:"The url isn't valid" });
+
+    const userID = res.locals.userID;
+
+    const filter = { _id:userID };
+
+    const update = { profilePhoto:url };
+
+    User.updateOne( filter, update, ( err, userStored ) => {
+        
+        if ( err ) throw err;
+
+        if ( !userStored ) return res.status( 404 ).send( { message:"The user doesn't exist" } );
+
+        res.status( 200 ).send({ message:'Profile photo updated successfully', url });
+
+    } );
+
+};
+
+module.exports = { createUser, signInUser, getUserInfo, uploadProfilePhoto };

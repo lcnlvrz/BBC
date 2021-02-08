@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import BCClogo from '../../../../images/bccLogo.png';
 import Input from '../../../reusableComponents/Input';
-import emailValidator from 'email-validator';
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
 import { defaultTransiton } from '../../../../constants/styles';
 import { Link } from 'react-router-dom';
@@ -9,26 +8,38 @@ import PropagateLoader from "react-spinners/PropagateLoader";
 import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
 import { useMediaQuery } from 'react-responsive';
 import { signInLink } from '../../../../constants/pathsRouter';
-import axiosInstance from '../../../../api/axiosConfig';
+import { useSendOTP } from '../../../../hooks/useSendOTP';
 
 const FirstStep = ( props ) => {
 
+    const { setSteps, setUserData } = props;
 
-    const { setSteps, setUserData, userData } = props;
+    const { alertFetch, initialColorInput, isLoading, cancelToken, isSuccess, setData, inputEmailRef } = useSendOTP();
 
     const [input, setInput] = useState( { email:'' } );
 
-    const [alert, setAlert] = useState( { type:'', message:'' } );
-
     const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
 
-    const [timer, setTimer] = useState('');
+    useEffect(() => {
 
-    const inputEmailRef = useRef( null );
+        return () => {
 
-    const [initialColorInput, setInitialColorInput] = useState( '#000000' );
-    
-    const [loading, setLoading] = useState( false );
+            if ( cancelToken ) cancelToken.cancel();
+
+        };
+
+    }, [ cancelToken ]);
+
+    useEffect(() => {
+
+        if ( isSuccess.fetched && isSuccess.success ) {
+
+            setSteps( { firstStep:false, secondStep:true, thirdStep:false } );
+            setUserData( { email:input.email, otp:'' } );
+
+        };
+        
+    }, [ isSuccess, setSteps, input.email, setUserData ]);
 
     return (
         <div 
@@ -48,45 +59,9 @@ const FirstStep = ( props ) => {
             onChange={ (e) => setInput({ email:e.target.value }) }
             onSubmit={ (e) => { 
 
+                e.preventDefault();
+                setData( input );
 
-                setInitialColorInput( '#000000' );
-                setAlert( { type:'', message:'' } );
-
-                e.preventDefault() 
-
-                const isValid = emailValidator.validate( input.email );
-
-                if ( !isValid ){
-
-                    inputEmailRef.current.focus();
-                    setInitialColorInput( '#FF0000' );
-
-                    setAlert( { type:'email', message:"The email isn't valid" } );
-
-                    return false;
-                };
-
-                setLoading( true );
-
-                axiosInstance.post( '/temporary-user', { email:input.email } )
-                .then( response => {
-
-                    setLoading( false );
-                    setUserData( { ...userData, email:input.email } );
-                    setSteps( { firstStep:false, secondStep:true, thirdStep:false } );
-                    
-
-                } )
-                .catch( err => {
-
-                    setLoading( false );
-
-                    setAlert( { type:'email', message:err.response.data.message } );
-
-                } );
-
-
-                
             } }
             className='space-y-4 w-full flex flex-col'>
                 <Input
@@ -102,14 +77,14 @@ const FirstStep = ( props ) => {
                 isFullWidth={ true }
                 variant='outlined'
                 />
-                { alert.type && 
+                { alertFetch.type && 
                 <div className='flex flex-row text-left space-x-2'>
                     <ErrorRoundedIcon className='text-red-500'/>
                     <h1 className='text-red-500 font-semibold'> 
-                        { alert.message }
+                        { alertFetch.message }
                     </h1> 
                 </div> }
-                { loading ?
+                { isLoading ?
                 <div className='py-5'>
                     <PropagateLoader/> 
                 </div> 

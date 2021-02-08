@@ -10,7 +10,8 @@ import { focusInputLastCharacter } from '../../../helpers/input';
 const Input = ( props ) => {
 
 
-    const { label, value, variant, isFullWidth, name, color, required, type, refInput, StartIcon, maxLength, isPassword, conditions, alert, indexInput, placeholder } = props;
+    const { label, value, variant, isFullWidth, name, color, required, type, refInput, StartIcon, maxLength, isPassword, conditions, alert, indexInput, placeholder, isThirdStep } = props;
+
 
     const [theme, setTheme] = useState( { muitheme:createMuiTheme({
         palette: {
@@ -62,7 +63,7 @@ const Input = ( props ) => {
             <div className='space-y-2'>
                 <TextField 
                 placeholder={ placeholder }
-                inputProps={{ maxLength, style:alert.type === name ? { color:'red' } : { color:'black' } }}
+                inputProps={{ maxLength, style:isThirdStep && { padding:'14px 0px' } }}
                 InputProps={{
                     startAdornment:( 
                     <InputAdornment>
@@ -119,7 +120,7 @@ const Input = ( props ) => {
                     className={ `${ alert.type === name ? 'text-red-500' : 'text-blue-500' }` }
                     />
                     <p className={ `text-xs font-semibold ${ alert.type === name && 'text-red-500' }` }> 
-                        { alert.message ? alert.message : conditions }
+                        { alert.message === name ? alert.message : conditions }
                     </p>
                 </div> }
             </div>

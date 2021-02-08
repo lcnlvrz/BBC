@@ -15,24 +15,11 @@ import { useHistory } from 'react-router-dom';
 
 const BusinessRouteConfig = () => {
 
-    const history = useHistory();
-
     const url = new URL( window.location.href );
 
     const currentSection = url.searchParams.get( 'section' );
 
     const [changeSection, setChangeSection] = useState( [] );
-
-    const user = useSelector(state => state.user);
-
-    useEffect(() => {
-
-        const { isLoading, userID } = user;
-
-        if ( !isLoading && !userID ) return history.push( '/' );
-        
-    }, [ user, history ]);
-
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 800px )' });
 

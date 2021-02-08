@@ -9,4 +9,8 @@ app.post( '/user', [ UserMiddleware.validateSignUpData ],[ UserMiddleware.valida
 
 app.post( '/sign-in', [ UserMiddleware.validateSignInData ], UserController.signInUser );
 
+app.get( '/user-info', [ UserMiddleware.validateToken ], UserController.getUserInfo );
+
+app.put( '/profile-photo', [ UserMiddleware.validateToken ], UserController.uploadProfilePhoto );
+
 module.exports = app;

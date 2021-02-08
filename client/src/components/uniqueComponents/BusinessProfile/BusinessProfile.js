@@ -149,7 +149,7 @@ const BusinessProfile = () => {
                             <Avatar
                             onClick={ () => {
 
-                                setIsChangeProfilePhoto( true );
+                                setIsChangeProfilePhoto( { endPoint:'/profile-photo' } );
 
                             } }
                             className={ `${ classes.large } shadow-lg cursor-pointer` }
@@ -162,11 +162,7 @@ const BusinessProfile = () => {
                         />
                     </div>
                     <img
-                    onClick={ () => {
-
-                      setIsChangeProfilePhoto( true );
-
-                    } }
+                    onClick={ () => setIsChangeProfilePhoto( { endPoint:'/banner' } ) }
                     style={{ filter:'brightness(0.5)' }}
                     className='h-44 w-full object-cover object-center cursor-pointer'
                     src='https://record-play.net/wp-content/uploads/2016/06/claimfreedom-adidas-Outdoor.jpg'

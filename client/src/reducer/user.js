@@ -4,7 +4,9 @@ const initialState = {
     businessName:'',
     username:'',
     userID:'',
-    isLoading:true
+    isLoading:true,
+    condition:'',
+    profilePhoto:''
 
 };
 
@@ -18,6 +20,10 @@ const user = ( state = initialState, action ) => {
         case 'CLEAR_USER':
 
             return { ...initialState, isLoading:false };
+
+        case 'SET_PROFILE_PHOTO':
+
+            return { ...state, profilePhoto:action.payload };
     
         default:
             return state;

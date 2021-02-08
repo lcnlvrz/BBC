@@ -1,62 +1,46 @@
-import React, { useEffect, useRef, useState } from 'react'
-import ImageContainer from '../../../reusableComponents/ImageContainer';
-import BCClogo from '../../../../images/bccLogo.png';
+import React, { useRef, useState } from 'react'
 import Input from '../../../reusableComponents/Input';
-import emailValidator from 'email-validator';
-import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
 import { defaultTransiton } from '../../../../constants/styles';
-import { Link, useHistory } from 'react-router-dom';
 import PropagateLoader from "react-spinners/PropagateLoader";
-import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
-import { useMediaQuery } from 'react-responsive';
-import VpnKeyRoundedIcon from '@material-ui/icons/VpnKeyRounded';
-import { validateCode } from '../../../../helpers/validations';
-import BusinessRoundedIcon from '@material-ui/icons/BusinessRounded';
-import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
-import LockRoundedIcon from '@material-ui/icons/LockRounded';
-import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
-import { createAccountAPI } from '../../../../api/userAPI';
+import { groupOfInputsThirdStepSignUp } from '../../../../constants/content';
+import { useSignUp } from '../../../../hooks/useSignUp';
 
 const ThirdStep = ( props ) => {
 
-    const history = useHistory();
+    const { userData } = props;
 
-    const { userData, setUserData, setSteps } = props;
+    const { isLoading, alertFetch, setData } = useSignUp();
 
     const [input, setInput] = useState( { businessName:'', username:'', password:'', repeatPassword:'' } );
-
-    const [alert, setAlert] = useState( { type:'', message:'' } );
-
-    const inputEmailRef = useRef( null );
-
-    const [initialColorInput, setInitialColorInput] = useState( '#000000' );
-
-    const [loading, setLoading] = useState( false );
 
     const businessName = useRef( null );
     const username = useRef( null );
     const password = useRef( null );
     const repeatPassword = useRef( null );
 
-    const inputsArray = [ { maxLength:100, startIcon:BusinessRoundedIcon, refInput:businessName, type:'text', required:true, label:'Business Name', value:input.businessName, name:'businessName', color:initialColorInput, isFullWidth:true, variant:'outlined', conditions:'Only letters, numbers and spaces'  }, 
-    { maxLength:100, startIcon:AccountCircleRoundedIcon, refInput:username, type:'text', required:true, label:'Username', value:input.username, name:'username', color:initialColorInput, isFullWidth:true, variant:'outlined', conditions:'Only letters, numbers . and _'}, 
-    { maxLength:100, startIcon:LockRoundedIcon, refInput:password, type:'password', required:true, label:'Password', value:input.password, name:'password', color:'#FF0000', isFullWidth:true, variant:'outlined', isPassword:true, conditions:'Minimum 1 upper case, 1 lower, 1 digit, 1 special character and 8 length' }, 
-    { maxLength:100, startIcon:LockRoundedIcon, refInput:repeatPassword, type:'password', required:true, label:'Repeat Password', value:input.repeatPassword, name:'repeatPassword', color:'#FF0000', isFullWidth:true, variant:'outlined', isPassword:true, conditions:'Passwords needs be equal' } ];
+    const inputsSignUp = groupOfInputsThirdStepSignUp( input, businessName, username, password, repeatPassword );
 
     return (
         <div 
         style={{ overflow:'hidden' }}
         className='text-center flex flex-col items-center justify-center w-3/4 bg-white rounded p-5 space-y-10 absolute'>
             <form
-            onSubmit={ (e) => createAccountAPI( input, setLoading, setAlert, e, history, userData ) }
+            onSubmit={ (e) => {
+
+                e.preventDefault();
+
+                setData( { ...input, ...userData } );
+
+            } }
             className='space-y-5 w-full flex flex-col'
             onChange={ (e) => setInput({ ...input, [ e.target.name ]:e.target.value }) }
             >
-                { inputsArray.map( ( input, index ) => (
+                { inputsSignUp.map( ( input, index ) => (
 
                     <Input
+                    isThirdStep={ true }
                     indexInput={ index }
-                    alert={ alert }
+                    alert={ alertFetch }
                     conditions={ input.conditions }
                     key={ index }
                     maxLength={ input.maxLength }
@@ -68,17 +52,17 @@ const ThirdStep = ( props ) => {
                     label={ input.label }
                     value={ input.value }
                     name={ input.name }
-                    color={ initialColorInput }
+                    color='#000000'
                     isFullWidth={ true }
                     variant='outlined' 
                     />
 
                 ) ) }
-                { alert.type === 'general' &&  
+                { alertFetch.type === 'general' &&  
                 <p className='font-semibold text-red-500'> 
-                    { alert.message } 
+                    { alert.alertFetch } 
                 </p> }
-                { loading ?
+                { isLoading ?
                 <div className='py-5'>
                     <PropagateLoader/> 
                 </div> 

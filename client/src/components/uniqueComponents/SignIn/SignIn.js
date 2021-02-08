@@ -1,30 +1,39 @@
 import React, { useEffect, useRef, useState } from 'react'
 import BCClogo from '../../../images/bccLogo.png';
 import Input from '../../reusableComponents/Input';
-import emailValidator from 'email-validator';
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
 import { defaultTransiton } from '../../../constants/styles';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropagateLoader from "react-spinners/PropagateLoader";
-import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
 import { useMediaQuery } from 'react-responsive';
 import BackGroundImage from '../../../images/background.jpg';
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import VpnKeyRoundedIcon from '@material-ui/icons/VpnKeyRounded';
 import { Fade } from '@material-ui/core';
-import { signInUserAPI } from '../../../api/userAPI';
 import { signUpLink } from '../../../constants/pathsRouter';
-import { useDispatch } from 'react-redux';
+import { useSignIn } from '../../../hooks/useSignIn';
+import { useDelayComponent } from '../../../hooks/useDelayComponent';
+import LoadingAnimation from '../../reusableComponents/LoadingAnimation';
 
 const SignIn = () => {
 
-    const dispatch = useDispatch();
+    const { isLoading, cancelToken, alertFetch, setData } = useSignIn();
+
+    const { setIsStartDelay, isLoadingComponent } = useDelayComponent();
+
+    useEffect(() => {
+
+        return () => {
+
+            if ( cancelToken ) cancelToken.cancel();
+
+        };
+        
+    }, [ cancelToken ]);
+
+    useEffect(() => setIsStartDelay( true ), [ setIsStartDelay ]);
 
     const [input, setInput] = useState( { emailOrUsername:'', password:'' } );
-
-    const [alert, setAlert] = useState( { type:'', message:'' } );
-
-    const history = useHistory();
 
     const url = new URL( window.location.href );
 
@@ -32,51 +41,12 @@ const SignIn = () => {
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
 
-    const [timer, setTimer] = useState('');
-
-    const [initialColorInput, setInitialColorInput] = useState( '#000000' );
-    
-    const [loading, setLoading] = useState( false );
-
-    const [isLoadingComponents, setIsLoadingComponents] = useState( true );
-
     const passwordRef = useRef( null );
-
-    
-    useEffect(() => {
-
-        window.scrollTo(0, 0);
-
-        setTimeout(function () {
-            let viewheight = window.innerHeight;
-            let viewwidth = window.innerWidth;
-            let viewport = document.querySelector("meta[name=viewport]");
-            viewport.setAttribute("content", "height=" + viewheight + "px, width=" + viewwidth + "px, initial-scale=1.0");
-        }, 300);
-
-
-        setTimeout(() => {
-
-            setIsLoadingComponents( false );
-            
-        }, 2000);
-     
-
-    }, []);
 
     return (
         <>
-        { isLoadingComponents && 
-            <div className="divLoader z-50 absolute bg-white">
-                <h1 className='point-hidden'> . </h1>
-                <div className="sk-folding-cube">
-                <div className="sk-cube1 sk-cube"></div>
-                <div className="sk-cube2 sk-cube"></div>
-                <div className="sk-cube4 sk-cube"></div>
-                <div className="sk-cube3 sk-cube"></div>
-                </div>
-            </div> }
-            <Fade in={ isLoadingComponents === false }>
+        { isLoadingComponent && <LoadingAnimation/> }
+            <Fade in={ isLoadingComponent === false }>
                 <div className='flex flex-col items-center justify-center h-screen'>
                     <img
                     className='h-screen w-screen object-cover backgroundSignUp'
@@ -97,7 +67,10 @@ const SignIn = () => {
                         </p>
                         <form 
                         onChange={ (e) => setInput({...input, [ e.target.name ]:e.target.value }) }
-                        onSubmit={ (e) => signInUserAPI( input, setAlert, setLoading, e, history, dispatch ) }
+                        onSubmit={ (e) => {
+                            e.preventDefault();
+                            setData( input );
+                        } }
                         className='space-y-4 w-full flex flex-col'>
                             <Input
                             alert={ alert }
@@ -107,7 +80,7 @@ const SignIn = () => {
                             label='Email or Username'
                             value={ input.emailOrUsername }
                             name='emailOrUsername'
-                            color={ initialColorInput }
+                            color='#000000'
                             isFullWidth={ true }
                             variant='outlined'
                             />
@@ -121,18 +94,18 @@ const SignIn = () => {
                             label='Password'
                             value={ input.password }
                             name='password'
-                            color={ initialColorInput }
+                            color='#000000'
                             isFullWidth={ true }
                             variant='outlined'
                             />
-                            { alert.type && 
+                            { alertFetch.type && 
                             <div className='flex flex-row text-left space-x-2'>
                                 <ErrorRoundedIcon className='text-red-500'/>
                                 <h1 className='text-red-500 font-semibold'> 
-                                    { alert.message }
+                                    { alertFetch.message }
                                 </h1> 
                             </div> }
-                            { loading ?
+                            { isLoading ?
                             <div className='py-5'>
                                 <PropagateLoader/> 
                             </div> 
