@@ -51,8 +51,8 @@ const LeftMenu = ( props ) => {
         <div className={ `left__part bg-green-400 p-5 flex h-screen justify-start flex-col space-y-5 ${ width } sticky top-0 z-30` }>
             <div className='flex flex-col items-center space-y-2'>
                 <Avatar
-                src='https://i.pinimg.com/originals/4d/96/2d/4d962dee72fa76f023d411e20d30690c.jpg'
-                className={ classes.large }
+                src={ user.profilePhoto }
+                className={ `${ classes.large } bg-white` }
                 />
                 <h3 className='font-semibold text-white text-lg truncate w-full text-center'> 
                     { user.businessName }

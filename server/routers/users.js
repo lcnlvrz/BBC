@@ -13,4 +13,14 @@ app.get( '/user-info', [ UserMiddleware.validateToken ], UserController.getUserI
 
 app.put( '/profile-photo', [ UserMiddleware.validateToken ], UserController.uploadProfilePhoto );
 
+app.put( '/banner', [ UserMiddleware.validateToken ], UserController.uploadBanner ); 
+
+app.delete( '/delete-profilePhoto', [ UserMiddleware.validateToken ], UserController.deleteProfilePhoto );
+
+app.delete( '/delete-banner', [ UserMiddleware.validateToken ], UserController.deleteBanner );
+
+app.put( '/info-business', [ UserMiddleware.validateToken ], UserController.updateBusinessInfo );
+
+app.put( '/socialMedia', [ UserMiddleware.validateToken ], UserController.updateSocialMedias );
+
 module.exports = app;

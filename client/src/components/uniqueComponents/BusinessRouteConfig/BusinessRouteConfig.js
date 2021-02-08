@@ -13,6 +13,7 @@ import LiveChat from '../LiveChat';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
+
 const BusinessRouteConfig = () => {
 
     const url = new URL( window.location.href );
@@ -25,7 +26,7 @@ const BusinessRouteConfig = () => {
 
     const HtmlData = () => {
 
-        if ( currentSection === 'panel' ) return <Panel/>
+        if ( currentSection === 'panel' ) return <Panel/> 
 
         if ( currentSection === 'real-time-data' ) return <RealTimeData/>
 

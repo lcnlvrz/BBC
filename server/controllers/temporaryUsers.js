@@ -7,7 +7,9 @@ const { getTransportToSendOTP } = require('../helpers/sendMail');
 
 const createTemporaryUser = async ( req, res ) => {
     
-    const { email } = req.body;
+    const { email:emailNoLowerCase } = req.body;
+
+    const email = emailNoLowerCase.toLowerCase();
 
     if ( !email ) return res.status( 404 ).send( { message:'The email is empty' } );
 
@@ -72,7 +74,9 @@ const createTemporaryUser = async ( req, res ) => {
 
 const validateOTP = ( req, res ) => {
 
-    const { otp, email } = req.body;
+    const { otp, email:emailNoLowerCase } = req.body;
+
+    const email = emailNoLowerCase.toLowerCase();
 
     const filter = { otp, email };
 

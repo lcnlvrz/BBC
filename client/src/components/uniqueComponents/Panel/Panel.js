@@ -18,6 +18,7 @@ import DescriptionRoundedIcon from '@material-ui/icons/DescriptionRounded';
 import TimerRoundedIcon from '@material-ui/icons/TimerRounded';
 import { defaultTransiton } from '../../../constants/styles';
 import { Link } from 'react-router-dom';
+import { Fade } from '@material-ui/core';
 
 const Panel = () => {
 
@@ -30,48 +31,48 @@ const Panel = () => {
     const DataPanel = () => {
 
         return ( 
+            <Fade in={ true }>
+                <div className='container__all__sections flex flex-col p-2 space-y-10'>
+                    { sections.map( ( section, index ) => (
 
-            <div className='container__all__sections flex flex-col p-2 space-y-10'>
-                { sections.map( ( section, index ) => (
+                        <Link 
+                        to={ section.route }
+                        key={ index }>
+                            <div
+                            style={ defaultTransiton } 
+                            key={ section.title }
+                            className={ `w-full flex flex-row justify-evenly items-center ${ mobileResolution ? 'space-y-5' : 'space-x-5' } one__section flex-wrap rounded-2xl shadow-lg cursor-pointer p-5 bg-white hover:bg-black hover:text-white` }>
+                                <div className='flex flex-col items-center w-40'>
+                                    <section.icon
+                                    style={{ fontSize:'120px' }}
+                                    />
+                                    <h1 className='font-semibold'> 
+                                        { section.title }
+                                    </h1>
+                                </div>
+                                <div className='flex flex-col space-y-3 w-60  items-start'>
+                                    { section.items.map( ( item, index ) => (
 
-                    <Link 
-                    to={ section.route }
-                    key={ index }>
-                        <div
-                        style={ defaultTransiton } 
-                        key={ section.title }
-                        className={ `w-full flex flex-row justify-evenly items-center ${ mobileResolution ? 'space-y-5' : 'space-x-5' } one__section flex-wrap rounded-2xl shadow-lg cursor-pointer p-5 bg-white hover:bg-black hover:text-white` }>
-                            <div className='flex flex-col items-center w-40'>
-                                <section.icon
-                                style={{ fontSize:'120px' }}
-                                />
-                                <h1 className='font-semibold'> 
-                                    { section.title }
-                                </h1>
+
+                                        <div
+                                        key={ index }
+                                        className='one__item flex flex-row items-center space-x-2'>
+
+                                            <item.icon/>
+                                            <h3 className='font-light'> 
+                                                { item.title }: 
+                                            </h3>
+                                            { item.value === true ? <DoneRoundedIcon className='text-green-400'/> : item.value === false ? <HourglassFullRoundedIcon className='text-red-500'/> : <h2 className='font-semibold'> { item.value } </h2> }
+                                            
+                                        </div>
+
+                                    ) ) }
+                                </div>
                             </div>
-                            <div className='flex flex-col space-y-3 w-60  items-start'>
-                                { section.items.map( ( item, index ) => (
-
-
-                                    <div
-                                    key={ index }
-                                    className='one__item flex flex-row items-center space-x-2'>
-
-                                        <item.icon/>
-                                        <h3 className='font-light'> 
-                                            { item.title }: 
-                                        </h3>
-                                        { item.value === true ? <DoneRoundedIcon className='text-green-400'/> : item.value === false ? <HourglassFullRoundedIcon className='text-red-500'/> : <h2 className='font-semibold'> { item.value } </h2> }
-                                        
-                                    </div>
-
-                                ) ) }
-                            </div>
-                        </div>
-                    </Link>
-                ) ) }
-                
-            </div>
+                        </Link>
+                    ) ) }
+                </div>
+            </Fade>
 
         );
 

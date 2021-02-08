@@ -75,4 +75,7 @@ const validateToken = ( req, res, next ) => {
 
 };
 
+
+
+
 module.exports = { validateSignUpData, validateIfUsernameAlreadyExist, validateSignInData, validateToken };

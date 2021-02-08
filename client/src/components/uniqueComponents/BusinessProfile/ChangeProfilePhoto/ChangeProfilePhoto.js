@@ -1,18 +1,32 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ModalOptions from '../../../reusableComponents/Modal';
 import { useMediaQuery } from 'react-responsive';
 import { defaultTransiton } from '../../../../constants/styles';
 import { usePhoto } from '../../../../hooks/usePhoto';
 import AlertAnimation from '../../../reusableComponents/AlertAnimation';
 import PhotoPreview from '../../../reusableComponents/PhotoPreview';
+import { useDeletePhoto } from '../../../../hooks/useDeletePhoto';
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 const ChangeProfilePhoto = ( props ) => {
 
-    const { setCloseModal } = props;
+    const { setCloseModal, endPoint, endPointDelete } = props;
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
 
     const { photo, alert, setData, setPhoto, setAlert, setUpload, isLoading, cancelTokenCloudinary, cancelTokenServer } = usePhoto();
+
+    const { isLoading:isLoadingDeletePhoto, setDeletePhoto, cancelToken, alertFetch, setAlertFetch } = useDeletePhoto();
+
+    useEffect(() => {
+
+        return () => {
+
+            if ( cancelToken ) cancelToken.cancel();
+
+        };
+        
+    }, [ cancelToken ]);
 
 
     return (
@@ -28,11 +42,19 @@ const ChangeProfilePhoto = ( props ) => {
                         </li>
                     </label>
                     <hr/>
+                    { !isLoadingDeletePhoto 
+                    ?  
                     <li 
+                    onClick={ () => setDeletePhoto( { isStartDelete:true, endPoint:endPointDelete } ) }
                     style={ defaultTransiton }
                     className='cursor-pointer font-semibold text-lg text-red-300 hover:text-red-400'> 
                         Delete Photo 
-                    </li>
+                    </li> 
+                    :
+                    <div className='py-4'>
+                        <PropagateLoader/>
+                    </div>
+                    }
                     <hr/>
                     <li 
                     onClick={ () => {
@@ -48,6 +70,8 @@ const ChangeProfilePhoto = ( props ) => {
                 { alert.type && 
                 <AlertAnimation setCloseAlert={ setAlert } severity={ alert.severity } message={ alert.message }/>
                 }
+                { alertFetch.type && 
+                <AlertAnimation setCloseAlert={ setAlertFetch } severity={ alertFetch.severity } message={ alertFetch.message }/> }
                 <input
                 key={ Date.now() }
                 onChange={ (e) => setData( e.target.files[0] ) }
@@ -59,7 +83,12 @@ const ChangeProfilePhoto = ( props ) => {
             </div>
         </ModalOptions> 
         { photo.file &&  
-        <PhotoPreview setPhoto={ setPhoto } mobileResolution={ mobileResolution } photo={ photo } isLoading={ isLoading } setUpload={ setUpload } cancelTokenCloudinary={ cancelTokenCloudinary } cancelTokenServer={ cancelTokenServer } endPoint='/profile-photo'/> }
+        <PhotoPreview 
+        setPhoto={ setPhoto } 
+        mobileResolution={ mobileResolution } photo={ photo } 
+        isLoading={ isLoading } 
+        setUpload={ setUpload } cancelTokenCloudinary={ cancelTokenCloudinary } 
+        cancelTokenServer={ cancelTokenServer } endPoint={ endPoint }/> }
         </>
         
 

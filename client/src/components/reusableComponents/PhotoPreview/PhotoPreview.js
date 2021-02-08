@@ -9,6 +9,8 @@ const PhotoPreview = ( props ) => {
 
     const { setPhoto, mobileResolution, photo, isLoading, setUpload, cancelTokenCloudinary, cancelTokenServer, endPoint } = props;
 
+    console.log( endPoint );
+
     useEffect(() => {
 
         return () => {
@@ -17,7 +19,7 @@ const PhotoPreview = ( props ) => {
 
             if ( cancelTokenServer ) cancelTokenServer.cancel();
 
-            setUpload( { startFetch:false, endPoint:'' } );
+            setUpload( { isStartFetch:false, endPoint:'' } );
 
         };
        
@@ -35,7 +37,7 @@ const PhotoPreview = ( props ) => {
                     { !isLoading ?
                     <> 
                         <IconButton
-                        onClick={ () => setUpload( { startFetch:true, endPoint } ) }
+                        onClick={ () => setUpload( { isStartFetch:true, endPoint } ) }
                         style={{ outline:'none' }}
                         >
                             <PublishRoundedIcon

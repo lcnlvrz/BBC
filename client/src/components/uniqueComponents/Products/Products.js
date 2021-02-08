@@ -13,6 +13,7 @@ import ChangeProfilePhoto from '../BusinessProfile/ChangeProfilePhoto/ChangeProf
 import RemoveCircleRoundedIcon from '@material-ui/icons/RemoveCircleRounded';
 import ImageRoundedIcon from '@material-ui/icons/ImageRounded';
 
+
 const Products = () => {
 
     const [currentItemMenu, setCurrentItemMenu ] = useState( 0 );
@@ -95,6 +96,7 @@ const Products = () => {
     const [isOpenChangePhoto, setIsOpenChangePhoto] = useState( false );
 
     return (
+        <Fade in={ true }>
             <div className='flex flex-col'>
                 <div className='px-5'>
                     <InputSearcher
@@ -266,6 +268,7 @@ const Products = () => {
                 </div>
                 { isOpenChangePhoto && <ChangeProfilePhoto setCloseModal={ setIsOpenChangePhoto }/> }
             </div>
+        </Fade>
     );
 };
 

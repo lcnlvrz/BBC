@@ -7,6 +7,9 @@ import MeetingRoomRoundedIcon from '@material-ui/icons/MeetingRoomRounded';
 import TimelineRoundedIcon from '@material-ui/icons/TimelineRounded';
 import ShoppingBasketRoundedIcon from '@material-ui/icons/ShoppingBasketRounded';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
+import FacebookIcon from '@material-ui/icons/Facebook';
+import TwitterIcon from '@material-ui/icons/Twitter';
+import InstagramIcon from '@material-ui/icons/Instagram';
 
 export const groupOfInputsThirdStepSignUp = ( input, businessName, username, password, repeatPassword ) => {
 
@@ -27,6 +30,24 @@ export const groupOfInputsThirdStepSignUp = ( input, businessName, username, pas
 
 };
 
-
 export const optionsLeftMenu = [ { title:'Home', Icon:HomeRoundedIcon, route:'/business/?section=panel' }, { title:'Real-Time Data', Icon:TimelineRoundedIcon, route:'/business/?section=real-time-data' },{ title:'Business Profile', Icon:BusinessRoundedIcon, route:'/business/?section=business-profile' }, { title:'Products', Icon:ShoppingBasketRoundedIcon, route:'/business/?section=products' }, { title:'Add Product', Icon:AddCircleRoundedIcon, route:'/business/?section=add-product' }, { title:'Live Chat', Icon:MessageRoundedIcon, route:'/business/?section=live-chat' }, { title:'Logout', Icon:MeetingRoomRoundedIcon, route:'/' } ];
+
+export const socialsMedia = [ { icon:FacebookIcon, id:'facebook'}, { icon:InstagramIcon, id:'instagram' }, { icon:TwitterIcon, id:'twitter' } ];
+
+
+
+export const textAreaBusinessProfileContentFooterFunction = ( input ) => {
+
+    return [ { name:'footerSectionOne', placeholder:'Type something important', value:input.footerSectionOne }, { name:'footerSectionTwo', placeholder:"More information about what's your business do", value:input.footerSectionTwo } ];
+
+};
+
+export const textAreaBusinessProfileContentMainFunction = ( input ) => {
+
+    return [ { name:'mainPresentationOne', placeholder:'Tell us about your bussiness 🤔', value:input.mainPresentationOne }, { name:'mainPresentationTwo', placeholder:'More presentation...', value:input.mainPresentationTwo } ];
+
+};
+
+export const inputKeys = [ 'businessName', 'isOpenBusiness', 'mainPresentationOne', 'footerSectionTwo', 'footerTitle', 'footerSectionOne', 'mainPresentationTwo', 'footerLastLine'  ];
+
 

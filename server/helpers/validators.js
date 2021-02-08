@@ -37,4 +37,64 @@ const usernameAndEmailValidator = ( value, helpers ) => {
 
 };
 
-module.exports = { usernameValidator, passwordValidator, usernameAndEmailValidator };
+const validateURL = ( url ) => {
+
+    if ( !url ) return false;
+
+    const isURLvalid = validator.isURL( url );
+
+    if ( !isURLvalid ) return res.status( 422 ).send({ message:"The url isn't valid" });
+
+    return true;
+
+};
+
+const validateURLs = ( urls ) => {
+
+    const keys = Object.keys( urls );
+
+    const socialMediasAllowed = [ 'facebook.com', 'instagram.com', 'twitter.com', 'mercadolibre.com' ];
+
+    const booleans = keys.map( ( socialMedia, index ) => {
+        
+        let protocol = "";
+        let hostURL = "";
+        let namePage = "";
+
+        const validateIfIsURL = validator.isURL( urls[ socialMedia ] );
+
+        if ( validateIfIsURL ) {
+
+            hostURL = new URL( urls[ socialMedia ] );
+
+            namePage = hostURL.host.split( '.' )[0];
+
+            protocol = hostURL.protocol;
+
+            hostURL = hostURL.host;
+
+        };
+
+        let isSocialMediaAllowed = false;
+
+        for (let i = 0; i < socialMediasAllowed.length; i++) {
+
+            if ( hostURL === socialMediasAllowed[i] && protocol === 'https:' && socialMedia === `${ namePage }Link` ) isSocialMediaAllowed = true; 
+            
+        };
+
+        if ( !isSocialMediaAllowed && urls[ socialMedia ] !== ""   ) return false;
+
+        return true;
+
+    } );
+
+    const indexInvalid = booleans.indexOf( false );
+
+    if ( indexInvalid !== -1 ) return false;
+
+    return true;
+
+};
+
+module.exports = { usernameValidator, passwordValidator, usernameAndEmailValidator, validateURL, validateURLs };

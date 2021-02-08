@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { clientIDimgr } from '../constants/API';
 import axiosInstance from '../api/axiosConfig';
 import { getToken } from '../helpers/getToken';
 import { useDispatch } from 'react-redux';
-import { setProfilePhoto } from '../actions/user';
+import { setBanner, setProfilePhoto } from '../actions/user';
 
 
-export const usePhoto = ( event ) => {
+export const usePhoto = () => {
 
     const dispatch = useDispatch();
 
@@ -81,7 +80,12 @@ export const usePhoto = ( event ) => {
                     setIsLoading( false );
 
                     setAlert( { type:'image', severity:'success', message:'Profile photo updated successfully' } );
-                    dispatch( setProfilePhoto( secure_url ) );
+
+                    if ( upload.endPoint === '/profile-photo' ) dispatch( setProfilePhoto( secure_url ) );
+
+                    if ( upload.endPoint === '/banner' ) dispatch( setBanner( secure_url ) );
+
+                    
 
                 } )
                 .catch( (err) => {
