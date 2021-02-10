@@ -75,21 +75,63 @@ export const preSubmitCreateAccount = ( inputData, setAlert ) => {
 
 export const preSubmitPublishProduct = ( inputData, setAlert ) => {
 
-    const { price, stock } = inputData;
+    const { price, stock, image } = inputData;
+
+    if ( !image ) {
+
+        setAlert( { type:'image', message:"Upload one product's photo", severity:'error' } );
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+        return false;
+
+    };
 
     const isPriceValid = validateNumber( Number(price) );
     const isStockValid = validateNumber( Number(stock) );
 
     if ( !isPriceValid ){
 
-        setAlert( { type:'price', message:'The price is not valid' } );
+        setAlert( { type:'price', message:'The price is not valid', severity:'error' } );
         return false;
 
     };
     
     if ( !isStockValid ){
 
-        setAlert( { type:'stock', message:'The stock is not valid' } );
+        setAlert( { type:'stock', message:'The stock is not valid', severity:'error' } );
+        return false;
+
+    };
+
+    return true;
+
+};
+
+export const preSubmitUpdateProduct = ( inputData, setAlert ) => {
+
+    const { price, stock, title, description, subtitle, details } = inputData;
+
+    if ( !title || !description || !subtitle || !details ) {
+
+        setAlert( { type:'incomplete', message:'Fill out all the information', severity:'error' } );
+        return false;
+
+    };
+
+    const isPriceValid = validateNumber( Number(price) );
+    const isStockValid = validateNumber( Number(stock) );
+
+    if ( !isPriceValid ) {
+
+        setAlert({ type:'price', message:"The price isn't valid", severity:'error' });
+
+        return false;
+
+    };
+
+    if ( !isStockValid ) {
+
+        setAlert({ type:'stock', message:"The stock isn't valid", severity:'error' });
+
         return false;
 
     };

@@ -10,6 +10,16 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import ImageContainer from '../../../reusableComponents/ImageContainer';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import PlaceHolderImage from '../../../../images/placeHolderHomeDrawVector.jpg';
+import { useSearchBusiness } from '../../../../hooks/useSearchBusiness';
+import { Avatar } from '@material-ui/core';
+import { StyledBadgeBusinessProfile, useStylesBusinessProfile } from '../../BusinessProfile/styles';
+import { makeStyles, withStyles  } from '@material-ui/core/styles';
+import Badge from '@material-ui/core/Badge';
+import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
+import WatchLaterRoundedIcon from '@material-ui/icons/WatchLaterRounded';
+import BusinessResult from '../BusinessResult';
+import PropagateLoader from "react-spinners/PropagateLoader";
+import AlertAnimation from '../../../reusableComponents/AlertAnimation/AlertAnimation';
 
 const Body = () => {
 
@@ -19,21 +29,20 @@ const Body = () => {
 
     const [imageLoaded, setImageLoaded] = useState( false );
 
-    const test = useRef( null );
+    const { setQuery, isLoading, setIsLoading, cancelToken, business, query, notFound, setNotFound, isSearching } = useSearchBusiness();
 
-    useEffect(() => {
+    const useStylesBusinessProfile = makeStyles((theme) => ({
+        large: {
+          width: theme.spacing(5),
+          height: theme.spacing(5)
+        },
+    }));
 
-        if ( test.current ) {
+    const classes = useStylesBusinessProfile();
 
-            console.log( test.current.offsetWidth );
+    const numbers = [ 0, 1 ];
 
 
-        }
-          
-    }, [ test ]);
-
-    
-    
     return (
         <div className='w-full flex flex-col items-center justify-center p-4'>
             <div className='flex items-center justify-center h-full flex-col space-y-5 w-full'>
@@ -41,8 +50,30 @@ const Body = () => {
                 className={`font-light ${ mobileResolution ? 'text-lg' : 'text-3xl' } text-center text-gray-400`}> 
                     <span className='text-gray-800 font-bold'>Search</span> whats <span className='text-gray-800 font-bold'> happening </span> in any <span className='text-gray-800 font-bold'>business</span> right now 
                 </h1>
-                <SearcherInput
-                placeholder='Business Name&#39;s'/>
+                <form
+                className='w-full'
+                onChange={ (e) => setQuery( e.target.value ) }
+                >
+                    <SearcherInput
+                    endPoint='business'
+                    name='query'
+                    placeholder='Business Name&#39;s'/>
+                </form>
+                <>
+                { business.length > 0 &&
+                <div className='w-full h-80 z-30 bg-white overflow-auto'>
+                    { business.map( ( company, index ) => (
+                        
+                        <BusinessResult key={ index } company={ company }/>
+
+                    ) )  }
+                </div> }
+                { isSearching
+                &&
+                <div className='py-5'>
+                    <PropagateLoader/>
+                </div>}
+                </>
             </div>  
             <ImageContainer
             heightPX='400px'
@@ -54,6 +85,7 @@ const Body = () => {
             <h1 className='text-2xl text-gray-400 font-light'> 
                 All plataforms, <span className='font-semibold text-black'>one site.</span> 
             </h1> 
+            { notFound && <AlertAnimation setCloseAlert={ setNotFound } message={ notFound.message } severity={ notFound.severity }/> }
         </div>
     );
 

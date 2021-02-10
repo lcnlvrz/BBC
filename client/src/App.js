@@ -9,6 +9,7 @@ import SignIn from './components/uniqueComponents/SignIn';
 import BusinessRouteConfig from './components/uniqueComponents/BusinessRouteConfig';
 import AuthProvider from './providers/AuthProvider';
 import CustomRoute from './CustomRoute/CustomRoute';
+import MyBusiness from './components/uniqueComponents/MyBusiness/MyBusiness';
 
 function App() {
 
@@ -16,7 +17,10 @@ function App() {
     <AuthProvider>
       <Router>
         <Switch>
-
+          <CustomRoute
+          path='/search/business/'
+          component={ MyBusiness }
+          />
           <CustomRoute 
           exact 
           path='/' 

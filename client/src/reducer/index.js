@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux'
 import user from './user';
+import currentSearch from './currentSearch';
 
 const allReducers = combineReducers( {
 
-    user
+    user,
+    currentSearch
 
 } );
 

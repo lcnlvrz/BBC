@@ -23,4 +23,10 @@ app.put( '/info-business', [ UserMiddleware.validateToken ], UserController.upda
 
 app.put( '/socialMedia', [ UserMiddleware.validateToken ], UserController.updateSocialMedias );
 
+app.get( '/business', UserController.getAllBusiness );
+
+app.put( '/banner-section', [ UserMiddleware.validateToken ], UserController.updateBannerSectionProducts );
+
+app.delete( '/delete-bannerSection', [ UserMiddleware.validateToken ], UserController.deleteBannerSectionProducts );
+
 module.exports = app;

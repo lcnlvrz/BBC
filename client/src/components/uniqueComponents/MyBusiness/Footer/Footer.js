@@ -5,25 +5,37 @@ import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import InstagramIcon from '@material-ui/icons/Instagram';
 
-const Footer = () => {
+const Footer = ( props ) => {
+
+    const { facebookLink, instagramLink, twitterLink, footerSectionOne, footerSectionTwo, footerTitle, footerLastLine } = props;
+
     return (
         <footer className='bg-black p-5 space-y-5'>
             <div className='flex flex-row justify-between'>
                 <div className='flex items-center space-x-2'>
                     <h1 className='text-white text-lg font-semibold'> 
-                        Nike  <span className='font-light'> | Oficial Business</span>
+                        { footerTitle }
                     </h1>
                 </div>
                 <div className='space-x-2'>
-                    <FacebookIcon
-                    className='text-white'
-                    />
-                    <InstagramIcon
-                    className='text-white'
-                    />
-                    <TwitterIcon
-                    className='text-white'
-                    />
+                    { facebookLink && 
+                    <a href={ facebookLink }>
+                        <FacebookIcon
+                        className='text-white'
+                        />
+                    </a> }
+                    { instagramLink && 
+                    <a href={ instagramLink }>
+                        <InstagramIcon
+                        className='text-white'
+                        />
+                    </a> }
+                    { twitterLink && 
+                    <a href={ twitterLink }>
+                        <TwitterIcon
+                        className='text-white'
+                        />
+                    </a> }
                 </div>
             </div>
             <div className='footer__questions text-white flex flex-row justify-between space-x-5'>
@@ -32,7 +44,7 @@ const Footer = () => {
                         What is Nike? 
                     </h1>
                     <p className='font-light'> 
-                        Nike, Inc. is an American multinational corporation that is engaged in the design, development, manufacturing, and worldwide marketing.
+                        { footerSectionOne }
                     </p>
                 </div>
                 <div className='space-y-2'>
@@ -40,13 +52,13 @@ const Footer = () => {
                         Why Nike? 
                     </h1>
                     <p className='font-light'> 
-                        Nike, Inc. is an American multinational corporation that is engaged in the design, development, manufacturing, and worldwide marketing and sales of footwear, apparel, equipment
+                       { footerSectionTwo }
                     </p>
                 </div>
             </div>
             <div className='text-white'>
                 <p className='font-light'> 
-                    Nike All Rights Reserved. 
+                   { footerLastLine }
                 </p>
             </div>
         </footer>      

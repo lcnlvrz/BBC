@@ -64,7 +64,7 @@ const Banner = ( props ) => {
                     variant="dot"
                     >
                         <Avatar
-                        className={ `${ classes.large } shadow-lg ` }
+                        className={ `${ classes.large } shadow-lg bg-white` }
                         src={ profilePhoto }
                         />
                     </StyledBadge>
@@ -75,7 +75,7 @@ const Banner = ( props ) => {
                 </div>
                 <img
                 style={{ filter:'brightness(0.5)' }}
-                className='h-44 w-full object-cover object-center'
+                className='h-44 w-full object-cover object-center '
                 src={ bannerPhoto }
                 alt=''/>
             </div>

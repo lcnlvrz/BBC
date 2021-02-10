@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteBanner, deleteProfilePhoto } from '../actions/user';
+import { deleteBanner, deleteBannerSectionProducts, deleteProfilePhoto } from '../actions/user';
 import axiosInstance from '../api/axiosConfig';
 import { getToken } from '../helpers/getToken';
 
@@ -31,7 +31,9 @@ export const useDeletePhoto = () => {
         setIsLoading( true );
 
         axiosInstance.delete( deletePhoto.endPoint, { headers:{ authorization:token }, cancelToken:cancelTokenFunction.token } )
-        .then( () => {
+        .then( ( response ) => {
+
+            console.log( deletePhoto.endPoint );
 
             setIsLoading( false );
 
@@ -39,8 +41,12 @@ export const useDeletePhoto = () => {
 
             if ( deletePhoto.endPoint === '/delete-banner' ) dispatch( deleteBanner() );
 
+            if ( deletePhoto.endPoint === '/delete-bannerSection' ) dispatch( deleteBannerSectionProducts() );
+
         } )
         .catch( (err) => {
+
+            console.log( err.response );
 
             if ( axiosInstance.isCancel( err ) ) return console.log( 'request canceled by user' );
 

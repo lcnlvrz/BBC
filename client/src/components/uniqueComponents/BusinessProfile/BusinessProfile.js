@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import '../MyBusiness/MyBusiness.css';
 import Badge from '@material-ui/core/Badge';
-import { Avatar, Fade, TextareaAutosize } from '@material-ui/core';
+import { Avatar, Fade, InputBase, TextareaAutosize } from '@material-ui/core';
 import { defaultTransiton, fillButton, textAreaDefaultProps } from '../../../constants/styles';
 import ChangeProfilePhoto from './ChangeProfilePhoto/ChangeProfilePhoto';
 import ChangeSocialMediaLinks from './ChangeSocialMediaLinks';
@@ -15,7 +15,9 @@ import Banner from './Banner';
 import CloseBusiness from './CloseBusiness';
 import Footer from './Footer';
 import ButtonSaveChanges from '../../reusableComponents/ButtonSaveChanges';
-
+import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
+import WatchLaterRoundedIcon from '@material-ui/icons/WatchLaterRounded';
+import AddPhotoAlternateRoundedIcon from '@material-ui/icons/AddPhotoAlternateRounded';
 
 const BusinessProfile = () => {
 
@@ -87,6 +89,19 @@ const BusinessProfile = () => {
             >
                 <Banner input={ input } setIsChangePhoto={ setIsChangePhoto } setIsNewChange={  setIsNewChange}/>
                 <div className='mt-28 flex items-center justify-center flex-col space-y-5'>
+                  <div className='flex flex-row space-x-2 items-center'>
+                    <label> 
+                      Business's category: 
+                    </label> 
+                    <InputBase
+                    className='p-0'
+                    required
+                    inputProps={{ style:{ padding:'0px' } }}
+                    name='businessCategory'
+                    value={ input.businessCategory }
+                    placeholder='BarberShop, Shoes Store...'
+                    />
+                  </div>
                   <CloseBusiness input={ input } setIsNewChange={ setIsNewChange }/>
                   <div className='mt-28 flex flex-row flex-wrap justify-evenly m-10 w-full px-5 space-y-5'>
                     { textAreaBusinessProfileContentMain.map( ( textArea ) => (
@@ -103,6 +118,43 @@ const BusinessProfile = () => {
 
                     ) ) }
                   </div>
+                  <div className='flex flex-row space-x-2 items-center'>
+                      <LocationOnRoundedIcon 
+                      style={{ fontSize:'50px' }}
+                      className='text-red-500'/>
+                      <InputBase
+                      required
+                      className='p-0'
+                      name='location'
+                      value={ input.location }
+                      placeholder="The business's location"
+                      />
+                  </div>
+                  <div className='flex flex-row space-x-2 items-center'>
+                      <WatchLaterRoundedIcon 
+                      style={{ fontSize:'50px' }}
+                      className='text-black'/>
+                      <InputBase
+                      required
+                      className='p-0'
+                      name='schedule'
+                      value={ input.schedule }
+                      placeholder="The business's schedule"
+                      />
+                  </div>
+                  <div 
+                  style={ user.bannerSectionProducts ? { background:`url( ${ user.bannerSectionProducts } )`, backgroundSize:'100%' } : { margin:0 } }
+                  className='h-60 bg-green-400 w-full flex items-center justify-center'>
+                    <label 
+                    style={ defaultTransiton }
+                    onClick={ () => setIsChangePhoto( { endPoint:'/banner-section', endPointDelete:'/delete-bannerSection' } ) }
+                    className='flex flex-row space-x-2 items-center cursor-pointer text-gray-500 hover:text-black'>
+                      <AddPhotoAlternateRoundedIcon style={{ fontSize:'50px' }}/>
+                      <h1 className='text-3xl font-semibold'> 
+                        Banner Section Products
+                      </h1>
+                    </label>
+                  </div>
                   <Footer setIsNewChange={ setIsNewChange } input={ input } setIsChangeSocialMediaLinks={ setIsChangeSocialMediaLinks } socialMediaLinks={ socialMediaLinks }/>
 
                   { isNewChange 
@@ -115,7 +167,7 @@ const BusinessProfile = () => {
                   isChangePhoto 
                   && 
                   <ChangeProfilePhoto 
-                  setCloseModal={ setIsChangePhoto  }
+                  setCloseModal={ setIsChangePhoto }
                   endPointDelete={ isChangePhoto.endPointDelete }
                   endPoint={ isChangePhoto.endPoint }
                   />  

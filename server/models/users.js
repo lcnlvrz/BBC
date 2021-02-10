@@ -20,8 +20,12 @@ const UserSchema = Schema({
     isOpenBusiness:{ type:Boolean, required:false, default:false },
     facebookLink:{ type:String, required:false },
     instagramLink:{ type:String, required:false },
-    twitterLink:{ type:String, required:false }
-
+    twitterLink:{ type:String, required:false },
+    products:[ { type:mongoose.Types.ObjectId, ref:'products', default:[] } ],
+    location:{ type:String, required:false },
+    schedule:{ type:String, required:false },
+    businessCategory:{ type:String, required:false },
+    bannerSectionProducts:{ type:String, required:false }
 
 
 });

@@ -51,3 +51,5 @@ export const textAreaBusinessProfileContentMainFunction = ( input ) => {
 export const inputKeys = [ 'businessName', 'isOpenBusiness', 'mainPresentationOne', 'footerSectionTwo', 'footerTitle', 'footerSectionOne', 'mainPresentationTwo', 'footerLastLine'  ];
 
 
+
+export const initialStateInputAddProduct = { title:'', subtitle:'', price:'', description:'', details:'', category:'', stock:'', currency:'', image:'', businessCategory:'', location:'', schedule:'' };

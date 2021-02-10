@@ -3,7 +3,7 @@ import axios from 'axios';
 import axiosInstance from '../api/axiosConfig';
 import { getToken } from '../helpers/getToken';
 import { useDispatch } from 'react-redux';
-import { setBanner, setProfilePhoto } from '../actions/user';
+import { setBanner, setProfilePhoto, updateBannerSectionProducts } from '../actions/user';
 
 
 export const usePhoto = () => {
@@ -84,6 +84,8 @@ export const usePhoto = () => {
                     if ( upload.endPoint === '/profile-photo' ) dispatch( setProfilePhoto( secure_url ) );
 
                     if ( upload.endPoint === '/banner' ) dispatch( setBanner( secure_url ) );
+
+                    if ( upload.endPoint === '/banner-section' ) dispatch( updateBannerSectionProducts( secure_url ) );
 
                     
 

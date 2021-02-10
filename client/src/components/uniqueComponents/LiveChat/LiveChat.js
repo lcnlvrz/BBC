@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Avatar, IconButton, InputBase } from '@material-ui/core';
 import { makeStyles, withStyles  } from '@material-ui/core/styles';
 import { defaultTransiton } from '../../../constants/styles';
@@ -8,8 +8,21 @@ import { useMediaQuery } from 'react-responsive';
 import MessageRoundedIcon from '@material-ui/icons/MessageRounded';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import { Fade } from '@material-ui/core';
+import socket from '../../../socket/config';
 
 const LiveChat = () => {
+
+    useEffect(() => {
+
+        socket.emit( 'getSocketID' );
+
+        socket.on( 'socketID', socketID => {
+
+            console.log( socketID );
+
+        } );
+        
+    }, []);
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
 

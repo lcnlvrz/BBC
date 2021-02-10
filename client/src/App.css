@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+.background__banner__searching {
+  content: "";
+  opacity: 0.2;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+  max-height: 100%;
+  background-repeat: no-repeat;
+  object-fit: cover;
+  background-size: 100%;
+  background-position: center;
+}

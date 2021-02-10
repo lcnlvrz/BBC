@@ -16,15 +16,18 @@ const initialState = {
     isOpenBusiness:false,
     instagramLink:'',
     twitterLink:'',
-    facebookLink:''
+    facebookLink:'',
+    products:[]
 };
 
 const user = ( state = initialState, action ) => {
 
+    const copyProducts = [ ...state.products ];
+
     switch (action.type) {
         case 'SET_USER':
             
-            return action.payload;
+            return { ...initialState, ...action.payload };
 
         case 'CLEAR_USER':
 
@@ -53,7 +56,31 @@ const user = ( state = initialState, action ) => {
         case 'UPDATE_SOCIAL_MEDIA':
 
             return { ...state, ...action.payload };
-    
+
+        case 'UPLOAD_ONE_PRODUCT':
+
+            return { ...state, products:[ action.payload, ...state.products ] };
+
+        case 'UPDATE_INFO_PRODUCT':
+
+            copyProducts[ action.payload.indexProduct ] = { ...copyProducts[ action.payload.indexProduct ], ...action.payload.newInfoProduct };
+
+            return { ...state, products:copyProducts };
+
+        case 'DELETE_PRODUCT':
+
+            copyProducts.splice( action.payload, 1 );
+
+            return { ...state, products:copyProducts };
+
+        case 'UPDATE_BANNER_SECTION_PRODUCTS':
+
+            return { ...state, bannerSectionProducts:action.payload };
+
+        case 'DELETE_BANNER_SECTION_PRODUCTS':
+
+            return { ...state, bannerSectionProducts:'' };
+        
         default:
             return state;
     };

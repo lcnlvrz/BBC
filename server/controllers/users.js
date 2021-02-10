@@ -8,6 +8,8 @@ const { validateURL, validateURLs } = require('../helpers/validators');
 const { validate } = require('../models/users');
 const { informationBusinessObject } = require('../helpers/joiObjects');
 
+const populateUser = { path:'products', options:{ sort:{ 'createdAt':-1 }, limit:10 } };
+
 const createUser = ( req, res ) => {
 
     const { businessName, username:usernameNoLowerCase, password, email } = req.body;
@@ -69,7 +71,9 @@ const signInUser = ( req, res ) => {
                 isOpenBusiness,
                 facebookLink,
                 instagramLink,
-                twitterLink 
+                twitterLink,
+                products,
+                bannerSectionProducts 
             } = userStored;
 
             if ( err ) throw err;
@@ -102,7 +106,9 @@ const signInUser = ( req, res ) => {
                     isOpenBusiness,
                     facebookLink,
                     instagramLink,
-                    twitterLink   
+                    twitterLink,
+                    products,
+                    bannerSectionProducts   
                 };
 
                 res.status( 200 ).send( { message:'User logged successfully', token, userData } );
@@ -111,7 +117,7 @@ const signInUser = ( req, res ) => {
 
         } );
 
-    } );
+    } ).populate( populateUser );
 
 };
 
@@ -141,7 +147,9 @@ const getUserInfo = ( req, res ) => {
             isOpenBusiness,
             facebookLink,
             instagramLink,
-            twitterLink    
+            twitterLink,
+            products,
+            bannerSectionProducts    
         } = userStored;
 
         const userData = { 
@@ -161,12 +169,14 @@ const getUserInfo = ( req, res ) => {
             isOpenBusiness,
             facebookLink,
             instagramLink,
-            twitterLink  
+            twitterLink,
+            products,
+            bannerSectionProducts  
         };
 
         res.status( 200 ).send( { message:'User login successfully', userData } );
 
-    } ).select( 'businessName username profilePhoto banner mainPresentationOne mainPresentationTwo footerSectionOne footerSectionTwo footerLastLine footerTitle isOpenBusiness facebookLink instagramLink twitterLink' );
+    } ).populate( populateUser );
 
 };
 
@@ -262,6 +272,53 @@ const deleteBanner = ( req, res ) => {
 
 };
 
+const updateBannerSectionProducts = ( req, res ) => {
+
+    const { url } = req.body;
+
+    const validation = validateURL( url );
+
+    if ( !validation ) return res.status( 422 ).send( { message:"The url isn't valid" } );
+
+    const userID = res.locals.userID;
+
+    const filter = { _id:userID };
+
+    const update = { bannerSectionProducts:url };
+
+    User.updateOne( filter, update, ( err, userStored ) => {
+
+        if ( err ) throw err;
+
+        if ( !userStored ) return res.status( 404 ).send( { message:"The user doesn't exist" } );
+
+        res.status( 200 ).send( { message:'Banner uploaded successfully', url } );
+
+    } );
+
+
+}
+
+const deleteBannerSectionProducts = ( req, res ) => {
+
+    const userID = res.locals.userID;
+
+    const filter = { _id:userID };
+
+    const update = { $unset:{ bannerSectionProducts:"" } };
+
+    User.updateOne( filter, update, ( err, updated ) => {
+
+        if ( err ) throw err;
+
+        if ( !updated ) return res.status( 404 ).send( { message:"The user isn't exist" } );
+
+        res.status( 200 ).send( { message:'The banner product was deleted successfully' } );
+
+    } );
+
+};
+
 const updateBusinessInfo = ( req, res ) => {
 
     const infoBusiness = req.body;
@@ -312,4 +369,24 @@ const updateSocialMedias = ( req, res ) => {
 
 };
 
-module.exports = { createUser, signInUser, getUserInfo, uploadProfilePhoto, uploadBanner, deleteProfilePhoto, deleteBanner, updateBusinessInfo, updateSocialMedias };
+const getAllBusiness = ( req, res ) => {
+
+    const { query } = req.headers;
+
+    const userPattern = new RegExp( '^'+query );
+
+    const filter = { businessName:{ $regex:userPattern, $options:'i' } };
+
+    User.find( filter, ( err, users ) => {
+
+        if ( err ) throw err;
+
+        if ( users.length === 0 ) return res.status( 404 ).send({ message:"Your search didn't match any business" });
+
+        res.status( 200 ).send( { message:'Business found!', business:users } );
+
+    } ).populate( populateUser );
+
+};
+
+module.exports = { createUser, signInUser, getUserInfo, uploadProfilePhoto, uploadBanner, deleteProfilePhoto, deleteBanner, updateBusinessInfo, updateSocialMedias, getAllBusiness, updateBannerSectionProducts, deleteBannerSectionProducts };

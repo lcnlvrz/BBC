@@ -13,10 +13,12 @@ app.use( helmet() );
 //load routes
 const temporaryUserRouter = require( './routers/temporaryUsers' );
 const userRouter = require( './routers/users' );
+const productRouter = require( './routers/products' );
 
 
 app.use( `/api/${ API_VERSION }`, temporaryUserRouter );
 app.use( `/api/${ API_VERSION }`, userRouter );
+app.use( `/api/${ API_VERSION }`, productRouter );
 
 module.exports = app;
 

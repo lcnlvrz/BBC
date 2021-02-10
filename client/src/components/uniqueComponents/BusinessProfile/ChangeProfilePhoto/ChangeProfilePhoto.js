@@ -85,9 +85,11 @@ const ChangeProfilePhoto = ( props ) => {
         { photo.file &&  
         <PhotoPreview 
         setPhoto={ setPhoto } 
-        mobileResolution={ mobileResolution } photo={ photo } 
+        mobileResolution={ mobileResolution } 
+        photo={ photo } 
         isLoading={ isLoading } 
-        setUpload={ setUpload } cancelTokenCloudinary={ cancelTokenCloudinary } 
+        setUpload={ setUpload } 
+        cancelTokenCloudinary={ cancelTokenCloudinary } 
         cancelTokenServer={ cancelTokenServer } endPoint={ endPoint }/> }
         </>
         

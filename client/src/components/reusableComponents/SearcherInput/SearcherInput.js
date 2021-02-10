@@ -4,7 +4,7 @@ import { defaultTransiton } from '../../../constants/styles';
 
 const SearcherInput = ( props ) => {
 
-    const { placeholder } = props;
+    const { placeholder, name, endPoint } = props;
 
     const searcherRef = useRef( null );
 
@@ -15,6 +15,7 @@ const SearcherInput = ( props ) => {
         className='flex flex-row items-center outline-none border-2 rounded-full py-2 px-2 active:border-gray-500 w-full'>
             <SearchRoundedIcon/>
             <input
+            name={ name }
             placeholder={ placeholder }
             onBlur={ () => searcherRef.current.classList.remove( 'border-black' )  }
             onFocus={ () => searcherRef.current.classList.add( 'border-black' )  }

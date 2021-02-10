@@ -45,3 +45,34 @@ export const updateSocialMedia = ( socialMedias ) => {
     return { type:'UPDATE_SOCIAL_MEDIA', payload:socialMedias };
 
 };
+
+export const uploadOneProduct = ( products ) => {
+
+    return { type:'UPLOAD_ONE_PRODUCT', payload:products };
+
+};
+
+export const updateOneProduct = ( indexProduct, newInfoProduct ) => {
+
+    return { type:'UPDATE_INFO_PRODUCT', payload:{ indexProduct, newInfoProduct } };
+
+};
+
+export const deleteOneProduct = ( indexProduct ) => {
+    
+    return { type:'DELETE_PRODUCT', payload:indexProduct };
+
+};
+
+export const updateBannerSectionProducts = ( url ) => {
+    
+    return { type:'UPDATE_BANNER_SECTION_PRODUCTS', payload:url }; 
+
+};
+
+export const deleteBannerSectionProducts = () => {
+
+    return { type:'DELETE_BANNER_SECTION_PRODUCTS' };
+
+}
+

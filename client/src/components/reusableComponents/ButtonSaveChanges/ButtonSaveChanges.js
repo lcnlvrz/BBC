@@ -13,7 +13,7 @@ const ButtonSaveChanges = ( props ) => {
                 { isLoading 
                 ?
                 <div className='my-5 mr-20'> 
-                <PropagateLoader color='	#90ee90'/> 
+                <PropagateLoader color='#90ee90'/> 
                 </div>
                 : 
                 <button

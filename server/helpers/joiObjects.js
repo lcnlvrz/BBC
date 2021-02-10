@@ -59,5 +59,65 @@ const informationBusinessObject = Joi.object({
 
 });
 
+const productObject = Joi.object({
 
-module.exports = { userObject, usernameAndPasswordObject, informationBusinessObject };
+    image:Joi.string()
+    .uri()
+    .min( 1 )
+    .max( 200 ),
+    title:Joi.string()
+    .min( 1 )
+    .max( 200 ),
+    subtitle:Joi.string()
+    .min( 1 )
+    .max( 200 ),
+    price:Joi.number()
+    .min( 1 )
+    .max( 10000000000000 ),
+    currency:Joi.string()
+    .length( 3 ),
+    description:Joi.string()
+    .min( 1 )
+    .max( 100 ),
+    details:Joi.string()
+    .min( 1 )
+    .max( 100 ),
+    category: Joi.string()
+    .min( 1 )
+    .max( 500 ),
+    stock:Joi.number()
+    .min( 1 )
+    .max( 10000000000000 )
+
+});
+
+const productUpdateInfoObject = Joi.object({
+
+    image:Joi.string()
+    .uri()
+    .min( 1 )
+    .max( 200 ),
+    title:Joi.string()
+    .min( 1 )
+    .max( 200 ),
+    subtitle:Joi.string()
+    .min( 1 )
+    .max( 200 ),
+    price:Joi.number()
+    .min( 1 )
+    .max( 10000000000000 ),
+    currency:Joi.string()
+    .length( 3 ),
+    description:Joi.string()
+    .min( 1 )
+    .max( 100 ),
+    details:Joi.string()
+    .min( 1 )
+    .max( 100 ),
+    stock:Joi.number()
+    .min( 1 )
+    .max( 10000000000000 )
+
+});
+
+module.exports = { userObject, usernameAndPasswordObject, informationBusinessObject, productObject,productUpdateInfoObject };
