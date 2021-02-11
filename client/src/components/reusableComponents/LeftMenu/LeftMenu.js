@@ -6,11 +6,14 @@ import { Link } from 'react-router-dom';
 import { useLogout } from '../../../hooks/useLogout';
 import { Fragment } from 'react';
 import { optionsLeftMenu } from '../../../constants/content';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentSearch } from '../../../actions/currentSearch';
 
 const LeftMenu = ( props ) => {
 
     const logoutUser = useLogout();
+
+    const dispatch = useDispatch();
 
     const { width, setChangeSection } = props;
 
@@ -80,8 +83,14 @@ const LeftMenu = ( props ) => {
                             </div>
                             :
                             <Link 
-                            onClick={ () => setChangeSection( [ true ] ) }
-                            to={ option.route }>
+                            onClick={ () => {
+
+                                setChangeSection( [ true ]);
+
+                                if ( option.title === 'Public Profile' ) dispatch( setCurrentSearch( { ...user, business:true, isLoading:false } ) );  
+
+                            } }
+                            to={ option.title === 'Public Profile' ? `/search/business/?username=${ user.username }` : option.route }>
                                 <div 
                                 onClick={ () => setCurrentOption( index ) }
                                 style={ defaultTransiton }

@@ -6,7 +6,7 @@ require( 'dotenv' ).config({ path:'../' });
 const validator = require( 'validator' );
 const { validateURL, validateURLs } = require('../helpers/validators');
 const { validate } = require('../models/users');
-const { informationBusinessObject } = require('../helpers/joiObjects');
+const { informationBusinessObject, realTimeObject } = require('../helpers/joiObjects');
 
 const populateUser = { path:'products', options:{ sort:{ 'createdAt':-1 }, limit:10 } };
 
@@ -73,7 +73,16 @@ const signInUser = ( req, res ) => {
                 instagramLink,
                 twitterLink,
                 products,
-                bannerSectionProducts 
+                bannerSectionProducts,
+                bannerSectionProductsText,
+                location,
+                businessCategory,
+                since,
+                until,
+                personalWorking,
+                clientsInTheShop,
+                lastUpdatePersonalWorking,
+                lastUpdateClientsInTheShop
             } = userStored;
 
             if ( err ) throw err;
@@ -108,7 +117,16 @@ const signInUser = ( req, res ) => {
                     instagramLink,
                     twitterLink,
                     products,
-                    bannerSectionProducts   
+                    bannerSectionProducts,
+                    bannerSectionProductsText,
+                    location,
+                    businessCategory,
+                    since,
+                    until,
+                    personalWorking,
+                    clientsInTheShop,
+                    lastUpdatePersonalWorking,
+                    lastUpdateClientsInTheShop   
                 };
 
                 res.status( 200 ).send( { message:'User logged successfully', token, userData } );
@@ -149,7 +167,16 @@ const getUserInfo = ( req, res ) => {
             instagramLink,
             twitterLink,
             products,
-            bannerSectionProducts    
+            bannerSectionProducts,
+            bannerSectionProductsText,
+            location,
+            businessCategory,
+            since,
+            until,
+            personalWorking,
+            clientsInTheShop,
+            lastUpdatePersonalWorking,
+            lastUpdateClientsInTheShop    
         } = userStored;
 
         const userData = { 
@@ -171,7 +198,16 @@ const getUserInfo = ( req, res ) => {
             instagramLink,
             twitterLink,
             products,
-            bannerSectionProducts  
+            bannerSectionProducts,
+            bannerSectionProductsText,
+            location,
+            businessCategory,
+            since,
+            until,
+            personalWorking,
+            clientsInTheShop,
+            lastUpdatePersonalWorking,
+            lastUpdateClientsInTheShop  
         };
 
         res.status( 200 ).send( { message:'User login successfully', userData } );
@@ -385,8 +421,120 @@ const getAllBusiness = ( req, res ) => {
 
         res.status( 200 ).send( { message:'Business found!', business:users } );
 
-    } ).populate( populateUser );
+    } ).populate( populateUser ).select( '-email -password' ).limit( 10 )
 
 };
 
-module.exports = { createUser, signInUser, getUserInfo, uploadProfilePhoto, uploadBanner, deleteProfilePhoto, deleteBanner, updateBusinessInfo, updateSocialMedias, getAllBusiness, updateBannerSectionProducts, deleteBannerSectionProducts };
+const updateSectionProductsText = ( req, res ) => {
+
+    const { data } = req.body;
+
+    if ( !data ) return res.status( 404 ).send( { message:'The data is empty' } );
+
+    const dataType = typeof data;
+
+    if ( dataType !== 'string' ) return res.status( 422 ).send( { message:"The data provided isn't valid" } );
+
+    const userID = res.locals.userID;
+
+    const filter = { _id:userID };
+
+    const update = { bannerSectionProductsText:data };
+
+    User.updateOne( filter, update, ( err, updated ) => {
+
+        if ( err ) throw err;
+
+        if ( !updated ) return res.status( 404 ).send( { message:"The user doesn't exist" } );
+
+        res.status( 200 ).send( { mesage:'The text banner was updated successfully', newTitle:data } );
+
+    } );
+
+};
+
+const updatePersonalWorking = ( req, res ) => {
+
+    const data = req.body;
+
+    const { personalWorking } = req.body; 
+
+    if ( personalWorking < 1 ) return res.status( 422 ).send( { message:'The data provided is invalid' } );
+
+    const userID = res.locals.userID;
+
+    const filter = { _id:userID };
+
+    const lastUpdatePersonalWorking = moment().unix();
+
+    const update = { personalWorking, lastUpdatePersonalWorking };
+
+    User.updateOne( filter, update, ( err, updated ) => {
+
+        if ( err ) throw err;
+
+        if ( !updated ) return res.status( 404 ).send( { message:"The user doesn't exist" } );
+        
+        res.status( 200 ).send( { message:'Real time updated successfully', newRealTimeInfo:{ ...data, lastUpdatePersonalWorking } } );
+
+    } );
+
+}; 
+
+const updateClientsInTheShop = ( req, res ) => {
+
+    const data = req.body;
+
+    const { clientsInTheShop } = req.body; 
+
+    if ( clientsInTheShop < 1 ) return res.status( 422 ).send( { message:'The data provided is invalid' } );
+
+    const userID = res.locals.userID;
+
+    const filter = { _id:userID };
+
+    const lastUpdateClientsInTheShop = moment().unix();
+
+    const update = { clientsInTheShop, lastUpdateClientsInTheShop };
+
+    User.updateOne( filter, update, ( err, updated ) => {
+
+        if ( err ) throw err;
+
+        if ( !updated ) return res.status( 404 ).send( { message:"The user doesn't exist" } );
+        
+        res.status( 200 ).send( { message:'Real time updated successfully', newRealTimeInfo:{ ...data, lastUpdateClientsInTheShop } } );
+
+    } );
+
+}; 
+
+const getOneBusinessByUsername = ( req, res ) => {
+
+    const { username } = req.headers;
+
+    if ( !username ) return res.status( 404 ).send( { message:'The username is empty' } );
+
+    const regUsername = /^([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)$/;
+
+    const valueAfterValidation = regUsername.test( username );
+
+    if ( !valueAfterValidation ) return res.status( 422 ).send({ message:"The username isn't valid" });
+
+    const filter = { username };
+    
+    User.findOne( filter, ( err, userStored ) => {
+
+        if ( err ) throw err;
+
+        if ( !userStored ) return res.status( 404 ).send( { message:"The user doesn't exist" } );
+
+        res.status( 200 ).send({ message:'User found successfully', business:{ ...userStored._doc, isLoading:false, business:true } });
+
+    } ).select( '-email -password' ).populate( populateUser );
+
+};
+
+
+
+module.exports = { createUser, signInUser, getUserInfo, uploadProfilePhoto, uploadBanner, deleteProfilePhoto, deleteBanner, updateBusinessInfo, updateSocialMedias, getAllBusiness, updateBannerSectionProducts, deleteBannerSectionProducts, updateSectionProductsText, updatePersonalWorking, updateClientsInTheShop, getOneBusinessByUsername };

@@ -5,23 +5,24 @@ const Questions = ( props ) => {
 
     const { questionsAndAnswers } = props;
 
+    const quantityPresentations = [ 'One', 'Two' ];
+
     return (
-        <div className='mt-28 flex flex-row flex-wrap justify-evenly m-10'>
-            { questionsAndAnswers.map( ( item, index ) => (
+        <div className='mt-40 flex flex-row flex-wrap justify-evenly m-10'>
+            { quantityPresentations.map( ( presentation, index ) => (
 
                 <div 
                 key={ index }
                 style={ defaultTransiton }
                 className='description text-center border p-5 bg-white rounded-2xl hover:text-white hover:bg-black cursor-pointer space-y-2 card__myBusiness w-96 my-5'>
-                    <h3 className='text-2xl font-semibold title__card'> 
-                        { item.title }
-                    </h3>
                     <p className='font-light'> 
-                        { item.text }
+                        { questionsAndAnswers[ `mainPresentation${ presentation }` ] }
                     </p>
                 </div>
+
             ) ) }
-        </div>
+            
+    </div>
     );
 };
 

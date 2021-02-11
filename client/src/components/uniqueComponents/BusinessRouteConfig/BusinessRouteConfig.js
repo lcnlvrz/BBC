@@ -40,6 +40,8 @@ const BusinessRouteConfig = () => {
 
         if ( currentSection === 'live-chat' ) return <LiveChat/>
 
+        return <h1> Invalid page </h1>
+
     };
 
 

@@ -115,4 +115,29 @@ const deleteProduct = ( req, res ) => {
 
 };
 
-module.exports = { createProduct, updateProduct, deleteProduct };
+const getProductsByQuery = ( req, res ) => {
+
+    const { query, userid:userID } = req.headers;
+
+    if ( !query || !userID ) return res.status( 404 ).send( { mesage:'The data provided are empty' } );
+
+    const queryPattern = new RegExp( '^'+query );
+
+    const regex =  { $regex:queryPattern, $options:[ 'i', 'x' ] }
+
+    const filter = { $or:[ { title:regex }, { category:regex } ], userID };
+
+    Product.find( filter, ( err, productsStored ) => {
+
+        if ( err ) throw err;
+        
+        if ( productsStored.length === 0 ) return res.status( 404 ).send( { message:"Your search didn't match with any products" } );
+
+        res.status( 200 ).send( { message:'Products found', products:productsStored } ); 
+
+    } ).limit( 10 )
+    
+
+};
+
+module.exports = { createProduct, updateProduct, deleteProduct, getProductsByQuery };

@@ -9,4 +9,6 @@ app.put( '/update-product', [ UserMiddleware.validateToken ], ProductController.
 
 app.delete( '/delete-product', [ UserMiddleware.validateToken ], ProductController.deleteProduct );
 
+app.get( '/one-product', ProductController.getProductsByQuery );
+
 module.exports = app;

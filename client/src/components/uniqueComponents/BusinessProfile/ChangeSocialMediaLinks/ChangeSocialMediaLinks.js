@@ -152,7 +152,8 @@ const ChangeSocialMediaLinks = ( props ) => {
                         <PropagateLoader/>
                     </div>
                     }
-                    { alert.type && <AlertAnimation setCloseAlert={ setAlert }/> }
+                    { alert.type && 
+                    <AlertAnimation message={ alert.message } severity={ alert.severity } setCloseAlert={ setAlert }/> }
                 </form>
         </ModalOptions>
     );

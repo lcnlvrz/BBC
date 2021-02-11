@@ -13,7 +13,7 @@ export const preSubmitSignIn = ( inputData, setAlert ) => {
 
     if ( ( !isEmailValid && !isUsernameValid ) || !isPasswordValid ) {
 
-        setAlert( { type:'user', message:"The user doesn't exist" } );
+        setAlert( { type:'user', message:"Bad credentials" } );
 
         return false;
 

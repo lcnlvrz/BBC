@@ -25,23 +25,17 @@ const Body = () => {
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
 
-    const searcher = useRef( null );
+    const { setQuery, cancelToken, business, notFound, setNotFound, isSearching } = useSearchBusiness();
 
-    const [imageLoaded, setImageLoaded] = useState( false );
+    useEffect(() => {
 
-    const { setQuery, isLoading, setIsLoading, cancelToken, business, query, notFound, setNotFound, isSearching } = useSearchBusiness();
+        return () => {
 
-    const useStylesBusinessProfile = makeStyles((theme) => ({
-        large: {
-          width: theme.spacing(5),
-          height: theme.spacing(5)
-        },
-    }));
+            if ( cancelToken ) cancelToken.cancel();
 
-    const classes = useStylesBusinessProfile();
-
-    const numbers = [ 0, 1 ];
-
+        };
+        
+    }, [ cancelToken ]);
 
     return (
         <div className='w-full flex flex-col items-center justify-center p-4'>

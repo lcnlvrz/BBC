@@ -74,5 +74,16 @@ export const deleteBannerSectionProducts = () => {
 
     return { type:'DELETE_BANNER_SECTION_PRODUCTS' };
 
-}
+};
 
+export const updateSectionProductsText = ( newTitle ) => {
+
+    return { type:'UPDATE_SECTION_PRODUCTS_TEXT', payload:newTitle };
+
+};
+
+export const updateRealTimeData = ( newRealTimeData ) => {
+
+    return { type:'UPDATE_REAL_TIME_DATA', payload:newRealTimeData };
+
+};

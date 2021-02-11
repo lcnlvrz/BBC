@@ -86,21 +86,21 @@ const BusinessResult = ( props ) => {
                             { company.businessName }
                         </h3>
                         <h4 className='font-light text-sm'> 
-                            Shoes Shopping
+                            { company.businessCategory }
                         </h4>
                     </div>
                 </div>
                 <div className='flex flex-col items-center'>
                     <div className='flex flex-row items-center space-x-2'>
                         <LocationOnRoundedIcon className='text-red-500'/>
-                        <h3 className='font-semibold'> 
-                            Lopez y Planes 528, Tucuman, Argentina 
+                        <h3 className='font-semibold truncate w-72'> 
+                           { company.location }
                         </h3>
                     </div>
                     <div className='flex flex-row items-center space-x-2'>
                         <WatchLaterRoundedIcon/>
                         <h3 className='font-semibold'> 
-                            07:00 - 17:00
+                            { company.since } - { company.until }
                         </h3>
                     </div>
                     <h3 className='font-semibold'> 

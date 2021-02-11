@@ -29,4 +29,12 @@ app.put( '/banner-section', [ UserMiddleware.validateToken ], UserController.upd
 
 app.delete( '/delete-bannerSection', [ UserMiddleware.validateToken ], UserController.deleteBannerSectionProducts );
 
+app.put( '/title-sectionProducts', [ UserMiddleware.validateToken ], UserController.updateSectionProductsText );
+
+app.put( '/personal-working', [ UserMiddleware.validateToken ], UserController.updatePersonalWorking );
+
+app.put( '/clients-in-shop', [ UserMiddleware.validateToken ], UserController.updateClientsInTheShop );
+
+app.get( '/business-by-username', UserController.getOneBusinessByUsername );
+
 module.exports = app;

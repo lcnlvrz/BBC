@@ -52,3 +52,11 @@
   background-size: 100%;
   background-position: center;
 }
+
+.ap-footer {
+  display: none;
+}
+
+.button.ap-input-icon.ap-icon-pin {
+  display: none;
+}

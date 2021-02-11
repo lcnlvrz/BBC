@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import '../MyBusiness/MyBusiness.css';
 import Badge from '@material-ui/core/Badge';
-import { Avatar, Fade, InputBase, TextareaAutosize } from '@material-ui/core';
+import { Avatar, Fade, IconButton, InputBase, TextareaAutosize } from '@material-ui/core';
 import { defaultTransiton, fillButton, textAreaDefaultProps } from '../../../constants/styles';
 import ChangeProfilePhoto from './ChangeProfilePhoto/ChangeProfilePhoto';
 import ChangeSocialMediaLinks from './ChangeSocialMediaLinks';
@@ -15,9 +15,10 @@ import Banner from './Banner';
 import CloseBusiness from './CloseBusiness';
 import Footer from './Footer';
 import ButtonSaveChanges from '../../reusableComponents/ButtonSaveChanges';
-import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
-import WatchLaterRoundedIcon from '@material-ui/icons/WatchLaterRounded';
-import AddPhotoAlternateRoundedIcon from '@material-ui/icons/AddPhotoAlternateRounded';
+import BannerSectionProducts from './BannerSectionProducts';
+import LocationAndSchedule from './LocationAndSchedule';
+import { Link } from 'react-router-dom';
+import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 
 const BusinessProfile = () => {
 
@@ -25,8 +26,7 @@ const BusinessProfile = () => {
 
     const { setInputData, alert, setAlert, cancelToken, isLoading } = useUploadInformation();
 
-    const [input, setInput] = useState( { businessName:'', isOpenBusiness:false, mainPresentationOne:'', footerSectionTwo:'', footerTitle:'', footerSectionOne:'', mainPresentationTwo:'', footerLastLine:'' } );
-
+    const [input, setInput] = useState( { businessName:'', isOpenBusiness:false, mainPresentationOne:'', footerSectionTwo:'', footerTitle:'', footerSectionOne:'', mainPresentationTwo:'', footerLastLine:'', businessCategory:'', since:'', until:'', location:'' } );
 
     const [socialMediaLinks, setSocialMediaLinks] = useState( { facebook:null, instagram:null, twitter:null } );
 
@@ -44,7 +44,7 @@ const BusinessProfile = () => {
 
           const field = inputKeys[ i ];
           
-          setInput( name => ({ ...name, [field]: user[ field ] }) );
+          setInput( name => ({ ...name, [field]: user[ field ] ? user[ field ] : '' }) );
           
         };
 
@@ -66,9 +66,6 @@ const BusinessProfile = () => {
 
     }, [ cancelToken ]);
 
-
-    const textAreaBusinessProfileContentFooter = textAreaBusinessProfileContentFooterFunction( input );
-
     const textAreaBusinessProfileContentMain = textAreaBusinessProfileContentMainFunction( input );
 
     return (
@@ -81,24 +78,29 @@ const BusinessProfile = () => {
             } }
             onChange={ (e) => {
 
+              setIsNewChange( true );
+
               if ( e.target.name === 'isOpenBusiness' ) return setInput( { ...input, [ e.target.name ]:e.target.checked } );
 
               setInput( { ...input, [ e.target.name ]: e.target.value } ); 
 
             } }
             >
-                <Banner input={ input } setIsChangePhoto={ setIsChangePhoto } setIsNewChange={  setIsNewChange}/>
+                <Banner 
+                input={ input } 
+                setIsChangePhoto={ setIsChangePhoto } 
+                setIsNewChange={  setIsNewChange}/>
                 <div className='mt-28 flex items-center justify-center flex-col space-y-5'>
-                  <div className='flex flex-row space-x-2 items-center'>
+                  <div className='flex flex-row space-x-2 items-center mx-10'>
                     <label> 
                       Business's category: 
                     </label> 
                     <InputBase
                     className='p-0'
                     required
-                    inputProps={{ style:{ padding:'0px' } }}
+                    inputProps={{ style:{ padding:'0px', fontWeight:600, marginTop:'2px' } }}
                     name='businessCategory'
-                    value={ input.businessCategory }
+                    value={ input.businessCategory ? input.businessCategory : '' }
                     placeholder='BarberShop, Shoes Store...'
                     />
                   </div>
@@ -112,50 +114,23 @@ const BusinessProfile = () => {
                       { ...textAreaDefaultProps }
                       className='outline-none w-full text-center border rounded-2xl p-5 text-semibold text-2xl resize-none'
                       placeholder={ textArea.placeholder }
-                      onChange={ () => setIsNewChange( true ) }
                       defaultValue={ textArea.value }
                       />
 
                     ) ) }
                   </div>
-                  <div className='flex flex-row space-x-2 items-center'>
-                      <LocationOnRoundedIcon 
-                      style={{ fontSize:'50px' }}
-                      className='text-red-500'/>
-                      <InputBase
-                      required
-                      className='p-0'
-                      name='location'
-                      value={ input.location }
-                      placeholder="The business's location"
-                      />
-                  </div>
-                  <div className='flex flex-row space-x-2 items-center'>
-                      <WatchLaterRoundedIcon 
-                      style={{ fontSize:'50px' }}
-                      className='text-black'/>
-                      <InputBase
-                      required
-                      className='p-0'
-                      name='schedule'
-                      value={ input.schedule }
-                      placeholder="The business's schedule"
-                      />
-                  </div>
-                  <div 
-                  style={ user.bannerSectionProducts ? { background:`url( ${ user.bannerSectionProducts } )`, backgroundSize:'100%' } : { margin:0 } }
-                  className='h-60 bg-green-400 w-full flex items-center justify-center'>
-                    <label 
-                    style={ defaultTransiton }
-                    onClick={ () => setIsChangePhoto( { endPoint:'/banner-section', endPointDelete:'/delete-bannerSection' } ) }
-                    className='flex flex-row space-x-2 items-center cursor-pointer text-gray-500 hover:text-black'>
-                      <AddPhotoAlternateRoundedIcon style={{ fontSize:'50px' }}/>
-                      <h1 className='text-3xl font-semibold'> 
-                        Banner Section Products
-                      </h1>
-                    </label>
-                  </div>
-                  <Footer setIsNewChange={ setIsNewChange } input={ input } setIsChangeSocialMediaLinks={ setIsChangeSocialMediaLinks } socialMediaLinks={ socialMediaLinks }/>
+
+                  <LocationAndSchedule
+                  until={ input.until } 
+                  since={ input.since }
+                  setInput={ setInput } 
+                  location={ input.location }/>
+
+                  <Footer 
+                  setIsNewChange={ setIsNewChange } 
+                  input={ input } 
+                  setIsChangeSocialMediaLinks={ setIsChangeSocialMediaLinks } 
+                  socialMediaLinks={ socialMediaLinks }/>
 
                   { isNewChange 
                   && 

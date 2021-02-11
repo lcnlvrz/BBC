@@ -17,7 +17,15 @@ const initialState = {
     instagramLink:'',
     twitterLink:'',
     facebookLink:'',
-    products:[]
+    products:[],
+    bannerSectionProductsText:'',
+    location:'',
+    since:'',
+    until:'',
+    personalWorking:0,
+    clientsInTheShop:0,
+    lastUpdatePersonalWorking:0,
+    lastUpdateClientsInTheShop:0
 };
 
 const user = ( state = initialState, action ) => {
@@ -80,6 +88,15 @@ const user = ( state = initialState, action ) => {
         case 'DELETE_BANNER_SECTION_PRODUCTS':
 
             return { ...state, bannerSectionProducts:'' };
+
+        case 'UPDATE_SECTION_PRODUCTS_TEXT':
+
+            return { ...state, bannerSectionProductsText:action.payload };
+
+        case 'UPDATE_REAL_TIME_DATA':
+
+            return { ...state, ...action.payload };
+
         
         default:
             return state;

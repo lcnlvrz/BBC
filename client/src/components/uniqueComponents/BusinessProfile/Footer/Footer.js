@@ -14,7 +14,9 @@ const Footer = ( props ) => {
 
 
     return (
-        <footer className='bg-black p-5 space-y-5 w-full'>
+        <footer 
+        style={{ margin:0 }}
+        className='bg-black p-5 space-y-5 w-full'>
             <div className='flex flex-row justify-between w-full'>
                 <div className='flex items-center space-x-2 w-2/4'>
                     <input
@@ -22,9 +24,8 @@ const Footer = ( props ) => {
                     maxLength={ 100 }
                     name='footerTitle'
                     placeholder='Footer title. Maybe will can be your business name'
-                    onChange={ () => setIsNewChange( true ) }
                     defaultValue={ input.footerTitle }
-                    className='bg-transparent outline-none text-white font-semibold text-lg'
+                    className='bg-transparent outline-none text-white font-semibold text-lg truncate'
                     />
                 </div>
                 <div 
@@ -50,7 +51,6 @@ const Footer = ( props ) => {
                 className='bg-transparent text-white resize-none w-full outline-none'
                 name={ textarea.name }
                 placeholder={ textarea.placeholder }
-                onChange={ () => setIsNewChange( true ) }
                 defaultValue={ textarea.value }
                 />
 
@@ -62,7 +62,6 @@ const Footer = ( props ) => {
                 required
                 name='footerLastLine'
                 placeholder='The last line you can type'
-                onChange={ () => setIsNewChange( true ) }
                 defaultValue={ input.footerLastLine }
                 className='bg-transparent outline-none w-full z-30 relative'
                 />

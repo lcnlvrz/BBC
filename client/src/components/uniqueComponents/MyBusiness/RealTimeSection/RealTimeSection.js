@@ -6,8 +6,15 @@ import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
 import ChatBubbleRoundedIcon from '@material-ui/icons/ChatBubbleRounded';
 import { fillButton } from '../../../../constants/styles';
+import moment from 'moment';
 
-const RealTimeSection = () => {
+const RealTimeSection = ( props ) => {
+
+    const { since, until, location, personalWorking, clientsInTheShop, lastUpdateClientsInTheShop, lastUpdatePersonalWorking } = props;
+
+    const parseOne = moment.unix( lastUpdatePersonalWorking ).format();
+    const parseTwo = moment.unix( lastUpdateClientsInTheShop ).format();
+
 
     return (
         <div className='flex flex-row items-center flex-wrap justify-center'>
@@ -17,14 +24,11 @@ const RealTimeSection = () => {
                 className='text-red-600'
                 style={ { fontSize:'100px' } }/>
                 <h1 className='font-light italic text-lg'> 
-                    Lopez y Planes 528, Tucuman, Argentina. 
+                    { location }
                 </h1>
                 <h1 className='text-2xl'> 
-                    07:00 AM - 18:00 PM 
+                    { since } - { until } 
                 </h1>
-                <h3 className='text-md text-gray-400'> 
-                    Updated 25 min ago 
-                </h3>
                 <a href='https://google.maps'>
                     <h3 className='text-lg text-blue-400 font-light'>
                         How i get there?
@@ -37,10 +41,10 @@ const RealTimeSection = () => {
                 style={{ fontSize:'100px' }}
                 />
                 <h1 className='font-light text-2xl text-center leading-6'> 
-                    <span className='font-semibold'>34</span> persons working in the shop now
+                    <span className='font-semibold'>{ personalWorking }</span> persons working in the shop now
                 </h1>
                 <h1 className='text-md text-gray-400'> 
-                    Updated 45 min ago 
+                    Updated { moment( parseOne ).fromNow() }
                 </h1>
             </div>
             <div className='flex m-10 flex-col items-center justify-center space-y-3'>
@@ -49,10 +53,10 @@ const RealTimeSection = () => {
                 style={{ fontSize:'100px' }}
                 />
                 <h1 className='font-light text-2xl text-center leading-6'> 
-                    There are <span className='font-semibold'> 55 </span> clients in the shop now
+                    There are <span className='font-semibold'> { clientsInTheShop } </span> clients in the shop now
                 </h1>
                 <h1 className='text-md text-gray-400'> 
-                    Updated 10 min ago 
+                    Updated { moment( parseTwo ).fromNow() }
                 </h1>
             </div>
             <div className='flex m-10 flex-col items-center justify-center space-y-5'>

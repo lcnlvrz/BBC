@@ -1,7 +1,5 @@
 import React from 'react'
-import ChatBubbleRoundedIcon from '@material-ui/icons/ChatBubbleRounded';
 import FacebookIcon from '@material-ui/icons/Facebook';
-import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import InstagramIcon from '@material-ui/icons/Instagram';
 
@@ -19,19 +17,28 @@ const Footer = ( props ) => {
                 </div>
                 <div className='space-x-2'>
                     { facebookLink && 
-                    <a href={ facebookLink }>
+                    <a 
+                    rel='noreferrer'
+                    target='_blank'
+                    href={ facebookLink }>
                         <FacebookIcon
                         className='text-white'
                         />
                     </a> }
                     { instagramLink && 
-                    <a href={ instagramLink }>
+                    <a 
+                    rel='noreferrer'
+                    target='_blank'
+                    href={ instagramLink }>
                         <InstagramIcon
                         className='text-white'
                         />
                     </a> }
                     { twitterLink && 
-                    <a href={ twitterLink }>
+                    <a 
+                    rel='noreferrer'
+                    target='_blank'
+                    href={ twitterLink }>
                         <TwitterIcon
                         className='text-white'
                         />
@@ -40,17 +47,11 @@ const Footer = ( props ) => {
             </div>
             <div className='footer__questions text-white flex flex-row justify-between space-x-5'>
                 <div className='space-y-2'>
-                    <h1 className='font-semibold text-lg'> 
-                        What is Nike? 
-                    </h1>
                     <p className='font-light'> 
                         { footerSectionOne }
                     </p>
                 </div>
                 <div className='space-y-2'>
-                    <h1 className='font-semibold text-lg'> 
-                        Why Nike? 
-                    </h1>
                     <p className='font-light'> 
                        { footerSectionTwo }
                     </p>

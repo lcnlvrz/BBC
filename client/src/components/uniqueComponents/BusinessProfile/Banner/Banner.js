@@ -45,7 +45,7 @@ const Banner = ( props ) => {
                     required
                     maxLength={ 100 }
                     name='businessName'
-                    placeholder='Your Business Name here 💼'
+                    placeholder="Business's name"
                     onChange={ () => setIsNewChange( true ) }
                     className='text-3xl w-full outline-none text-center'
                     defaultValue={ input.businessName }

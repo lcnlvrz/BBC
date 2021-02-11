@@ -55,9 +55,33 @@ const informationBusinessObject = Joi.object({
     .max( 1000 ),
     footerLastLine:Joi.string()
     .min( 1 )
+    .max( 100 ),
+    location:Joi.string()
+    .min( 1 )
+    .max( 500 ),
+    since:Joi.string()
+    .length(5),
+    until:Joi.string()
+    .length( 5 ),
+    businessCategory:Joi.string()
+    .min( 1 )
     .max( 100 )
 
+
 });
+
+const realTimeObject = Joi.object({
+
+    personalWorking:Joi.number()
+    .min( 1 )
+    .max( 10000 ),
+    clientsInTheShop:Joi.number()
+    .min( 1 )
+    .max( 10000 )
+
+});
+
+
 
 const productObject = Joi.object({
 
@@ -72,7 +96,7 @@ const productObject = Joi.object({
     .min( 1 )
     .max( 200 ),
     price:Joi.number()
-    .min( 1 )
+    .min( 0 )
     .max( 10000000000000 ),
     currency:Joi.string()
     .length( 3 ),
@@ -86,7 +110,7 @@ const productObject = Joi.object({
     .min( 1 )
     .max( 500 ),
     stock:Joi.number()
-    .min( 1 )
+    .min( 0 )
     .max( 10000000000000 )
 
 });
@@ -104,7 +128,7 @@ const productUpdateInfoObject = Joi.object({
     .min( 1 )
     .max( 200 ),
     price:Joi.number()
-    .min( 1 )
+    .min( 0 )
     .max( 10000000000000 ),
     currency:Joi.string()
     .length( 3 ),
@@ -115,9 +139,9 @@ const productUpdateInfoObject = Joi.object({
     .min( 1 )
     .max( 100 ),
     stock:Joi.number()
-    .min( 1 )
+    .min( 0 )
     .max( 10000000000000 )
 
 });
 
-module.exports = { userObject, usernameAndPasswordObject, informationBusinessObject, productObject,productUpdateInfoObject };
+module.exports = { userObject, usernameAndPasswordObject, informationBusinessObject, productObject,productUpdateInfoObject, realTimeObject };

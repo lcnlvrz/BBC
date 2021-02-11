@@ -11,13 +11,15 @@ export const useSearchBusiness = () => {
 
     const [isLoading, setIsLoading] = useState( false );
 
-    const [alert, setAlert] = useState( { type:'', message:'', severity:'' } );
-
     const [cancelToken, setCancelToken] = useState( null );
 
     const [isSearching, setIsSearching] = useState( false );
 
     const [business, setBusiness] = useState( [] );
+
+    const [response, setResponse] = useState( [] );
+
+    const [anotherEndPoint, setAnotherEndPoint] = useState( { route:'', userID:'' } );
 
     const [notFound, setNotFound] = useState( false );
 
@@ -39,39 +41,50 @@ export const useSearchBusiness = () => {
 
         const timer = setTimeout(() => {
 
-        const token = getToken( dispatch );
-
-        if ( !token ) return setAlert( { type:'Token invalid', message:"The token isn't valid", severity:'error' } );
-
         const cancelTokenFunction = axiosInstance.CancelToken.source();
 
         setCancelToken( cancelTokenFunction );
 
-        axiosInstance.get( '/business', { headers:{ query }, cancelToken:cancelTokenFunction.token } )
+        let finalEndPoint = '';
+
+        if ( anotherEndPoint.route ) {
+
+            finalEndPoint = anotherEndPoint.route;
+
+        } else {
+
+            finalEndPoint = '/business';
+
+        };
+
+        axiosInstance.get( finalEndPoint, { headers:{ query, userID:anotherEndPoint.userID }, cancelToken:cancelTokenFunction.token } )
         .then( (response) => {
 
-            setIsSearching( false );
             console.log( response );
-            setBusiness( response.data.business );
+
+            setIsSearching( false );
+
+            if ( finalEndPoint === '/business' ) setBusiness( response.data.business );
+            
+            if ( finalEndPoint === '/one-product' ) setResponse( response.data.products );
 
         } )
         .catch( (err) => {
 
 
+            console.log( err );
             setIsSearching( false );
-            setNotFound( { type:'search', message:"Your search didn't match with any business", severity:'error' } );
+            setNotFound( { type:'search', message:err.response.data.message, severity:'error' } );
 
 
-        } );
-
-            
+        } );   
             
     }, 3000);
 
         return () => clearTimeout( timer );
         
-    }, [ query, dispatch ]);
+    }, [ query, dispatch, anotherEndPoint ]);
 
-    return { setQuery, isLoading, setIsLoading, cancelToken, query, business, notFound, setNotFound, isSearching };
+    return { setQuery, isLoading, setIsLoading, cancelToken, query, business, notFound, setNotFound, isSearching, setAnotherEndPoint, response };
 
 };

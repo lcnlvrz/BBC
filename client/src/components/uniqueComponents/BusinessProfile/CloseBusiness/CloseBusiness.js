@@ -6,16 +6,17 @@ const CloseBusiness = ( props ) => {
 
     const { setIsNewChange, input } = props;
 
+    const type = typeof input.isOpenBusiness;
+
     return (
         <>
             <FormControlLabel
             control={
             <IOSSwitch
-            onChange={ () => setIsNewChange( true ) } 
-            checked={ input.isOpenBusiness } 
+            checked={ type === 'boolean' ? input.isOpenBusiness : false } 
             name="isOpenBusiness" 
             />}
-            label={ !input.isOpenBusiness ? 'Open Business' : 'Close Business' }
+            label={ !input.isOpenBusiness ? 'Online' : 'Offline' }
             />
             <h1 className='font-light text-center px-5 text-gray-500'> 
                 *To custom information, just touch or click over the text, modify it and finally save changes clicking the button save changes*

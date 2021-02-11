@@ -23,9 +23,15 @@ const UserSchema = Schema({
     twitterLink:{ type:String, required:false },
     products:[ { type:mongoose.Types.ObjectId, ref:'products', default:[] } ],
     location:{ type:String, required:false },
-    schedule:{ type:String, required:false },
+    since:{ type:String, required:false },
+    until:{ type:String, required:false },
     businessCategory:{ type:String, required:false },
-    bannerSectionProducts:{ type:String, required:false }
+    bannerSectionProductsText:{ type:String, required:false },
+    bannerSectionProducts:{ type:String, required:false },
+    personalWorking:{ type:Number, required:false },
+    lastUpdatePersonalWorking:{ type:Number, required:false },
+    clientsInTheShop:{ type:Number, required:false },
+    lastUpdateClientsInTheShop:{ type:Number, required:false }
 
 
 });

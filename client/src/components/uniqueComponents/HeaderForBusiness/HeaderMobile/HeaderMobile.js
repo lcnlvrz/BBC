@@ -5,8 +5,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
 import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
-import { Avatar, IconButton } from '@material-ui/core';
+import { Avatar, Fade, IconButton } from '@material-ui/core';
 import LeftMenu from '../../../reusableComponents/LeftMenu';
+import { outlineButton } from '../../../../constants/styles';
 
 
 const HeaderMobile = (props) => {
@@ -15,16 +16,12 @@ const HeaderMobile = (props) => {
 
     const [state, setState] = React.useState({ left:false });
 
-    const useStyles = makeStyles((theme) => ({
-      large: {
-        width: theme.spacing(10),
-        height: theme.spacing(10)
-      },
-    }));
-  
-    const classes = useStyles();
-  
-  
+    const url = new URL( window.location.href );
+
+    const section = url.searchParams.get( 'section' );
+
+
+
     const toggleDrawer = (anchor, open) => (event) => {
       if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
         return;
@@ -66,13 +63,15 @@ const HeaderMobile = (props) => {
                 alt=''
                 src={ BCClogo }
                 />
+
                 <IconButton
                 disabled
+                className='ghost__filler'
                 style={{ outline:'none', opacity:0, cursor:'none' }}
                 >
-                <MenuRoundedIcon
-                style={{ color:'black' }}
-                />
+                  <MenuRoundedIcon
+                  style={{ color:'black' }}
+                  />
                 </IconButton>
             </header>
     );

@@ -42,7 +42,8 @@ export const useUploadSocialMedia = () => {
 
                 if ( axiosInstance.isCancel( err ) ) return console.log( 'Request canceled by user' );
 
-                console.log( err.response );
+
+                setAlert( { type:'error', message:err.response.data.message, severity:'error' } );
 
                 setIsLoading( false );
 

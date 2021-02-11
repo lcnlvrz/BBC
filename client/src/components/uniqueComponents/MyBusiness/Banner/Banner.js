@@ -6,15 +6,15 @@ import { Avatar } from '@material-ui/core';
 
 const Banner = ( props ) => {
 
-    const { profilePhoto, nameBusiness, bannerPhoto, topPositionAvatar } = props;
+    const { profilePhoto, nameBusiness, bannerPhoto, topPositionAvatar, businessCategory, isOpenBusiness } = props;
 
     const StyledBadge = withStyles((theme) => ({
         badge: {
           width:theme.spacing(5),
           height: theme.spacing(5),
           borderRadius:'100px',
-          backgroundColor: '#44b700',
-          color: '#44b700',
+          backgroundColor: isOpenBusiness ? '#44b700' : '#ccc',
+          color: isOpenBusiness ? '#44b700' : '#ccc',
           boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
           '&::after': {
             position: 'absolute',
@@ -52,9 +52,9 @@ const Banner = ( props ) => {
 
 
     return (
-        <div className='my__business__container border-solid border-b-8 border-green-400'>
+        <div className={ `my__business__container border-solid border-b-8 ${ isOpenBusiness ? 'border-green-400' : 'border-gray-300' }` }>
             <div className='h-44 w-full'>
-                <div className={ `h-44 w-full absolute z-50 top-32 flex items-center justify-end flex-col space-y-5` }>
+                <div className={ `h-44 w-full absolute z-50 top-40 flex items-center justify-end flex-col space-y-5` }>
                     <StyledBadge
                     overlap="circle"
                     anchorOrigin={{
@@ -68,10 +68,14 @@ const Banner = ( props ) => {
                         src={ profilePhoto }
                         />
                     </StyledBadge>
-                    <h1 className='font-semibold text-3xl'> { nameBusiness } 
-                        <span className='font-light'> - Oficial Business 
-                        </span> 
-                    </h1>
+                    <div className='text-center'>
+                      <h1 className='font-semibold text-3xl'> 
+                        { nameBusiness } 
+                      </h1>
+                      <h3 className='text-light text-2xl'> 
+                        { businessCategory } 
+                      </h3>
+                    </div>
                 </div>
                 <img
                 style={{ filter:'brightness(0.5)' }}
