@@ -80,6 +80,10 @@ const Products = () => {
                 bannerSectionProducts={ user.bannerSectionProducts }
                 setIsChangePhoto={ setIsChangePhoto }/>
 
+                <h1 className='font-semibold text-center'> 
+                    *Click Over Text to Change Information* 
+                </h1>
+
                 { 
                     products.length > 0 && !isSearching ? products.map( ( product, index ) => (
 

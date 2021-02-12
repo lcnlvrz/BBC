@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { setClearSearch, setCurrentSearch } from "../actions/currentSearch";
 
 
-
 export const useGetOneBusiness = () => {
 
     const dispatch = useDispatch();
@@ -17,16 +16,12 @@ export const useGetOneBusiness = () => {
         if ( !username ) return dispatch( setClearSearch() );
 
         axiosInstance.get( '/business-by-username', { headers:{ username } } )
-        .then( response => {
+        .then( (response) => {
 
             dispatch( setCurrentSearch( response.data.business ) );
 
         } )
-        .catch( (err) => {
-
-            dispatch( setClearSearch() );
-
-        } );
+        .catch( () => dispatch( setClearSearch() ) );
 
     };
 

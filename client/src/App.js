@@ -10,6 +10,8 @@ import BusinessRouteConfig from './components/uniqueComponents/BusinessRouteConf
 import AuthProvider from './providers/AuthProvider';
 import CustomRoute from './CustomRoute/CustomRoute';
 import MyBusiness from './components/uniqueComponents/MyBusiness/MyBusiness';
+import OneProductPage from './components/uniqueComponents/OneProductPage';
+import ChatViewClient from './components/uniqueComponents/ChatViewClient';
 
 function App() {
 
@@ -17,6 +19,14 @@ function App() {
     <AuthProvider>
       <Router>
         <Switch>
+          <CustomRoute
+          path='/business/chat/'
+          component={ ChatViewClient }
+          />
+          <CustomRoute
+          path='/product/'
+          component={ OneProductPage }
+          />
           <CustomRoute
           path='/search/business/'
           component={ MyBusiness }

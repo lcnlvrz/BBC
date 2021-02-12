@@ -69,10 +69,10 @@ const Banner = ( props ) => {
                         />
                     </StyledBadge>
                     <div className='text-center'>
-                      <h1 className='font-semibold text-3xl'> 
+                      <h1 className='font-semibold text-3xl w-72 whitespace-nowrap truncate'> 
                         { nameBusiness } 
                       </h1>
-                      <h3 className='text-light text-2xl'> 
+                      <h3 className='text-light text-2xl whitespace-nowrap truncate w-72'> 
                         { businessCategory } 
                       </h3>
                     </div>

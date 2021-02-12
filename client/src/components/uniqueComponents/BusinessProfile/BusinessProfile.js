@@ -43,8 +43,8 @@ const BusinessProfile = () => {
         for (let i = 0; i < inputKeys.length; i++) {
 
           const field = inputKeys[ i ];
-          
-          setInput( name => ({ ...name, [field]: user[ field ] ? user[ field ] : '' }) );
+
+          setInput( name => ({ ...name, [field]: field === 'isOpenBusiness' ? user[ field ] :  user[ field ] ? user[ field ] : '' }) );
           
         };
 
@@ -98,7 +98,7 @@ const BusinessProfile = () => {
                     <InputBase
                     className='p-0'
                     required
-                    inputProps={{ style:{ padding:'0px', fontWeight:600, marginTop:'2px' } }}
+                    inputProps={{ style:{ padding:'0px', fontWeight:600, marginTop:'2px', textAlign:'center' } }}
                     name='businessCategory'
                     value={ input.businessCategory ? input.businessCategory : '' }
                     placeholder='BarberShop, Shoes Store...'

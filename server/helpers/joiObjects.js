@@ -102,10 +102,10 @@ const productObject = Joi.object({
     .length( 3 ),
     description:Joi.string()
     .min( 1 )
-    .max( 100 ),
+    .max( 1000 ),
     details:Joi.string()
     .min( 1 )
-    .max( 100 ),
+    .max( 1000 ),
     category: Joi.string()
     .min( 1 )
     .max( 500 ),

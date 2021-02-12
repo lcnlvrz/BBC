@@ -7,10 +7,11 @@ import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
 import ChatBubbleRoundedIcon from '@material-ui/icons/ChatBubbleRounded';
 import { fillButton } from '../../../../constants/styles';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 const RealTimeSection = ( props ) => {
 
-    const { since, until, location, personalWorking, clientsInTheShop, lastUpdateClientsInTheShop, lastUpdatePersonalWorking } = props;
+    const { since, until, location, personalWorking, clientsInTheShop, lastUpdateClientsInTheShop, lastUpdatePersonalWorking, businessName, username } = props;
 
     const parseOne = moment.unix( lastUpdatePersonalWorking ).format();
     const parseTwo = moment.unix( lastUpdateClientsInTheShop ).format();
@@ -65,13 +66,16 @@ const RealTimeSection = ( props ) => {
                 style={{ fontSize:'100px' }}
                 />
                 <h1 className='font-light text-2xl text-center'> 
-                    Do you have more questions?
+                    Do you have some questions?
                 </h1>
-                <button
-                className={ fillButton }
-                >
-                    CHAT NOW WITH NIKE
-                </button>
+                <Link
+                to={ `/business/chat/?username=${ username }` }>
+                    <button
+                    className={ fillButton }
+                    >
+                        CHAT NOW WITH { businessName }
+                    </button>
+                </Link>
             </div>
         </div>
     );

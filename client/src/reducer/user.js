@@ -67,7 +67,17 @@ const user = ( state = initialState, action ) => {
 
         case 'UPLOAD_ONE_PRODUCT':
 
-            return { ...state, products:[ action.payload, ...state.products ] };
+            if ( copyProducts.length === 10 ) {
+
+                copyProducts.pop();
+                copyProducts.unshift( action.payload );
+                return { ...state, products:copyProducts };
+
+            } else {
+
+                return { ...state, products:[ action.payload, ...state.products ] };
+
+            };
 
         case 'UPDATE_INFO_PRODUCT':
 

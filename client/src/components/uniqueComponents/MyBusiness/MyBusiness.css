@@ -2,16 +2,12 @@
   color: rgba(52, 211, 153, var(--tw-text-opacity));
 }
 
-div.container__title__card::before {
+div.container__title__card::after {
   content: "";
   position: absolute;
   top: 200px;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(0, 0, 0, 0.561) 100%
-  );
+  background: linear-gradient(to bottom, transparent 0%, rgb(0, 0, 0) 500%);
 }

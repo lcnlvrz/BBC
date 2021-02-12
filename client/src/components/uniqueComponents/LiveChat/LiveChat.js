@@ -9,20 +9,16 @@ import MessageRoundedIcon from '@material-ui/icons/MessageRounded';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import { Fade } from '@material-ui/core';
 import socket from '../../../socket/config';
+import { useSelector } from 'react-redux';
+import { useChatBusiness } from '../../../hooks/useChatBusiness';
+import { Fragment } from 'react';
+import moment from 'moment';
 
 const LiveChat = () => {
+    
+    const { allMessages, setAllMessages } = useChatBusiness();
 
-    useEffect(() => {
-
-        socket.emit( 'getSocketID' );
-
-        socket.on( 'socketID', socketID => {
-
-            console.log( socketID );
-
-        } );
-        
-    }, []);
+    console.log( allMessages );
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
 
@@ -208,7 +204,7 @@ const LiveChat = () => {
                         <div 
                         className='clients__chat rounded-b-2xl h-screen
                         overflow-auto'>
-                            { numbers.map( ( number, index ) => (
+                            { Object.keys( allMessages ).map( ( client, index ) => (
         
                                 <div 
                                 onClick={ () => {
@@ -216,7 +212,7 @@ const LiveChat = () => {
                                     setIsShowOneChat( true );
 
                                 } }
-                                key={ number }
+                                key={ index }
                                 style={ defaultTransiton }
                                 className='one__user flex flex-row space-x-2 items-center hover:shadow-2xl cursor-pointer rounded-2xl p-5'>
                                     <Avatar
@@ -226,24 +222,33 @@ const LiveChat = () => {
                                     <div className='flex flex-col items-start w-full'>
                                         <div className='flex flex-row w-full justify-between'>
                                             <h3 className='font-semibold text-green-400'> 
-                                                Roberto Juarez 
+                                                { allMessages[ client ][0].fromName }
                                             </h3>
                                             <h3 className='bg-green-300 rounded-full px-2'> 
-                                                1 
+                                            { allMessages[client].length }
                                             </h3>
                                         </div>
-                                        <h4 className='font-semibold text-white'> 
-                                            Hi, i need reclaim one product... 
-                                        </h4>
-                                        <div className='flex flex-row justify-between w-full'>
-                                            <h3 className='text-xs opacity-0'> 
-                                                10 min ago 
-                                            </h3>
-                                            <h3 className='text-xs text-gray-400'> 
-                                                10 min ago 
-                                            </h3>
-        
-                                        </div>
+                                            <div className='table table-fixed w-full'>
+                                                { allMessages[ client ].map( ( message, index ) => index + 1 === allMessages[ client ].length && (
+                                                    <Fragment
+                                                    key={ index }
+                                                    >
+                                                    <h4 className='font-semibold truncate text-white'> 
+                                                        { message.message }
+                                                    </h4>
+                                                    <div className='flex flex-row justify-between w-full'>
+                                                        <h3 className='text-xs opacity-0 ghost_filler'> 
+                                                            10 min ago 
+                                                        </h3>
+                                                        <h3 className='text-xs text-gray-400'> 
+                                                            { moment( message.sentAt ).fromNow() }  
+                                                        </h3>
+                                                    </div>
+                                                    </Fragment>
+
+                                                ) ) }
+                                             </div>
+                                        
                                     </div>
                                 </div>
         

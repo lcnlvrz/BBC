@@ -6,22 +6,18 @@ import SecondStep from './SecondStep';
 import { Fade } from '@material-ui/core';
 import ThirdStep from './ThirdStep';
 import LoadingAnimation from '../../reusableComponents/LoadingAnimation';
-import { useDelayComponent } from '../../../hooks/useDelayComponent';
+import { useFixViewPort } from '../../../hooks/useFixViewport';
 
 const SignUp = ( ) => {
 
-    const { setIsStartDelay, isLoadingComponent } = useDelayComponent();
+    useFixViewPort();
 
     const [steps, setSteps] = useState( { firstStep:true, secondStep:false, thirdStep:false } );
 
     const [userData, setUserData] = useState( { email:'', otp:0 } );
 
-    useEffect(() => setIsStartDelay( true ), [ setIsStartDelay ]);
-
     return (
-        <>
-        { isLoadingComponent && <LoadingAnimation/> }
-        <Fade in={ isLoadingComponent === false }>
+        <Fade in={ true }>
             <div 
             className='flex flex-col items-center justify-center h-screen'>
                 <img
@@ -33,7 +29,6 @@ const SignUp = ( ) => {
                 { steps.thirdStep && <ThirdStep setSteps={ setSteps } setUserData={ setUserData } userData={ userData }/> }
             </div>
         </Fade>
-        </>
     );
       
 };

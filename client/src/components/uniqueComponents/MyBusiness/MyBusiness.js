@@ -13,7 +13,6 @@ import Products from './Products/Products';
 import Footer from './Footer';
 import { useSelector } from 'react-redux';
 import { Fragment } from 'react';
-import LoadingAnimation from '../../reusableComponents/LoadingAnimation/LoadingAnimation';
 import { useSearchBusiness } from '../../../hooks/useSearchBusiness';
 import AlertAnimation from '../../reusableComponents/AlertAnimation';
 
@@ -21,7 +20,7 @@ const MyBusiness = () => {
 
     const currentSearch = useSelector(state => state.currentSearch); 
 
-    const [products, setProducts] = useState( [] );
+    const [products, setProducts] = useState( currentSearch.products );
 
     const { setQuery, cancelToken, notFound, setNotFound, isSearching, setAnotherEndPoint, response } = useSearchBusiness();
 
@@ -37,21 +36,13 @@ const MyBusiness = () => {
 
     useEffect(() => {
 
+        console.log( response );
+
         if ( response.length > 0 ) setProducts( response );
         
     }, [ response ]);
 
-    useEffect(() => {
-
-        if ( !currentSearch.isLoading ) {
-
-            setProducts( currentSearch.products );
-
-        };
-        
-    }, [ currentSearch ]);
-
-    if ( currentSearch.isLoading ) return <LoadingAnimation/>
+    if ( !currentSearch.business ) return <h1> The user doesn't exist </h1>
 
     return (
         <Fade in={ currentSearch.business }>
@@ -68,6 +59,8 @@ const MyBusiness = () => {
                 questionsAndAnswers={ currentSearch }
                 />
                 <RealTimeSection
+                username={ currentSearch.username }
+                businessName={ currentSearch.businessName }
                 lastUpdateClientsInTheShop={ currentSearch.lastUpdateClientsInTheShop }
                 lastUpdatePersonalWorking={ currentSearch.lastUpdatePersonalWorking }
                 clientsInTheShop={ currentSearch.clientsInTheShop }
@@ -95,6 +88,7 @@ const MyBusiness = () => {
                     <Products 
                     isSearching={ isSearching }
                     products={ products }/>
+                    
                 </form>
                 <Footer
                 facebookLink={ currentSearch.facebookLink }

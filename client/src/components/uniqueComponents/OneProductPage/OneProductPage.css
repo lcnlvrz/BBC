@@ -1,5 +1,9 @@
 .background {
-  background: linear-gradient(to bottom, transparent 0%, black 250%);
+  background: linear-gradient(to bottom, transparent 0%, black 500%);
+}
+
+.busines__information__product {
+  background: linear-gradient(to top, transparent 0%, black 500%);
 }
 
 .padding-inner {

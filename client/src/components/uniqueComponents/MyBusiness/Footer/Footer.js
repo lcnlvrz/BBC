@@ -9,13 +9,13 @@ const Footer = ( props ) => {
 
     return (
         <footer className='bg-black p-5 space-y-5'>
-            <div className='flex flex-row justify-between'>
-                <div className='flex items-center space-x-2'>
-                    <h1 className='text-white text-lg font-semibold'> 
+            <div className='flex flex-row justify-between w-full'>
+                <div className='flex items-center space-x-2 w-1/2 break-words truncate'>
+                    <h1 className='text-white text-lg font-semibold break-words'> 
                         { footerTitle }
                     </h1>
                 </div>
-                <div className='space-x-2'>
+                <div className='space-x-2 w-1/2 text-right'>
                     { facebookLink && 
                     <a 
                     rel='noreferrer'
@@ -45,20 +45,20 @@ const Footer = ( props ) => {
                     </a> }
                 </div>
             </div>
-            <div className='footer__questions text-white flex flex-row justify-between space-x-5'>
-                <div className='space-y-2'>
-                    <p className='font-light'> 
+            <div className='footer__questions text-white flex flex-row justify-between w-full'>
+                <div className='space-y-2 w-1/2'>
+                    <p className='font-light break-words'> 
                         { footerSectionOne }
                     </p>
                 </div>
-                <div className='space-y-2'>
-                    <p className='font-light'> 
+                <div className='space-y-2 w-1/2'>
+                    <p className='font-light text-right break-words'> 
                        { footerSectionTwo }
                     </p>
                 </div>
             </div>
-            <div className='text-white'>
-                <p className='font-light'> 
+            <div className='text-white w-full'>
+                <p className='font-light break-words'> 
                    { footerLastLine }
                 </p>
             </div>

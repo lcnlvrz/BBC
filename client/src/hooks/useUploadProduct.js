@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { getToken } from '../helpers/getToken';
 import { preSubmitPublishProduct } from '../helpers/preSubmit';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import axiosInstance from '../api/axiosConfig';
 import axios from 'axios';
 import { uploadOneProduct } from '../actions/user';
@@ -73,7 +73,7 @@ export const useUploadProduct = () => {
     
                     setIsLoading( false );
 
-                    console.log( err );
+                    console.log( err.response );
 
                     setAlert({ type:'image', message:'Error from server to store the product', severity:'error' });
     

@@ -36,6 +36,8 @@ export const useUploadInformation = () => {
 
             setCancelToken( cancelTokenFunction );
 
+            console.log( inputData );
+
             axiosInstance.put( '/info-business', inputData, { headers:{ authorization:token }, cancelToken:cancelTokenFunction.token })
             .then( (response) => {
 
@@ -47,6 +49,10 @@ export const useUploadInformation = () => {
             .catch( (err) => {
 
                 if ( axiosInstance.isCancel( err ) ) return console.log( 'request canceled by user' );
+
+                console.log( err.response );
+
+                setAlert( { type:'incomplete', severity:'error', message:err.response.data.message } );
 
                 setIsLoading( false );
 

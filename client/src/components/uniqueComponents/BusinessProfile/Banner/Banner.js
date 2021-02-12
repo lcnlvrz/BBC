@@ -21,7 +21,7 @@ const Banner = ( props ) => {
     return (
         <div className={ `my__business__container border-solid border-b-8 ${ input.isOpenBusiness ? 'text-green-400 border-green-400' : 'text-gray-500 border-gray-500' }` }>
             <div className='h-44 w-full flex items-center justify-center'>
-                <div className={ `h-44 w-max-full absolute z-20 ${ mobileResolution ? 'top-48' : 'top-44' } flex items-center justify-end flex-col space-y-5` }>
+                <div className={ `h-44 w-max-full absolute z-20 ${ mobileResolution ? 'top-48' : 'top-44' } flex items-center justify-end flex-col space-y-5 mx-5` }>
                     <StyledBadge
                     style={ defaultTransiton }
                     overlap="circle"

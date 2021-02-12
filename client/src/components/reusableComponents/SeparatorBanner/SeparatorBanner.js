@@ -10,7 +10,7 @@ const SeparatorBanner = ( props ) => {
                 <h1 className='font-semibold text-5xl'> { title } </h1>
             </div>
             <img 
-            style={{ filter:'brightness(0.4)' }}
+            style={{ filter:'brightness(0.6)' }}
             className='h-32 w-full object-cover object-center'
             alt=''
             src={ bannerPhoto }/>

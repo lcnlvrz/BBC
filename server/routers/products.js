@@ -11,4 +11,6 @@ app.delete( '/delete-product', [ UserMiddleware.validateToken ], ProductControll
 
 app.get( '/one-product', ProductController.getProductsByQuery );
 
+app.get( '/product-by-id', ProductController.getProductByID );
+
 module.exports = app;

@@ -86,8 +86,10 @@ const LeftMenu = ( props ) => {
                             onClick={ () => {
 
                                 setChangeSection( [ true ]);
+                                
+                                const { userID } = user;
 
-                                if ( option.title === 'Public Profile' ) dispatch( setCurrentSearch( { ...user, business:true, isLoading:false } ) );  
+                                if ( option.title === 'Public Profile' ) dispatch( setCurrentSearch( { ...user, business:true, isLoading:false, _id:userID } ) );  
 
                             } }
                             to={ option.title === 'Public Profile' ? `/search/business/?username=${ user.username }` : option.route }>

@@ -59,3 +59,15 @@ export const validatePassword = ( password ) => {
 
 };
 
+
+export const validateName = ( name ) => {
+
+    const regexName = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*$/;
+
+    const valueAfterValidation = regexName.test( name );
+
+    if ( !valueAfterValidation ) return false;
+
+    return true;
+
+};

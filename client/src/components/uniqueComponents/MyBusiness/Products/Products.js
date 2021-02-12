@@ -14,13 +14,7 @@ const Products = ( props ) => {
 
                         <ProductCard
                         key={ index }
-                        index={ index }
-                        title={ product.title }
-                        image={ product.image }
-                        stockAvailable={ product.stock }
-                        lastUpdate={ product.lastUpdate }
-                        price={ product.price }
-                        currency={ product.currency }
+                        product={ product }
                         />
 
                     ) ) 

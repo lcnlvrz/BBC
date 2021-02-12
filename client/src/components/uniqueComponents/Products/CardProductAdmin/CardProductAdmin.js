@@ -5,8 +5,6 @@ import { defaultTransiton } from '../../../../constants/styles';
 import Fade from '@material-ui/core/Fade';
 import { IconButton, TextareaAutosize } from '@material-ui/core';
 import RemoveCircleRoundedIcon from '@material-ui/icons/RemoveCircleRounded';
-import ImageRoundedIcon from '@material-ui/icons/ImageRounded';
-import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRounded';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import moment from 'moment';
 import { useUpdateProduct } from '../../../../hooks/useUpdateProduct';
@@ -185,24 +183,24 @@ const CardProductAdmin = ( props ) => {
                             setInput({ ...input, [ e.target.name ]:e.target.value });
 
                         } }
-                        className={ `flex flex-row  ${ mobileResolution ? 'space-y-5 flex-wrap' : 'space-x-5' } rounded-3xl shadow-2xl h-full` }>
+                        className={ `flex flex-row  ${ mobileResolution ? 'space-y-5 flex-wrap w-full' : 'space-x-5' } rounded-3xl shadow-2xl h-full` }>
                             <div className={ `${ mobileResolution ? 'w-full' : 'w-80' } one__product__image__container` }>
                                 <div className={ `h-96 absolute flex items-end justify-center ${ mobileResolution ? 'w-full padding-inner' : 'w-80' }` }>
                                     <div 
-                                    className={ `w-full h-96 flex items-end background ${ !mobileResolution && 'rounded-bl-3xl' } flex-col justify-end leading-3` }>
+                                    className={ `w-full h-20 flex flex-row items-end background ${ !mobileResolution && 'rounded-bl-3xl' } justify-end leading-3` }>
                                         <input
                                         required
                                         maxLength={ 100 }
                                         name='price'
                                         defaultValue={ input.price }
-                                        className='outline-none bg-transparent text-white text-4xl text-center w-full font-bold p-2'
+                                        className='outline-none bg-transparent text-white text-4xl font-bold p-2 w-1/2 text-right'
                                         />
                                         <input
                                         required
                                         name='currency'
                                         maxLength={ 3 }
                                         defaultValue={ input.currency }
-                                        className='outline-none bg-transparent text-white text-4xl text-center w-full font-bold p-2'
+                                        className='outline-none bg-transparent text-white text-4xl  w-1/2 font-bold p-2 text-left'
                                         />
                                     </div>
                                 </div>

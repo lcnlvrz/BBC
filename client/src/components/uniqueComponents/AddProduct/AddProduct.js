@@ -123,7 +123,7 @@ const AddProduct = () => {
 
                 } }
                 className={ `container__add__product flex ${ mobileResolution ? 'flex-col space-y-5 items-center justify-center' : 'flex-row flex-wrap items-start justify-evenly space-x-5' } px-5 py-5` }>
-                    <div className={ `one__part ${ mobileResolution ? 'w-full' : 'w-56 sticky top-5' } ` }>
+                    <div className={ `one__part ${ mobileResolution ? 'w-full' : 'w-56 sticky top-24' } ` }>
                         <div
                         className={ `flex flex-col items-center justify-center w-full space-y-5 ${ mobileResolution && 'my-10'}` }>
                             { !input.image ?  

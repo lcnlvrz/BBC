@@ -3,6 +3,8 @@ const Product = require( '../models/products' );
 const moment = require( 'moment' );
 const User = require( '../models/users' );
 
+
+
 const createProduct = ( req, res ) => {
 
     const product = req.body;
@@ -135,9 +137,29 @@ const getProductsByQuery = ( req, res ) => {
 
         res.status( 200 ).send( { message:'Products found', products:productsStored } ); 
 
-    } ).limit( 10 )
+    } ).limit( 10 );
     
 
 };
 
-module.exports = { createProduct, updateProduct, deleteProduct, getProductsByQuery };
+const getProductByID = ( req, res ) => {
+
+    const { productid:productID, userid:userID } = req.headers;
+
+    if ( !productID || !userID ) return res.status( 404 ).send( { message:'The data provided are empty' } );
+
+    const filter = { _id:productID, userID };
+
+    Product.findOne( filter, ( err, productStored ) => {
+
+        if ( err ) throw err;
+
+        if ( !productStored ) return res.status( 404 ).send( { message:"The product doesn't exist" } );
+
+        res.status( 200 ).send({ message:'Product found!', product:productStored });
+
+    } ).populate( { path:'userID', populate:{ path:'products' }, select:'-email -password' } );
+    
+};
+
+module.exports = { createProduct, updateProduct, deleteProduct, getProductsByQuery, getProductByID };
