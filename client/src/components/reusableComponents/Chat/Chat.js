@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Fade } from '@material-ui/core';
 import { Avatar, IconButton, InputBase } from '@material-ui/core';
 import { makeStyles, withStyles  } from '@material-ui/core/styles';
@@ -11,101 +11,156 @@ import socket from '../../../socket/config';
 import { badgeOnlineOrOffline, avatarSizeChat } from './styles';
 import { useSelector } from 'react-redux';
 import AvatarStatus from '../AvatarStatus.js';
+import { Fragment } from 'react';
+import ArrowBackRoundedIcon from '@material-ui/icons/ArrowBackRounded';
+import { useHistory } from 'react-router-dom';
+import moment from 'moment';
 
 const Chat = ( props ) => {
 
-    const { from, to, allMessages, setAllMessages } = props;
+    const history = useHistory();
+
+    const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
+
+    const { from, to, allMessages, setAllMessages, setIsShowOneChat, socket, image, isClientVision } = props;
 
     const numbers = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
 
-    const currentSearch = useSelector(state => state.currentSearch);
-
-    const StyledBadge = badgeOnlineOrOffline( currentSearch.isOpenBusiness, 2 );
-
-    const useStylesClient = avatarSizeChat( 6 );
+    console.log( isClientVision );
 
     const [message, setMessage] = useState( '' );
+    
+    const user = useSelector(state => state.user);
 
-    console.log( allMessages );
+    const currentSearch = useSelector(state => state.currentSearch);
 
+    const lastMessageRef = useRef( null );
+
+    useEffect(() => {
+
+        if ( lastMessageRef ) lastMessageRef.current.scrollIntoView( { behavior:'smooth' } );
+        
+    }, [ allMessages ])
 
     return (
         <Fade in={ true }>
-            <div className='w-full flex flex-row justify-evenly flex-wrap p-2'>
-                <div className='right__part rounded w-3/5'>
+            <div className='h-screen overflow-hidden'>
+                <div className='flex flex-row justify-between items-center'>
+                    
+                    <IconButton
+                    onClick={ () => {
+
+                        if ( setIsShowOneChat ) return setIsShowOneChat( false );
+
+                        history.push( `/search/business/?username=${ currentSearch.username }` );
+
+                    } }
+                    style={{ outline:'none', color:'black' }}
+                    >
+                        <ArrowBackRoundedIcon/>    
+                    </IconButton> 
                     <div className='flex flex-col space-y-1 items-center py-1'>  
-                        <h3 className='font-semibold text-gray-500 text-lg'> 
+                        <h3 className='font-semibold text-gray-500 text-lg truncate w-full'> 
                             { currentSearch.businessName }
                         </h3>
                         <AvatarStatus
-                        status={ true } 
-                        spacingBadge={ 2 } 
-                        spacingAvatar={ 5 } 
-                        souceProfilePhoto={ currentSearch.profilePhoto } 
+                        status={ true }
+                        spacingBadge={ 3 }
+                        spacingAvatar={ 7 }
+                        souceProfilePhoto={ isClientVision && currentSearch.profilePhoto }
                         vertical='bottom'
                         horizontal='right'
                         />
                     </div>
-                    <div className='all__messages bg-gray-200 h-96 overflow-auto'>
-                        <div className='p-5 one__message__other__user w-full'>
+                    <IconButton
+                    disabled
+                    style={{ opacity:0 }}
+                    className='ghost__fillter'
+                    >
+                        <ArrowBackRoundedIcon/>    
+                    </IconButton> 
+                </div>
+                <div 
+                style={{ height: 'calc(100% - 155px)' }}
+                className='all__messages bg-gray-200 flex-1 overflow-auto '>
+                    { allMessages[ to.socketID ] && allMessages[ to.socketID ].length > 0 && 
+                    allMessages[ to.socketID ].map( ( message, index ) => message.fromSocketID === to.socketID ? (
+
+                        <div 
+                        key={ index }
+                        className='p-5 one__message__other__user w-full'>
                             <div className='flex flex-row items-center space-x-2'>
                                 <Avatar
-                                src='https://image.shutterstock.com/image-photo/sad-pensive-man-spectacles-glasses-260nw-1807028797.jpg'
+                                className='bg-white'
+                                src={ message.image }
                                 />
                                 <div className='bg-white rounded-2xl'>
                                     <h3 className='text-black font-semibold pt-2 px-2 text-left'> 
-                                        Hi, i need reclaim one product. Can you help me?
-                                        
+                                        { message.message }
+
                                     </h3>
                                     <div className='flex w-full items-end justify-end p-2'>
                                         <h4 className='text-xs'> 
-                                            10 min ago 
+                                            { moment( message.sentAt ).fromNow() }
                                         </h4>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        { numbers.map( ( number, index ) => (
-                            <div 
-                            key={ index }
-                            className='p-5 one__message__own flex items-end justify-end w-full '>
-                                <div className='flex flex-row items-center space-x-2'>
-                                    <div className='bg-white rounded-2xl'>
-                                        <h3 className='text-black font-semibold pt-2 px-2'> 
-                                            Hi, i need reclaim one product. Can you help me?
-                                            
-                                        </h3>
-                                        <div className='flex w-full items-end justify-end p-2'>
-                                            <h4 className='text-xs text-right'> 
-                                                10 min ago 
-                                            </h4>
-                                        </div>
+
+                    ) : (
+
+                        <div 
+                        key={ index }
+                        className='p-5 one__message__own flex items-end justify-end w-full '>
+                            <div className='flex flex-row items-center space-x-2'>
+                                <div className='bg-white rounded-2xl'>
+                                    <h3 className='text-black font-semibold pt-2 px-2'> 
+                                        { message.message }
+                                        
+                                    </h3>
+                                    <div className='flex w-full items-end justify-end p-2'>
+                                        <h4 className='text-xs text-right'> 
+                                            { moment( message.sentAt ).fromNow() } 
+                                        </h4>
                                     </div>
-                                    <Avatar
-                                    src='https://image.shutterstock.com/image-photo/sad-pensive-man-spectacles-glasses-260nw-1807028797.jpg'
-                                    />
                                 </div>
+                                <Avatar
+                                className='bg-white'
+                                src={ message.image }
+                                />
                             </div>
-                        ) ) }
-                    </div>
+                        </div>
+
+                    ) )
+                    }
+                <div ref={ lastMessageRef }></div>
+                </div>
+                <div className='w-full relative'>
                     <form 
+                    onChange={ (e) => setMessage( e.target.value ) }
                     onSubmit={ (e) => {
 
                         e.preventDefault();
 
-
-                        socket.emit( 'sendMessage', { message, fromName:from, toSocketID:to.socketID, fromSocketID:socket.id } );
-                        setAllMessages( [ ...allMessages, { from, to, message } ] );
+                        socket.emit( 'sendMessage', { fromName:from, message, toSocketID:to.socketID, fromSocketID:socket.id, image } );
 
                         setMessage( '' );
 
+                        if ( allMessages[ to.socketID ] ) return setAllMessages( { ...allMessages, [ to.socketID ]: [ ...allMessages[ to.socketID ], { message, fromName:from, toSocketID:to.socketID, fromSocketID:socket.id, image } ] } );
+
+                        setAllMessages( { ...allMessages, [ to.socketID ]: [ { message, fromName:from, toSocketID:to.socketID, fromSocketID:socket.id, image } ] } );
+
+                        
+
+                        
+
                     } }
-                    onChange={ (e) => setMessage( e.target.value ) }
-                    className='flex flex-row items-center p-2 justify-between w-full'>
+                    className='flex flex-row items-center p-2 justify-between  bg-white absolute w-full'>
                         <InputBase
                         name='message'
-                        fullWidth
                         value={ message }
+                        fullWidth
                         placeholder='Type something to send...'
                         />
                         <IconButton
@@ -117,7 +172,7 @@ const Chat = ( props ) => {
                             />
                         </IconButton>
                     </form>
-                </div>   
+                </div>
             </div>
         </Fade>
     );

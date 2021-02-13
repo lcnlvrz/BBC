@@ -8,7 +8,7 @@ const http = require( 'http' );
 const server = http.Server( app );
 
 const socketio = require( 'socket.io' );
-const { getStatusBusiness, newBusinessReturnTheirClients, getIndexToDeleteBusinessOffline } = require('./helpers/getStatusBusiness');
+const { getStatusBusiness, newBusinessReturnTheirClients, getIndexToDeleteBusinessOffline, getIndexToDeleteClientOffline } = require('./helpers/getStatusBusiness');
 
 const io = socketio( server, {
 
@@ -43,8 +43,9 @@ mongoose.connect( process.env.MONGODB_CONNECT, ( err ) => {
         io.on( 'connection', socket => {
 
            socket.on( 'businessOnline', ( userData ) => {
+               
 
-            businessOnline.push( userData );
+            businessOnline.push( { ...userData, socketID:socket.id } );
 
             let clientsToSendNotification = [];
 
@@ -58,19 +59,22 @@ mongoose.connect( process.env.MONGODB_CONNECT, ( err ) => {
 
                 for (let i = 0; i < clientsToSendNotification.length; i++) {
                     
-                    io.to( clientsToSendNotification[ i ] ).emit( 'businesStatus', { isOnline:true, businessData:userData } );
+                    io.to( clientsToSendNotification[ i ] ).emit( 'businesStatus', { isOnline:true, businessData:{ ...userData, socketID:socket.id } } );
                     
                 };
 
             };
 
+            console.log( `LENGTH BUSINESS CONNECT:${ businessOnline.length }` );
+
            } );
 
            socket.on( 'businessOffline', ( businessDataDisconnected ) => {
 
+
             const indexDeleteBusiness = getIndexToDeleteBusinessOffline( businessOnline, businessDataDisconnected );
 
-            if ( indexDeleteBusiness ) businessOnline.slice( indexDeleteBusiness, 1 );
+            if ( indexDeleteBusiness > -1 ) businessOnline.splice( indexDeleteBusiness, 1 );
 
             const clientsToSendNotification = newBusinessReturnTheirClients( businessDataDisconnected, clientsOnline );
 
@@ -78,38 +82,66 @@ mongoose.connect( process.env.MONGODB_CONNECT, ( err ) => {
 
                 for (let i = 0; i < clientsToSendNotification.length; i++) {
 
-                    console.log( `'SEND DISCONNECT TO:${ clientsToSendNotification[i] }` );
-
                     io.to( clientsToSendNotification[i] ).emit( 'businesStatus', { isOnline:false, businessData:null } );
                     
                 };
 
             };
 
+            console.log( `LENGTH BUSINESS DISCONNECT:${ businessOnline.length }` );
+
+
 
            } );
 
 
-           socket.on( 'getStatusBusiness', ( searchingForBusinessData ) => {
+           socket.on( 'clientConnect', ( searchingForBusinessData ) => {
+
+            console.log( businessOnline );
 
             const { isOnline, businessData } = getStatusBusiness( businessOnline, searchingForBusinessData );
+
+            console.log( businessData );
 
             clientsOnline.push( searchingForBusinessData )
 
             socket.emit( 'businesStatus', { isOnline, businessData } );
 
+            console.log( `LENGTH CLIENTS CONNECT:${ clientsOnline.length }` );
+
+
+           } );
+
+           socket.on( 'clientDisconnect', () => {
+
+            const indexToDeleteClient = getIndexToDeleteClientOffline( clientsOnline, socket.id );
+
+            console.log( indexToDeleteClient );
+
+            if ( indexToDeleteClient === -1 ) return false;
+
+            console.log( indexToDeleteClient );
+
+            clientsOnline.splice( indexToDeleteClient, 1 );
+
+
+
+
+           
 
            } );
 
            socket.on( 'sendMessage', (data) => {
 
-            const { fromName, message, toSocketID, fromSocketID } = data;
+            const { fromName, message, toSocketID, fromSocketID, image } = data;
 
             const sentAt = moment().format();
 
-            io.to( toSocketID ).emit( 'receiveMessage', { message, fromName, sentAt, fromSocketID } );
+            io.to( toSocketID ).emit( 'receiveMessage', { message, fromName, sentAt, fromSocketID, image } );
 
            } );
+
+          
 
         } );
 

@@ -2,64 +2,46 @@ import React, { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive';
 import HeaderMobile from '../HeaderForBusiness/HeaderMobile/HeaderMobile';
 import HeaderForBusiness from '../HeaderForBusiness';
-import Panel from '../Panel/Panel';
-import RealTimeSection from '../MyBusiness/RealTimeSection/RealTimeSection';
-import WelcomeMessage from '../../reusableComponents/WelcomeMessage';
-import RealTimeData from '../RealTimeData/RealTimeData';
-import BusinessProfile from '../BusinessProfile';
-import Products from '../Products';
-import AddProduct from '../AddProduct';
-import LiveChat from '../LiveChat';
-import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { sections, titleSections } from '../../../constants/content';
+import { Fragment } from 'react';
 
 
 const BusinessRouteConfig = () => {
 
+    const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
+
     const url = new URL( window.location.href );
 
-    const currentSection = url.searchParams.get( 'section' );
+    const section = url.searchParams.get( 'section' );
 
-    const [changeSection, setChangeSection] = useState( [] );
+    const [sectionToRender, setSectionToRender] = useState( '' );
 
-    const mobileResolution = useMediaQuery({ query:'( max-width: 800px )' });
+    useEffect(() => {
 
-    const HtmlData = () => {
+        setSectionToRender( section );
+        
+    }, [ section ]);
 
-        if ( currentSection === 'panel' ) return <Panel/> 
-
-        if ( currentSection === 'real-time-data' ) return <RealTimeData/>
-
-        if ( currentSection === 'welcome-message' ) return <WelcomeMessage/>
-
-        if ( currentSection === 'business-profile' ) return <BusinessProfile/>
-
-        if ( currentSection === 'products' ) return <Products/>
-
-        if ( currentSection === 'add-product' ) return <AddProduct/>
-
-        if ( currentSection === 'live-chat' ) return <LiveChat/>
-
-        return <h1> Invalid page </h1>
-
-    };
-
-
-
-    if ( mobileResolution ) return ( 
-
-        <>
-            <HeaderMobile
-            setChangeSection={ setChangeSection }
-            /> 
-            <HtmlData/>
-        </>
-
+    if ( mobileResolution ) return (
+        
+        <Fragment>
+            <HeaderMobile sectionToRender={ sectionToRender }/>
+            { sections.map( ( section ) => section.title === sectionToRender && <section.component/> ) }
+            { titleSections.every( ( value ) => value !== sectionToRender ) && <h1> Sorry, but this section doesn't exist </h1> }
+        </Fragment>
+    
     );
+    
+    return (
+    
+        <HeaderForBusiness sectionToRender={ sectionToRender }>
 
-    return <HeaderForBusiness 
-    setChangeSection={ setChangeSection } 
-    HtmlData={ HtmlData }/>
+            { sections.map( ( section ) => section.title === sectionToRender && <section.component/> ) }
+            { titleSections.every( ( value ) => value !== sectionToRender ) && <h1> Sorry, but this section doesn't exist </h1> }
+
+        </HeaderForBusiness>
+    
+    );
 
 
 };

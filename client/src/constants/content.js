@@ -12,6 +12,12 @@ import TwitterIcon from '@material-ui/icons/Twitter';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import PublicRoundedIcon from '@material-ui/icons/PublicRounded';
 import { useSelector } from 'react-redux';
+import LiveChat from '../components/uniqueComponents/LiveChat';
+import AddProduct from '../components/uniqueComponents/AddProduct';
+import RealTimeData from '../components/uniqueComponents/RealTimeData/RealTimeData';
+import BusinessProfile from '../components/uniqueComponents/BusinessProfile';
+import Products from '../components/uniqueComponents/Products';
+import Panel from '../components/uniqueComponents/Panel/Panel';
 
 export const groupOfInputsThirdStepSignUp = ( input, businessName, username, password, repeatPassword ) => {
 
@@ -56,3 +62,13 @@ export const inputKeys = [ 'businessName', 'isOpenBusiness', 'mainPresentationOn
 
 
 export const initialStateInputAddProduct = { title:'', subtitle:'', price:'', description:'', details:'', category:'', stock:'', currency:'', image:''};
+
+
+export const sections = [ { title:'live-chat', component:LiveChat }, { title:'add-product', component:AddProduct }, { title:'real-time-data', component:RealTimeData }, { title:'business-profile', component:BusinessProfile }, { title:'products', component:Products }, { title:'panel', component:Panel } ];
+
+export const titleSections = [ 'live-chat',
+'add-product',
+'real-time-data',
+'business-profile',
+'products',
+'panel' ];

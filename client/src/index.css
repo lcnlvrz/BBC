@@ -21,3 +21,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.element {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.truncate {
+  display: table-cell;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

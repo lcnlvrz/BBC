@@ -85,7 +85,7 @@ const LeftMenu = ( props ) => {
                             <Link 
                             onClick={ () => {
 
-                                setChangeSection( [ true ]);
+                                // setChangeSection( [ true ]);
                                 
                                 const { userID } = user;
 

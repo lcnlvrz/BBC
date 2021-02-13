@@ -22,8 +22,6 @@ const CardProductAdmin = ( props ) => {
 
     const { product, index } = props;
 
-    console.log( index );
-
     const { alert, setAlert, setData, setProductID, isLoading, cancelToken, setIndexProduct, setAction } = useUpdateProduct();
 
     useEffect(() => {

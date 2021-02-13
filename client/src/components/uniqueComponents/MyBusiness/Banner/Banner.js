@@ -68,10 +68,12 @@ const Banner = ( props ) => {
                         src={ profilePhoto }
                         />
                     </StyledBadge>
-                    <div className='text-center'>
-                      <h1 className='font-semibold text-3xl w-72 whitespace-nowrap truncate'> 
-                        { nameBusiness } 
-                      </h1>
+                    <div className='text-center flex flex-col items-center justify-center'>
+                      <div className='element'>
+                        <h1 className='font-semibold text-3xl truncate'> 
+                          { nameBusiness } 
+                        </h1>
+                      </div>
                       <h3 className='text-light text-2xl whitespace-nowrap truncate w-72'> 
                         { businessCategory } 
                       </h3>

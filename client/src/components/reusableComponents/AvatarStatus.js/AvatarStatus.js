@@ -20,7 +20,7 @@ const AvatarStatus = ( props ) => {
         variant="dot"
         >
             <Avatar
-            className={ `${ avatarSize().large }` }
+            className={ `${ avatarSize().large } bg-white` }
             src={ souceProfilePhoto }
             />
         </StyledBadge>

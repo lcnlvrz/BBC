@@ -64,4 +64,18 @@ const getIndexToDeleteBusinessOffline = ( businessOnline, businessDisconnected )
 
 };
 
-module.exports = { getStatusBusiness, newBusinessReturnTheirClients, getIndexToDeleteBusinessOffline };
+const getIndexToDeleteClientOffline = ( clientsOnline, socketIDdisconnect ) => {
+
+    if ( clientsOnline.length === 0 ) return -1;
+
+    const indexToDelete = clientsOnline.findIndex( ( client ) => {
+
+        return client.socketID === socketIDdisconnect;
+
+    } );
+
+    return indexToDelete;
+
+};
+
+module.exports = { getStatusBusiness, newBusinessReturnTheirClients, getIndexToDeleteBusinessOffline, getIndexToDeleteClientOffline };
