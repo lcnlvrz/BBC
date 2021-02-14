@@ -66,6 +66,8 @@ const getIndexToDeleteBusinessOffline = ( businessOnline, businessDisconnected )
 
 const getIndexToDeleteClientOffline = ( clientsOnline, socketIDdisconnect ) => {
 
+    console.log( socketIDdisconnect );
+
     if ( clientsOnline.length === 0 ) return -1;
 
     const indexToDelete = clientsOnline.findIndex( ( client ) => {
@@ -74,8 +76,28 @@ const getIndexToDeleteClientOffline = ( clientsOnline, socketIDdisconnect ) => {
 
     } );
 
+    console.log( clientsOnline );
+
+    console.log( `The index to delete client is: ${ indexToDelete }` )
+
     return indexToDelete;
 
 };
 
-module.exports = { getStatusBusiness, newBusinessReturnTheirClients, getIndexToDeleteBusinessOffline, getIndexToDeleteClientOffline };
+const getSocketIDBusinessToNotificate = ( searchingForID, businessOnline ) => {
+
+    if ( businessOnline.length === 0 ) return false;
+
+    let socketIDBusiness = '';
+
+    for (let i = 0; i < businessOnline.length; i++) {
+        
+        if ( businessOnline[i].userID === searchingForID ) socketIDBusiness = businessOnline[i].socketID;
+        
+    };
+
+    return socketIDBusiness;
+
+};
+
+module.exports = { getStatusBusiness, newBusinessReturnTheirClients, getIndexToDeleteBusinessOffline, getIndexToDeleteClientOffline, getSocketIDBusinessToNotificate };

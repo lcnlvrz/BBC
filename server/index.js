@@ -8,7 +8,7 @@ const http = require( 'http' );
 const server = http.Server( app );
 
 const socketio = require( 'socket.io' );
-const { getStatusBusiness, newBusinessReturnTheirClients, getIndexToDeleteBusinessOffline, getIndexToDeleteClientOffline } = require('./helpers/getStatusBusiness');
+const { getStatusBusiness, newBusinessReturnTheirClients, getIndexToDeleteBusinessOffline, getIndexToDeleteClientOffline, getSocketIDBusinessToNotificate } = require('./helpers/getStatusBusiness');
 
 const io = socketio( server, {
 
@@ -97,13 +97,10 @@ mongoose.connect( process.env.MONGODB_CONNECT, ( err ) => {
 
            socket.on( 'clientConnect', ( searchingForBusinessData ) => {
 
-            console.log( businessOnline );
 
-            const { isOnline, businessData } = getStatusBusiness( businessOnline, searchingForBusinessData );
+            const { isOnline, businessData } = getStatusBusiness( businessOnline, { ...searchingForBusinessData, socketID:socket.id } );
 
-            console.log( businessData );
-
-            clientsOnline.push( searchingForBusinessData )
+            clientsOnline.push( { ...searchingForBusinessData, socketID:socket.id } )
 
             socket.emit( 'businesStatus', { isOnline, businessData } );
 
@@ -116,18 +113,18 @@ mongoose.connect( process.env.MONGODB_CONNECT, ( err ) => {
 
             const indexToDeleteClient = getIndexToDeleteClientOffline( clientsOnline, socket.id );
 
-            console.log( indexToDeleteClient );
-
             if ( indexToDeleteClient === -1 ) return false;
 
-            console.log( indexToDeleteClient );
+            const { socketID, searchingForID } = clientsOnline[indexToDeleteClient];
+
+            const businessSocketNotificateClientDisconnect = getSocketIDBusinessToNotificate( searchingForID, businessOnline );
 
             clientsOnline.splice( indexToDeleteClient, 1 );
 
+            if ( !businessSocketNotificateClientDisconnect ) return false;
 
+            io.to( businessSocketNotificateClientDisconnect ).emit( 'clientDisconnect', socketID );
 
-
-           
 
            } );
 
@@ -135,13 +132,25 @@ mongoose.connect( process.env.MONGODB_CONNECT, ( err ) => {
 
             const { fromName, message, toSocketID, fromSocketID, image } = data;
 
+
             const sentAt = moment().format();
 
             io.to( toSocketID ).emit( 'receiveMessage', { message, fromName, sentAt, fromSocketID, image } );
 
            } );
 
-          
+           socket.on( 'typing', ( toSocketID ) => { 
+
+            io.to( toSocketID ).emit( 'otherUserIsTyping', true );
+
+           } );
+
+           socket.on( 'stopTyping', ( toSocketID ) => {
+
+            io.to( toSocketID ).emit( 'otherUserIsNotTyping', true );
+
+           } );
+
 
         } );
 

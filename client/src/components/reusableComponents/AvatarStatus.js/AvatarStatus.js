@@ -4,11 +4,16 @@ import { avatarSizeChat, badgeOnlineOrOffline } from '../Chat/styles';
 
 const AvatarStatus = ( props ) => {
 
-    const { status, spacingBadge, spacingAvatar, souceProfilePhoto, vertical, horizontal } = props;
+    const { status, spacingBadge, spacingAvatar, souceProfilePhoto, vertical, horizontal, isOnlyAvatar } = props;
+
+    console.log( status );
 
     const StyledBadge = badgeOnlineOrOffline( status, spacingBadge );
 
     const avatarSize = avatarSizeChat( spacingAvatar );
+
+    if ( isOnlyAvatar ) return <Avatar className={ `${ avatarSize().large } bg-white` }
+    src={ souceProfilePhoto }/>
 
     return (
         <StyledBadge

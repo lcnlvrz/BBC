@@ -18,6 +18,10 @@ export const useChatClient = () => {
 
     const [allMessages, setAllMessages] = useState( [] );
 
+    const [isTyping, setIsTyping] = useState( false );
+
+    const [isContinueWithDataFromLS, setIsContinueWithDataFromLS] = useState( { checked:false, askQuestion:false, isContinue:false } );
+
     const currentSearch = useSelector(state => state.currentSearch);
 
     window.onbeforeunload = (e) => {
@@ -62,13 +66,25 @@ export const useChatClient = () => {
 
             socket.on( 'receiveMessage', (data) => {
 
-                const { fromSocketID } = data;
+                const { fromSocketID, message, sentAt, fromName, image } = data;
 
-                console.log( data );
 
-                setAllMessages( messages => ({ ...messages, [ fromSocketID ]:messages[fromSocketID] ? [ ...messages[ fromSocketID ], data ] : [data] }) );
+                setAllMessages( messages => ({ ...messages, [ fromSocketID ]:messages[fromSocketID] ? {  ...messages[ fromSocketID ], messages:[ ...messages[fromSocketID].messages, { message, sentAt, sentBy:fromSocketID } ]  } : { fromName, image, fromSocketID, messages:[ { message, sentAt, sentBy:fromSocketID } ]  } } ) );
 
-            } )
+
+            } );
+
+            socket.on( 'otherUserIsTyping', () => {
+
+                setIsTyping( true );
+
+            } );
+
+            socket.on( 'otherUserIsNotTyping', () => {
+
+                setIsTyping( false );
+
+            } );
 
         };
 
@@ -82,6 +98,6 @@ export const useChatClient = () => {
     
     }, [ currentSearch ]);
 
-    return { input, setInput, isFormFillOut, setIsFormFillOut, isOnline, currentSearch, businessToSendMSG, socket, setAllMessages, allMessages, isLoading, image, setImage };
+    return { input, setInput, isFormFillOut, setIsFormFillOut, isOnline, currentSearch, businessToSendMSG, socket, setAllMessages, allMessages, isLoading, image, setImage, isTyping, setIsTyping, isContinueWithDataFromLS, setIsContinueWithDataFromLS };
 
 };

@@ -25,8 +25,8 @@ const BusinessRouteConfig = () => {
     if ( mobileResolution ) return (
         
         <Fragment>
-            <HeaderMobile sectionToRender={ sectionToRender }/>
-            { sections.map( ( section ) => section.title === sectionToRender && <section.component/> ) }
+            { sectionToRender !== 'live-chat' && <HeaderMobile sectionToRender={ sectionToRender }/> }
+            { sections.map( ( section, index ) => section.title === sectionToRender && <section.component key={ index }/> ) }
             { titleSections.every( ( value ) => value !== sectionToRender ) && <h1> Sorry, but this section doesn't exist </h1> }
         </Fragment>
     
@@ -36,7 +36,7 @@ const BusinessRouteConfig = () => {
     
         <HeaderForBusiness sectionToRender={ sectionToRender }>
 
-            { sections.map( ( section ) => section.title === sectionToRender && <section.component/> ) }
+            { sections.map( ( section, index ) => section.title === sectionToRender && <section.component key={ index }/> ) }
             { titleSections.every( ( value ) => value !== sectionToRender ) && <h1> Sorry, but this section doesn't exist </h1> }
 
         </HeaderForBusiness>

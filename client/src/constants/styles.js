@@ -10,4 +10,4 @@ export const textAreaDefaultProps = {
     rowsMax:10, 
     rowsMin:10,
     maxLength:1000,
-  };
+};

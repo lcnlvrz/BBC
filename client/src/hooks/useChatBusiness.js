@@ -9,16 +9,17 @@ export const useChatBusiness = () => {
 
     const [allMessages, setAllMessages] = useState( {} );
 
-    console.log( allMessages );
-    
+    const [isTyping, setIsTyping] = useState( false );
 
+    console.log( allMessages );
+
+    
     window.onbeforeunload = (e) => {
     
         socket.emit( 'businessOffline', { userID:user.userID, username:user.username, socketID:user.socketID } );
 
         socket.disconnect();
 
-        console.log( 'BUSINESS DISCONNECT!' );
 
     };
 
@@ -35,11 +36,34 @@ export const useChatBusiness = () => {
 
             socket.on( 'receiveMessage', ( data ) => {
 
-                const { fromSocketID } = data;
+                const { message, fromName, sentAt, fromSocketID, image } = data;
 
                 console.log( data );
 
-                setAllMessages( messages => ({ ...messages, [ fromSocketID ]:messages[fromSocketID] ? [ ...messages[ fromSocketID ], data ] : [data] }) );
+                setAllMessages( messages => ({ ...messages, [ fromSocketID ]:messages[fromSocketID] ? {  ...messages[ fromSocketID ], lastMessage:{ text:message, sentAt }, messages:[ ...messages[fromSocketID].messages, { message, sentAt, sentBy:fromSocketID } ]  } : { fromName, image, fromSocketID, lastMessage:{ text:message, sentAt }, messages:[ { message, sentAt, sentBy:fromSocketID } ]  } } ) );
+
+
+
+            } );
+
+            socket.on( 'otherUserIsTyping', () => {
+
+
+                setIsTyping( true );
+
+            } );
+
+            socket.on( 'otherUserIsNotTyping', () => {
+
+                setIsTyping( false );
+
+
+            } );
+
+            socket.on( 'clientDisconnect', clientSocketID => {
+
+
+                setAllMessages( messages => messages[ clientSocketID ] ? {  ...messages, [ clientSocketID ]:{  ...messages[ clientSocketID ], isLeave:true, messages:[ ...messages[ clientSocketID ].messages, { isLeave:true, message:'Left from chat' } ] } } : [] );
 
 
             } );
@@ -53,12 +77,11 @@ export const useChatBusiness = () => {
 
             socket.disconnect();
 
-            console.log( 'BUSINESS DISCONNECT!' );
 
         };
 
     }, [ user ]);
 
-    return { allMessages, setAllMessages, socket };
+    return { allMessages, setAllMessages, socket, isTyping, setIsTyping };
 
 };

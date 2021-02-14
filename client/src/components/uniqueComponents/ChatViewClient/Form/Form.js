@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Fade, TextField } from '@material-ui/core';
+import { Fade, IconButton, TextField } from '@material-ui/core';
 import AvatarStatus from '../../../reusableComponents/AvatarStatus.js';
 import { useSelector } from 'react-redux';
 import Theme from '../../../reusableComponents/Theme/Theme.js';
@@ -11,10 +11,14 @@ import FileBase64 from 'react-file-base64';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import { useMediaQuery } from 'react-responsive';
 import { KeyboardReturn } from '@material-ui/icons';
+import AddPhotoAlternateRoundedIcon from '@material-ui/icons/AddPhotoAlternateRounded';
+import { Fragment } from 'react';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const Form = ( props ) => {
 
-    const { input, setIsFormFillOut, setInput, setImage, image } = props; 
+    const { input, setIsFormFillOut, setInput, setImage, image, setIsContinueWithDataFromLS } = props; 
 
     useFixViewPort();
 
@@ -41,6 +45,8 @@ const Form = ( props ) => {
         
     }, [ fileBase64ParentRef ]);
 
+    const [checked, setChecked] = useState( false );
+
     return (
         <Fade in={ true }>
             <div className='h-screen flex flex-col items-center justify-center space-y-5 mx-5'>
@@ -62,16 +68,26 @@ const Form = ( props ) => {
 
                         if ( !input.completeName ) return setAlert( { type:'invalidCompleteName', message:"The name can't be empty", severity:'error' } );
 
+
                         const validation = validateName( input.completeName );
 
                         if ( !validation ) return setAlert( { type:'invalidName', message:"The name isn't valid. Only accepts letters", severity:'error' } );
+                                                
+                        if ( checked ) {
+
+                            localStorage.setItem( 'completeName', input.completeName );
+                            localStorage.setItem( 'image', image );
+                            setIsContinueWithDataFromLS( true );
+
+                        };
 
                         setIsFormFillOut( true );
+                        
 
                     } }
                     onChange={ (e) => {
 
-                        if ( e.target.name !== 'image' ) setInput( { completeName:e.target.value } );
+                        if ( e.target.name === 'completeName' ) setInput( { completeName:e.target.value } );
 
                     } }
                     className='flex flex-col items-center justify-center space-y-5'
@@ -100,13 +116,27 @@ const Form = ( props ) => {
                                     <h5 className='font-light'> *It's not necessary </h5>
                                 </div>
                            </div>
-                            
                         </label>  
                         :
-                        <img 
-                        className={ `${ mobileResolution ? 'w-full' : 'w-56' }` }
-                        src={ image } 
-                        alt=''/>
+                        <Fade in={ true }>
+                            <div className='relative'>
+                                <div className='absolute w-full h-full flex items-end justify-end'>
+                                    <label htmlFor='image-client'>
+                                        <span
+                                        style={ defaultTransiton } 
+                                        className='p-2 bg-black rounded-full flex items-center justify-center m-2 outline-none active:outline-none hover:text-green-300 text-white focus:outline-none focus:bg-white focus:text-black cursor-pointer' >
+                                        
+                                            <AddPhotoAlternateRoundedIcon
+                                            />
+                                        </span>
+                                    </label>
+                                </div>
+                                <img 
+                                className={ `${ mobileResolution ? 'w-full' : 'w-56' } h-48 object-cover rounded` }
+                                src={ image } 
+                                alt=''/>
+                            </div>
+                        </Fade>
                         }
                         <div 
                         className='hidden'
@@ -123,9 +153,23 @@ const Form = ( props ) => {
 
                             } } />
                         </div>
+                        <FormControlLabel
+                        className='w-full font-semibold'
+                        control={
+
+                            <Checkbox 
+                            style={{ color:'#47c746' }}
+                            checked={ checked } 
+                            onChange={ (e) => setChecked( e.target.checked ) }
+                            />
+
+                        }
+                        label="Remember me"
+                        />
                         <button 
-                        style={{ width:'100%', borderRadius:'5px' }}
-                        className={ fillButton }>
+                        type='submit'
+                        style={ { transition: "all .15s ease", borderRadius:'5px' } }
+                        className={ `${ fillButton } w-full` }>
 
                             JOIN
 
