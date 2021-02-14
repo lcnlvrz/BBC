@@ -53,7 +53,7 @@ const HeaderMobile = (props) => {
     if ( isOnlyButton ) return <ButtonDrawer/>
 
     return (
-      <header className='p-5 flex flex-row w-full justify-between items-center sticky top-0 bg-white z-30'>
+      <header className='p-5 flex flex-row w-full justify-between items-center fixed top-0 bg-white z-30'>
         <ButtonDrawer/>
         <img 
         className='w-20'

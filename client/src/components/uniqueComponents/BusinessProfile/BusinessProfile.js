@@ -19,8 +19,11 @@ import BannerSectionProducts from './BannerSectionProducts';
 import LocationAndSchedule from './LocationAndSchedule';
 import { Link } from 'react-router-dom';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
+import { useMediaQuery } from 'react-responsive';
 
 const BusinessProfile = () => {
+
+    const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
 
     const user = useSelector(state => state.user);
 
@@ -70,7 +73,7 @@ const BusinessProfile = () => {
 
     return (
         <Fade in={ true }>
-          <div>
+          <div className={ mobileResolution ? 'pt-28' : '' }>
             <form
             onSubmit={ (e) => {
               e.preventDefault();

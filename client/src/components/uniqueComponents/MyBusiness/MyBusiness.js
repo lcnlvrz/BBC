@@ -46,7 +46,7 @@ const MyBusiness = () => {
 
     return (
         <Fade in={ currentSearch.business }>
-            <Fragment>
+            <div className='pt-10'>
                 <HeaderForClient/>
                 <Banner
                 isOpenBusiness={ currentSearch.isOpenBusiness }
@@ -104,7 +104,7 @@ const MyBusiness = () => {
                     && 
                     <AlertAnimation setCloseAlert={ setNotFound } message={ notFound.message } severity={ notFound.severity }/> 
                 }
-            </Fragment>
+            </div>
         </Fade>
     );
 };

@@ -151,9 +151,30 @@ mongoose.connect( process.env.MONGODB_CONNECT, ( err ) => {
 
            } );
 
+           socket.on( 'notificateMessagesViewedToClient', ( toSocketID ) => {
+
+            io.to( toSocketID ).emit( 'messagesViewedByBusiness', socket.id );
+
+           } );
+
+           socket.on( 'notificateMessagesNotViewedToClient', ( toSocketID ) => {
+
+
+            io.to( toSocketID ).emit( 'messagesIgnoredByBusiness', socket.id );
+
+           } );
+
+           socket.on( 'media', ( data ) => {
+
+            const { toSocketID, media, fromName, image } = data;
+
+            const sentAt = moment().format();
+
+            io.to( toSocketID ).emit( 'media', { media, fromSocketID:socket.id, sentAt, image, fromName } );
+
+           } )
 
         } );
-
 
     } );
 

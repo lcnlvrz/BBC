@@ -20,9 +20,12 @@ import { useSearchBusiness } from '../../../hooks/useSearchBusiness';
 import AlertAnimation from '../../reusableComponents/AlertAnimation';
 import PropagateLoader from "react-spinners/PropagateLoader";
 
+
 const Products = () => {
 
     const user = useSelector(state => state.user);
+
+    const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
 
     const [isOpenChangePhoto, setIsOpenChangePhoto] = useState( false );
 
@@ -61,7 +64,7 @@ const Products = () => {
  
     return (
         <Fade in={ true }>
-            <div className='flex flex-col space-y-10 my-5'>
+            <div className={ `flex flex-col space-y-10 my-5 ${ mobileResolution && 'pt-28' }` }>
                 <form 
                 onChange={ (e) => {
 

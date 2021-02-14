@@ -12,7 +12,7 @@ import TimeAgoInterval from '../../../reusableComponents/TimeAgoInterval/index.j
 
 const ListAllMessages = ( props ) => {
 
-    const { allMessages, setIsShowOneChat, setTo, mobileResolution, isShowOneChat, to } = props;
+    const { allMessages, setIsShowOneChat, setTo, mobileResolution, isShowOneChat, to, setAllMessages, socket } = props;
 
     const user = useSelector(state => state.user);
 
@@ -46,7 +46,18 @@ const ListAllMessages = ( props ) => {
 
                         if ( !isShowOneChat )  setIsShowOneChat( true );
 
-                        if ( to.socketID !== client ) setTo( { socketID:allMessages[ client ].fromSocketID } );
+                        if ( to.socketID !== client ) {
+
+                            const clientSocketID = allMessages[ client ].fromSocketID;
+
+                            setTo( { socketID:clientSocketID } );
+
+                            setAllMessages( { ...allMessages, [ clientSocketID ]:{ ...allMessages[ clientSocketID ], viewed:{ quantity:0, doubleCheck:true } } } );
+
+                            socket.emit( 'notificateMessagesViewedToClient', clientSocketID );
+                            socket.emit( 'notificateMessagesNotViewedToClient', to.socketID );
+
+                        };
                         
 
                     } }
@@ -63,9 +74,12 @@ const ListAllMessages = ( props ) => {
                                     { allMessages[ client ].fromName }
                                     </h3>
                                 </div>
-                                <h3 className='bg-green-300 rounded-full px-2'> 
-                                        { allMessages[ client ].messages.length } 
-                                </h3>
+                                { allMessages[ client ].fromSocketID !== to.socketID &&  allMessages[ client ].viewed.quantity > 0 &&
+                            
+                                    <h3 className='bg-green-300 rounded-full px-2'> 
+                                        { allMessages[ client ].viewed.quantity } 
+                                    </h3>
+                                } 
                             </div>
                             <div className='element'>
                                 <h4 className='font-semibold text-white truncate w-full'> 

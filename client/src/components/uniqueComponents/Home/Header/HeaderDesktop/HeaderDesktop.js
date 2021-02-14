@@ -3,6 +3,7 @@ import React from 'react';
 import { defaultTransiton } from '../../../../../constants/styles';
 import OutlineButtonCircle from '../../../../reusableComponents/OutlineButtonCircle';
 import logoBBC from '../../../../../images/bccLogo.png';
+import { Link } from 'react-router-dom';
 
 const HeaderDesktop = () => {
     return (
@@ -28,9 +29,11 @@ const HeaderDesktop = () => {
                     className='cursor-pointer text-gray-300 hover:text-gray-500 hover:font-semibold'>     
                        ABOUT US
                     </h3>
-                    <OutlineButtonCircle
-                    textButton='SIGN IN'
-                    />
+                    <Link to='/sign-in'>
+                        <OutlineButtonCircle
+                        textButton='SIGN IN'
+                        />
+                    </Link>
                 </div>
             </div>
         </header>

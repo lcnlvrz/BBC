@@ -8,6 +8,7 @@ import ChatBubbleRoundedIcon from '@material-ui/icons/ChatBubbleRounded';
 import { fillButton } from '../../../../constants/styles';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import TimeAgoInterval from '../../../reusableComponents/TimeAgoInterval';
 
 const RealTimeSection = ( props ) => {
 
@@ -44,9 +45,7 @@ const RealTimeSection = ( props ) => {
                 <h1 className='font-light text-2xl text-center leading-6'> 
                     <span className='font-semibold'>{ personalWorking }</span> persons working in the shop now
                 </h1>
-                <h1 className='text-md text-gray-400'> 
-                    Updated { moment( parseOne ).fromNow() }
-                </h1>
+                <TimeAgoInterval date={ parseOne } classes='text-md text-gray-400'/>
             </div>
             <div className='flex m-10 flex-col items-center justify-center space-y-3'>
                 <PeopleAltRoundedIcon
@@ -56,9 +55,7 @@ const RealTimeSection = ( props ) => {
                 <h1 className='font-light text-2xl text-center leading-6'> 
                     There are <span className='font-semibold'> { clientsInTheShop } </span> clients in the shop now
                 </h1>
-                <h1 className='text-md text-gray-400'> 
-                    Updated { moment( parseTwo ).fromNow() }
-                </h1>
+            <TimeAgoInterval date={ parseTwo } classes='text-md text-gray-400'/>
             </div>
             <div className='flex m-10 flex-col items-center justify-center space-y-5'>
                 <ChatBubbleRoundedIcon

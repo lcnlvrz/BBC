@@ -21,7 +21,7 @@ const LeftMenu = ( props ) => {
 
     const currentSection = url.searchParams.get( 'section' );
 
-    const [currentOption, setCurrentOption] = useState( 0 );
+    const [currentOption, setCurrentOption] = useState( 3 );
 
     const user = useSelector(state => state.user);
 
@@ -51,26 +51,48 @@ const LeftMenu = ( props ) => {
     const classes = useStyles();
 
     return (
-        <Fade in={ true }>
-            <div className={ `left__part bg-green-400 p-5 flex h-screen justify-start flex-col space-y-5 ${ width } sticky top-0 z-30` }>
-                <div className='flex flex-col items-center space-y-2'>
-                    <Avatar
-                    src={ user.profilePhoto }
-                    className={ `${ classes.large } bg-white` }
-                    />
-                    <h3 className='font-semibold text-white text-lg truncate w-full text-center'> 
-                        { user.businessName }
-                    </h3>
-                </div>
-                <div className='all__options flex flex-col'>
-                    <div className='group__one flex-col flex space-y-5'>
-                        { optionsLeftMenu.map( ( option, index ) => (
+        <div className={ `left__part bg-green-400 p-5 flex h-screen justify-start flex-col space-y-5 ${ width } sticky top-0 z-30` }>
+            <div className='flex flex-col items-center space-y-2'>
+                <Avatar
+                src={ user.profilePhoto }
+                className={ `${ classes.large } bg-white` }
+                />
+                <h3 className='font-semibold text-white text-lg truncate w-full text-center'> 
+                    { user.businessName }
+                </h3>
+            </div>
+            <div className='all__options flex flex-col'>
+                <div className='group__one flex-col flex space-y-5'>
+                    { optionsLeftMenu.map( ( option, index ) => (
 
-                            <Fragment key={ index }>
-                                { option.title === 'Logout' 
-                                ?  
+                        <Fragment key={ index }>
+                            { option.title === 'Logout' 
+                            ?  
+                            <div 
+                            onClick={ logoutUser }
+                            style={ defaultTransiton }
+                            className={ `one__option flex flex-row w-full space-x-2 ${ currentOption === index ? 'text-white' : 'text-blue-900' } hover:text-white cursor-pointer` }>
+                                { currentOption === index && 
+                                <h3> | </h3> }
+                                <option.Icon
+                                />
+                                <h3 
+                                className={ `text-sm ${ index === currentOption ? 'font-semibold' : 'font-light' }` }> 
+                                    { option.title }
+                                </h3>
+                            </div>
+                            :
+                            <Link 
+                            onClick={ () => {
+                                
+                                const { userID } = user;
+
+                                if ( option.title === 'Public Profile' ) dispatch( setCurrentSearch( { ...user, business:true, isLoading:false, _id:userID } ) );  
+
+                            } }
+                            to={ option.title === 'Public Profile' ? `/search/business/?username=${ user.username }` : option.route }>
                                 <div 
-                                onClick={ logoutUser }
+                                onClick={ () => setCurrentOption( index ) }
                                 style={ defaultTransiton }
                                 className={ `one__option flex flex-row w-full space-x-2 ${ currentOption === index ? 'text-white' : 'text-blue-900' } hover:text-white cursor-pointer` }>
                                     { currentOption === index && 
@@ -82,39 +104,13 @@ const LeftMenu = ( props ) => {
                                         { option.title }
                                     </h3>
                                 </div>
-                                :
-                                <Link 
-                                onClick={ () => {
-
-                                    // setChangeSection( [ true ]);
-                                    
-                                    const { userID } = user;
-
-                                    if ( option.title === 'Public Profile' ) dispatch( setCurrentSearch( { ...user, business:true, isLoading:false, _id:userID } ) );  
-
-                                } }
-                                to={ option.title === 'Public Profile' ? `/search/business/?username=${ user.username }` : option.route }>
-                                    <div 
-                                    onClick={ () => setCurrentOption( index ) }
-                                    style={ defaultTransiton }
-                                    className={ `one__option flex flex-row w-full space-x-2 ${ currentOption === index ? 'text-white' : 'text-blue-900' } hover:text-white cursor-pointer` }>
-                                        { currentOption === index && 
-                                        <h3> | </h3> }
-                                        <option.Icon
-                                        />
-                                        <h3 
-                                        className={ `text-sm ${ index === currentOption ? 'font-semibold' : 'font-light' }` }> 
-                                            { option.title }
-                                        </h3>
-                                    </div>
-                                </Link>
-                                }
-                            </Fragment>
-                        ) ) } 
-                    </div>
+                            </Link>
+                            }
+                        </Fragment>
+                    ) ) } 
                 </div>
             </div>
-        </Fade>
+        </div>
     );
 };
 

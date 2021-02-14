@@ -17,6 +17,12 @@ import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import TimeAgoInterval from '../../reusableComponents/TimeAgoInterval';
+import FileBase64 from 'react-file-base64';
+import AlertAnimation from '../AlertAnimation';
+import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
+import ModalOptions from '../Modal';
+import FindReplaceRoundedIcon from '@material-ui/icons/FindReplaceRounded';
+import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
 
 const Chat = ( props ) => {
 
@@ -26,8 +32,9 @@ const Chat = ( props ) => {
 
     const { from, to, allMessages, setAllMessages, setIsShowOneChat, socket, image, isClientVision, isTyping, setIsTyping } = props;
 
-    const numbers = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
+    const [media, setMedia] = useState( null );
 
+    const [alert, setAlert] = useState( { type:'', message:'', severity:'' } );
 
     const [message, setMessage] = useState( '' );
     
@@ -62,6 +69,60 @@ const Chat = ( props ) => {
         
     }, [ setIsTyping ]);
 
+    const fileBase64ParentRef = useRef( null );
+
+    useEffect(() => {
+
+        if ( fileBase64ParentRef.current ) {
+        
+            const children = fileBase64ParentRef.current.children[0];
+        
+           children.setAttribute( 'id', 'image-client' );
+           children.setAttribute( 'name', 'image' );
+           children.classList.add( 'hidden' );
+        
+        };
+        
+    }, [ fileBase64ParentRef ]);
+
+    const sendMessage = (e) => {
+
+        e.preventDefault();
+
+        if ( !message ) return false;
+
+        setTimeout(() => {
+
+            socket.emit( 'stopTyping', to.socketID );
+            socket.emit( 'sendMessage', { fromName:from, message, toSocketID:to.socketID, fromSocketID:socket.id, image } );
+
+            setMessage( '' );
+
+            const sentAt = moment().format();
+
+            if ( isClientVision ) {
+
+                if ( allMessages[ to.socketID ] ) return setAllMessages( { ...allMessages, [ to.socketID ]: {  ...allMessages[ to.socketID ], messages:[ ...allMessages[to.socketID].messages, { message, sentAt, sentBy:socket.id } ]  }  } );
+
+                setAllMessages( { ...allMessages, [ to.socketID ]:{ fromName:currentSearch.businessName, image:currentSearch.profilePhoto, fromSocketID:to.socketID, messages:[ { message, sentAt, sentBy:socket.id } ] } } );
+
+            } else {
+
+                setAllMessages( { ...allMessages, [ to.socketID ]: {  ...allMessages[ to.socketID ], messages:[ ...allMessages[to.socketID].messages, { message, sentAt, sentBy:socket.id } ]  }  } );
+
+            };
+            
+        }, 100);
+
+    }
+
+    const resetValueInputFileBase64 = () => {
+
+        const children = fileBase64ParentRef.current.children[0];
+
+        children.value = '';
+
+    };
 
     return (
         <Fade in={ true }>
@@ -71,30 +132,47 @@ const Chat = ( props ) => {
                     <IconButton
                     onClick={ () => {
 
-                        if ( setIsShowOneChat ) return setIsShowOneChat( false );
+                        if ( setIsShowOneChat ){
 
-                        history.push( `/search/business/?username=${ currentSearch.username }` );
+                            setIsShowOneChat( false );
+                            socket.emit( 'notificateMessagesNotViewedToClient', to.socketID );
+
+                        } else {
+
+                            history.push( `/search/business/?username=${ currentSearch.username }` );
+
+                        };
 
                     } }
                     style={{ outline:'none', color:'black' }}
                     >
                         <ArrowBackRoundedIcon/>    
                     </IconButton> 
-                    <div className='flex flex-col space-y-1 items-center py-1'>  
-                        <h3 className='font-semibold text-black text-lg truncate w-full text-center'> 
-                            { isClientVision ? currentSearch.businessName : allMessages[ to.socketID ] && allMessages[ to.socketID ].fromName }
-                        </h3>
+                    <div className='flex flex-row space-x-2 items-center justify-center py-1'>
                         <Avatar
                         src={ isClientVision ? currentSearch.profilePhoto : allMessages[ to.socketID ] ? allMessages[ to.socketID ].image : '' }
-                        />
-                        {/* <AvatarStatus
-                        status={ true }
-                        spacingBadge={ 3 }
-                        spacingAvatar={ 7 }
-                        souceProfilePhoto={ isClientVision ? currentSearch.profilePhoto : allMessages[ to.socketID ] ? allMessages[ to.socketID ].image : '' }
-                        vertical='bottom'
-                        horizontal='right'
-                        /> */}
+                        /> 
+                        <div className='flex flex-col items-start justify-center text-left'>
+                            <div className='element'>
+                                <h3 className='font-semibold text-black text-lg truncate w-full text-left'> 
+                                    { isClientVision ? currentSearch.businessName : allMessages[ to.socketID ] && allMessages[ to.socketID ].fromName }
+                                </h3>
+                            </div>
+                            { allMessages[ to.socketID ] &&  allMessages[ to.socketID ].viewed && isClientVision ?
+                            <Fade in={ true }>
+                                <h1 className={ `${ mobileResolution && 'text-sm'} text-green-400 font-semibold` }> 
+                                    is in your chat now! 🙇
+                                </h1>
+                            </Fade>   
+                            :
+                            isClientVision && allMessages[ to.socketID ]
+                            &&
+                            <Fade in={ true }>
+                                <h1 className={ `text-red-400 font-semibold ${ mobileResolution && 'text-xs' }` }> 
+                                    is answering other clients, wait a minute 🙏
+                                </h1>
+                            </Fade> }
+                        </div> 
                     </div>
                     <IconButton
                     disabled
@@ -105,7 +183,7 @@ const Chat = ( props ) => {
                     </IconButton> 
                 </div>
                 <div 
-                style={{ height: 'calc(100% - 155px)' }}
+                style={{ height: !mobileResolution && !isClientVision ? 'calc(100% - 110px)' : 'calc(100% - 125px)' }}
                 className='all__messages bg-gray-200 flex-1 overflow-auto flex-col justify-between flex'>
                     <div>
                         { allMessages[ to.socketID ] && allMessages[ to.socketID ].messages.map( ( message, index ) => message.sentBy === to.socketID ? (
@@ -124,9 +202,21 @@ const Chat = ( props ) => {
                                                 { allMessages[ to.socketID ].fromName }
                                             </h3>
                                         </div>
-                                        <h3 className='font-semibold text-gray-500 pt-2 px-2 text-left break-words'> 
-                                            { message.message }
-                                        </h3>
+
+                                        { !message.isMedia 
+                                        ?  
+
+                                            <h3 className='font-semibold text-gray-500 pt-2 px-2 text-left break-words'> 
+                                                { message.message }
+                                            </h3> 
+                                        : 
+                                        <div className='flex items-center justify-center w-full'>
+                                            <img 
+                                            className={ `${ mobileResolution ? 'w-full h-2/3 object-contain' : 'w-3/4 h-2/3' } ` }
+                                            src={ message.media } 
+                                            alt='media'/>
+                                        </div> 
+                                        }
                                         <div className='flex w-full items-end justify-end p-2'>
                                             <TimeAgoInterval
                                             classes='text-xs'
@@ -147,12 +237,22 @@ const Chat = ( props ) => {
                                     <div className='bg-white rounded-2xl w-3/4'>
                                         <div className='element w-full'>
                                             <h3 className='text-black font-semibold pt-2 px-2 text-right truncate'> 
-                                                { isClientVision ? from : user.businessName }
+                                                <span className='font-light'>You as</span> { isClientVision ? from : user.businessName }
                                             </h3>
                                         </div>
-                                        <h3 className='font-semibold text-gray-500 pt-2 px-2 text-right break-words '> 
+                                        { !message.isMedia ?  
+
+                                        <h3 className='font-semibold text-gray-500 pt-2 px-2 text-right break-words'> 
                                             { message.message }
-                                        </h3>
+                                        </h3> 
+                                        :
+                                        <div className='flex items-center justify-center w-full '>
+                                            <img 
+                                            className={ `${ mobileResolution ? 'w-full' : 'w-3/4 h-64 ' } object-contain ` }
+                                            src={ message.media } 
+                                            alt='media'/>
+                                        </div> 
+                                        }
                                         <div className='flex w-full items-start justify-start p-2'>
                                             <TimeAgoInterval
                                             classes='text-xs'
@@ -172,11 +272,13 @@ const Chat = ( props ) => {
                         key={ index }
                         in={ true }>
                             <div 
-                            className='w-full flex items-center justify-center flex-col space-y-5'>
+                            className='w-full flex items-center justify-center flex-col space-y-3 py-2'>
                                 <div className='bg-red-500 w-3/4 text-center text-white p-4 rounded-full'>
-                                    <h3 className='font-semibold text-lg'> 
+                                    <div className='element w-full'>
+                                    <h3 className='font-semibold text-lg truncate'> 
                                         { allMessages[ to.socketID ].fromName } left from chat 😞 
                                     </h3>
+                                    </div>
                                 </div>
                                 <button
                                 onClick={ () => {
@@ -208,7 +310,7 @@ const Chat = ( props ) => {
                 { isTyping &&
                 <Fade in={ isTyping }>
                     <div className='relative w-full bottom-7 mx-2'>
-                        <p className='bg-gray-200 absolute'>
+                        <p className='absolute'>
                             { `${ isClientVision ? currentSearch.businessName : allMessages[ to.socketID ] && allMessages[ to.socketID ].fromName } is typing...` }
                         </p>
                     </div> 
@@ -217,40 +319,40 @@ const Chat = ( props ) => {
                     <form 
                     onChange={ (e) => {
 
-                        setMessage( e.target.value );
-                        socket.emit( 'typing', to.socketID );
+                        if ( e.target.name !== 'image' ) {
+
+                            socket.emit( 'typing', to.socketID );
+                            setMessage( e.target.value );
+
+                        }                 
 
                     } }
-                    onSubmit={ (e) => {
+                    onSubmit={ (e) => sendMessage(e) }
+                    className='flex flex-row items-center p-2 justify-center  bg-white absolute w-full space-x-2'>
+                        <div 
+                        className='hidden'
+                        ref={ fileBase64ParentRef }>
+                            <FileBase64
+                            multiple={ false }
+                            onDone={ ( file ) => {
 
-                        e.preventDefault();
+                                const { base64, file:image } = file;
 
-                        if ( !message ) return false;
+                                if ( image.size > 100000 ) return setAlert( { type:'heavyImage', message:"The image is so heavy, try with another less 100 KB", severity:'error' } );
 
-                        setTimeout(() => {
+                                setMedia( base64 );
 
-                            socket.emit( 'stopTyping', to.socketID );
-                            socket.emit( 'sendMessage', { fromName:from, message, toSocketID:to.socketID, fromSocketID:socket.id, image } );
-
-                            setMessage( '' );
-
-                            const sentAt = moment().format();
-
-                            if ( isClientVision ) {
-
-                                if ( allMessages[ to.socketID ] ) return setAllMessages( { ...allMessages, [ to.socketID ]: {  ...allMessages[ to.socketID ], messages:[ ...allMessages[to.socketID].messages, { message, sentAt, sentBy:socket.id } ]  }  } );
-
-                                setAllMessages( { ...allMessages, [ to.socketID ]:{ fromName:currentSearch.businessName, image:currentSearch.profilePhoto, fromSocketID:to.socketID, messages:[ { message, sentAt, sentBy:socket.id } ] } } );
-
-                            } else {
-
-                                setAllMessages( { ...allMessages, [ to.socketID ]: {  ...allMessages[ to.socketID ], messages:[ ...allMessages[to.socketID].messages, { message, sentAt, sentBy:socket.id } ]  }  } );
-
-                            };
-                            
-                        }, 100);
-                    } }
-                    className='flex flex-row items-center p-2 justify-between  bg-white absolute w-full'>
+                            } } />
+                        </div>
+                        <label htmlFor='image-client'>
+                            <IconButton
+                            onClick={ resetValueInputFileBase64 }
+                            component='span'
+                            style={{ outline:'none', color:'black' }}
+                            >
+                                <MenuRoundedIcon/>
+                            </IconButton>
+                        </label>
                         <InputBase
                         maxLength={ 2000 }
                         disabled={ allMessages[to.socketID] && allMessages[to.socketID].isLeave ? true : false }
@@ -270,6 +372,72 @@ const Chat = ( props ) => {
                         </IconButton>
                     </form>
                 </div>
+                { alert.type && <AlertAnimation message={ alert.message } severity={ alert.severity } setCloseAlert={ setAlert }/> }
+                { media && 
+                <ModalOptions setCloseModal={ setMedia }>
+                    <div className={ `bg-white outline-none flex flex-col justify-center items-center rounded mx-2 absolute h-3/4 w-3/4` }>
+                            <img 
+                            className='w-full h-3/4 object-contain object-center rounded-tl rounded-tr'
+                            src={ media } 
+                            alt='client'/>
+                        <div className='flex flex-row space-x-2 justify-center items-center'>
+                            <IconButton
+                            onClick={ () => {
+
+                                if ( !media ) return setAlert( { type:'empty', message:'The image is empty', severity:'error' } );
+
+                                socket.emit( 'media', { toSocketID:to.socketID, media, fromName:from, image } );
+
+                                setMedia( null );
+
+                                const sentAt = moment().format();
+
+                                if ( isClientVision ) {
+
+                                    if ( allMessages[ to.socketID ] ) return setAllMessages( { ...allMessages, [ to.socketID ]: {  ...allMessages[ to.socketID ], messages:[ ...allMessages[to.socketID].messages, { media, sentAt, sentBy:socket.id, isMedia:true } ]  }  } );
+                    
+                                    setAllMessages( { ...allMessages, [ to.socketID ]:{ fromName:currentSearch.businessName, image:currentSearch.profilePhoto, fromSocketID:to.socketID, messages:[ { media, sentAt, sentBy:socket.id, isMedia:true } ] } } );
+                    
+                                } else {
+                    
+                                    setAllMessages( { ...allMessages, [ to.socketID ]: {  ...allMessages[ to.socketID ], messages:[ ...allMessages[to.socketID].messages, { media, sentAt, sentBy:socket.id, isMedia:true } ]  }  } );
+                    
+                                };
+
+                               
+
+                            } }
+                            style={{ outline:'none' }}
+                            >
+                                <SendRoundedIcon
+                                className='text-green-400'
+                                />             
+                            </IconButton>
+                            <label htmlFor='image-client'>
+                                <IconButton
+                                onClick={ resetValueInputFileBase64 }
+                                component='span'
+                                style={{ outline:'none' }}
+                                
+                                >
+                                    <FindReplaceRoundedIcon
+                                    className=''
+                                    />
+                                </IconButton>
+                            </label>
+                            <IconButton
+                            onClick={ () => setMedia( null ) }
+                            style={{ outline:'none' }}
+                            >
+                                <ClearRoundedIcon
+                                className='text-gray-500'
+                                />
+                            </IconButton>
+                        </div>
+                    </div>
+
+                </ModalOptions> 
+                }
             </div>
         </Fade>
     );

@@ -11,8 +11,7 @@ export const useChatBusiness = () => {
 
     const [isTyping, setIsTyping] = useState( false );
 
-    console.log( allMessages );
-
+    const [to, setTo] = useState('');
     
     window.onbeforeunload = (e) => {
     
@@ -38,11 +37,7 @@ export const useChatBusiness = () => {
 
                 const { message, fromName, sentAt, fromSocketID, image } = data;
 
-                console.log( data );
-
-                setAllMessages( messages => ({ ...messages, [ fromSocketID ]:messages[fromSocketID] ? {  ...messages[ fromSocketID ], lastMessage:{ text:message, sentAt }, messages:[ ...messages[fromSocketID].messages, { message, sentAt, sentBy:fromSocketID } ]  } : { fromName, image, fromSocketID, lastMessage:{ text:message, sentAt }, messages:[ { message, sentAt, sentBy:fromSocketID } ]  } } ) );
-
-
+                setAllMessages( messages => ({ ...messages, [ fromSocketID ]:messages[fromSocketID] ? {  ...messages[ fromSocketID ], lastMessage:{ text:message, sentAt }, messages:[ ...messages[fromSocketID].messages, { message, sentAt, sentBy:fromSocketID } ], viewed:{ quantity:messages[fromSocketID].viewed ? messages[fromSocketID].viewed.quantity + 1 : 1 } } : { fromName, image, fromSocketID, lastMessage:{ text:message, sentAt }, messages:[ { message, sentAt, sentBy:fromSocketID } ], viewed:{ doubleCheck:false, quantity: 1 }  } } ) );
 
             } );
 
@@ -68,6 +63,14 @@ export const useChatBusiness = () => {
 
             } );
 
+            socket.on( 'media', data => {
+
+                const { fromSocketID, media, sentAt, image, fromName } = data;
+
+                setAllMessages( messages => ({ ...messages, [ fromSocketID ]:messages[fromSocketID] ? {  ...messages[ fromSocketID ], lastMessage:{ text:'Message type media', sentAt }, messages:[ ...messages[fromSocketID].messages, { media, sentAt, sentBy:fromSocketID, isMedia:true } ], viewed:{ quantity:messages[fromSocketID].viewed ? messages[fromSocketID].viewed.quantity + 1 : 1 } } : { fromName, image, fromSocketID, lastMessage:{ text:'Message type media', sentAt }, messages:[ { media, sentAt, sentBy:fromSocketID, isMedia:true } ], viewed:{ doubleCheck:false, quantity: 1 }  } } ) );
+
+            } );
+
 
         };
         
@@ -82,6 +85,6 @@ export const useChatBusiness = () => {
 
     }, [ user ]);
 
-    return { allMessages, setAllMessages, socket, isTyping, setIsTyping };
+    return { allMessages, setAllMessages, socket, isTyping, setIsTyping, to, setTo };
 
 };

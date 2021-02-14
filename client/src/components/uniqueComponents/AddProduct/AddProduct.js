@@ -106,7 +106,7 @@ const AddProduct = () => {
     return (
         <Fade in={ true }>
             <div 
-            className={ `` }>
+            className={ mobileResolution && 'pt-28' }>
                 <form 
                 onChange={ (e) => {
 

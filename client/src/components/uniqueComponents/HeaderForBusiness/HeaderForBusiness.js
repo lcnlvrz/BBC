@@ -3,10 +3,14 @@ import HeaderForClient from '../HeaderForClient';
 import BCClogo from '../../../images/bccLogo.png';
 import LeftMenu from '../../reusableComponents/LeftMenu';
 import { outlineButton } from '../../../constants/styles';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const HeaderForBusiness = ( props ) => {
 
     const { sectionToRender, children } = props;
+
+    const user = useSelector(state => state.user);
 
     return (
         <div className='welcome__page flex flex-row'>
@@ -21,11 +25,13 @@ const HeaderForBusiness = ( props ) => {
                 src={ BCClogo }
                 />
                 { sectionToRender === 'business-profile' && 
-                <button
-                className={ outlineButton }
-                >
-                    SEE MY PROFILE AS CLIENT
-                </button>
+                <Link to={ `/search/business/?username=${ user.username }` }>
+                    <button
+                    className={ outlineButton }
+                    >
+                        SEE MY PROFILE AS CLIENT
+                    </button>
+                </Link>
                 }
             </header> }
             { children }

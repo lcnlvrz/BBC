@@ -56,9 +56,7 @@ export const useChatClient = () => {
 
                 };
 
-               
-
-
+            
                 setIsLoading( false );
         
 
@@ -67,7 +65,6 @@ export const useChatClient = () => {
             socket.on( 'receiveMessage', (data) => {
 
                 const { fromSocketID, message, sentAt, fromName, image } = data;
-
 
                 setAllMessages( messages => ({ ...messages, [ fromSocketID ]:messages[fromSocketID] ? {  ...messages[ fromSocketID ], messages:[ ...messages[fromSocketID].messages, { message, sentAt, sentBy:fromSocketID } ]  } : { fromName, image, fromSocketID, messages:[ { message, sentAt, sentBy:fromSocketID } ]  } } ) );
 
@@ -85,6 +82,30 @@ export const useChatClient = () => {
                 setIsTyping( false );
 
             } );
+
+            socket.on( 'messagesViewedByBusiness', ( socketIDBusiness ) => {
+
+                setAllMessages( previousMessages => ({ [ socketIDBusiness ]:{ ...previousMessages[ socketIDBusiness ], viewed:true } }) );
+
+            } );
+
+            socket.on( 'messagesIgnoredByBusiness', ( socketIDBusiness ) => {
+
+                setAllMessages( previousMessages => ({ [ socketIDBusiness ]:{ ...previousMessages[ socketIDBusiness ], viewed:false } }) );
+
+            } );
+
+            socket.on( 'media', data => {
+
+                const { fromSocketID, media, sentAt, image, fromName } = data;
+
+                setAllMessages( messages => ({ ...messages, [ fromSocketID ]:messages[fromSocketID] ? {  ...messages[ fromSocketID ], lastMessage:{ text:'Message type media', sentAt }, messages:[ ...messages[fromSocketID].messages, { media, sentAt, sentBy:fromSocketID, isMedia:true } ], viewed:{ quantity:messages[fromSocketID].viewed ? messages[fromSocketID].viewed.quantity + 1 : 1 } } : { fromName, image, fromSocketID, lastMessage:{ text:'Message type media', sentAt }, messages:[ { media, sentAt, sentBy:fromSocketID, isMedia:true } ], viewed:{ doubleCheck:false, quantity: 1 }  } } ) );
+
+            } );
+
+        } else if ( !currentSearch.isLoading && !currentSearch.business ) {
+
+            setIsLoading( false );
 
         };
 

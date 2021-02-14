@@ -19,6 +19,7 @@ const BusinessRouteConfig = () => {
     useEffect(() => {
 
         setSectionToRender( section );
+        window.scrollTo(0,0);
         
     }, [ section ]);
 

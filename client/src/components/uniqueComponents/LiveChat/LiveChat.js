@@ -12,11 +12,9 @@ import ImageChatExample from '../../../images/chatExampleImg.png';
 
 const LiveChat = () => {
     
-    const { allMessages, setAllMessages, socket, isTyping, setIsTyping } = useChatBusiness();
+    const { allMessages, setAllMessages, socket, isTyping, setIsTyping, to, setTo } = useChatBusiness();
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
-
-    const [to, setTo] = useState( '' );
 
     const user = useSelector(state => state.user);
 
@@ -39,7 +37,9 @@ const LiveChat = () => {
 
         return <ListAllMessages 
         setTo={ setTo }
+        socket={ socket }
         to={ to }
+        setAllMessages={ setAllMessages }
         isShowOneChat={ isShowOneChat }
         mobileResolution={ mobileResolution } 
         allMessages={ allMessages } 
@@ -54,6 +54,8 @@ const LiveChat = () => {
                 <div className='left__part  text-white w-2/5 bg-gray-500'>
                     <ListAllMessages 
                     to={ to }
+                    socket={ socket }
+                    setAllMessages={ setAllMessages }
                     isShowOneChat={ isShowOneChat }
                     mobileResolution={ mobileResolution }
                     setTo={ setTo }

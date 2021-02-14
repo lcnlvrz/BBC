@@ -54,7 +54,7 @@ const Banner = ( props ) => {
     return (
         <div className={ `my__business__container border-solid border-b-8 ${ isOpenBusiness ? 'border-green-400' : 'border-gray-300' }` }>
             <div className='h-44 w-full'>
-                <div className={ `h-44 w-full absolute z-50 top-40 flex items-center justify-end flex-col space-y-5` }>
+                <div className={ `h-44 w-full absolute z-50 top-48 flex items-center justify-end flex-col space-y-5` }>
                     <StyledBadge
                     overlap="circle"
                     anchorOrigin={{

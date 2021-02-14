@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setCurrentProduct } from '../../../actions/currentProduct';
 import { useSelector } from 'react-redux';
+import TimeAgoInterval from '../TimeAgoInterval';
 
 const ProductCard = ( props ) => {
 
@@ -60,14 +61,14 @@ const ProductCard = ( props ) => {
                             <WatchLaterRoundedIcon 
                             style={{ fontSize:'20px' }}
                             className='text-black'/>
-                            <h3 className='font-light text-gray-600 text-sm'> 
-                                Last update: <span className='text-black font-semibold'> { moment( timeParse ).fromNow() } 
-                                </span> 
-                            </h3>
+                            <span className='font-light text-gray-600 text-sm'>Last update:</span>
+                            <TimeAgoInterval 
+                            classes='text-black font-semibold'
+                            date={ timeParse }/>
                         </div>
-                        <div className='text-2xl'>
-                            <h1 className='text-center font-bold truncate'> 
-                                ${ product.price } <span className='font-light '> { product.currency } </span> 
+                        <div className='text-2xl flex items-center justify-center'>
+                            <h1 className='font-bold truncate'> 
+                                ${ product.price } <span className='font-light'> { product.currency } </span> 
                             </h1>
                         </div>
                     </div>

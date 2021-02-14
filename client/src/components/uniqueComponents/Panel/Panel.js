@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import HeaderForBusiness from '../HeaderForBusiness';
 import HeaderMobile from '../HeaderForBusiness/HeaderMobile/HeaderMobile';
@@ -19,12 +19,70 @@ import TimerRoundedIcon from '@material-ui/icons/TimerRounded';
 import { defaultTransiton } from '../../../constants/styles';
 import { Link } from 'react-router-dom';
 import { Fade } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import CategoryRoundedIcon from '@material-ui/icons/CategoryRounded';
+import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
+import QueryBuilderRoundedIcon from '@material-ui/icons/QueryBuilderRounded';
+import InstagramIcon from '@material-ui/icons/Instagram';
+import moment from 'moment';
+import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
 
 const Panel = () => {
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
 
-    const sections = [ { title:'Real-Time Data', items:[ { title:'Personal Working now', value:52, icon:WorkRoundedIcon }, { title:'Clients in the shop', value:25, icon:PeopleAltRoundedIcon }, { title:'Last update', value:'45 minutes ago', icon:TimerRoundedIcon } ], icon:TimelineRoundedIcon, route:'/business/real-time-data' }, { title:'Business Profile', icon:BusinessRoundedIcon, items:[ { title:'Banner', value:true, icon:ImageRoundedIcon }, { title:'Presentation', value:true, icon:ContactSupportRoundedIcon }, { title:'Real-Time Data', icon:TimelineRoundedIcon, value:false }, { title:'Products', value:false, icon:ShoppingBasketRoundedIcon }, { title:'Footer', icon:BorderBottomRoundedIcon , value:true } ], route:'/business/profile' }, { title:'Products', icon:ShoppingBasketRoundedIcon, items:[ { title:'Quantity published', value:150, icon:PublishRoundedIcon }, { title:'Description completed', value:false, icon:DescriptionRoundedIcon }, { title:'Last update', value:'45 minutes ago', icon:TimerRoundedIcon } ], route:'/business/products' } ];
+    const user = useSelector(state => state.user);
+
+    const [lastUpdateRealTime, setlastUpdateRealTime] = useState(0);
+
+    useEffect(() => {
+
+        if ( !user.isLoading && user.userID ) {
+
+            const lastUpdateWorking = user.lastUpdatePersonalWorking;
+            const lastUpdateClientsInTheShop = user.lastUpdateClientsInTheShop;
+
+            if ( lastUpdateWorking > lastUpdateClientsInTheShop ) {
+
+                const isValid = moment( lastUpdateWorking ).isValid();
+
+                if ( !isValid ) return false;
+                
+                const parse = moment.unix( lastUpdateWorking ).format();
+                const timeAgo = moment( parse ).fromNow();
+                setlastUpdateRealTime( timeAgo );
+
+            } else {
+
+                const isValid = moment( lastUpdateClientsInTheShop ).isValid();
+
+                if ( !isValid ) return false;
+
+                const parse = moment.unix( lastUpdateClientsInTheShop ).format();
+                const timeAgo = moment( parse ).fromNow();
+                setlastUpdateRealTime( timeAgo );
+
+            };
+
+        };
+       
+    }, [ user ]) 
+
+    const sections = [ { title:'Real-Time Data',
+
+    items:[ { title:'Personal Working now', value:user.personalWorking ? user.personalWorking : 0, icon:WorkRoundedIcon }, { title:'Clients in the shop', value:user.clientsInTheShop ? user.clientsInTheShop : 0, icon:PeopleAltRoundedIcon }, 
+    { title:'Last update', value:lastUpdateRealTime, icon:TimerRoundedIcon } ], 
+
+    icon:TimelineRoundedIcon, route:'/business/?section=real-time-data' }, 
+    { title:'Business Profile', icon:BusinessRoundedIcon, 
+
+    items:[ { title:'Banner', value:user.banner ? true : false, icon:ImageRoundedIcon }, { title:'Presentation', value:user.mainPresentationOne && user.mainPresentationTwo ? true : false, icon:ContactSupportRoundedIcon }, { title:'Profile Photo', value:user.profilePhoto ? true : false, icon:AccountCircleRoundedIcon }, { title:'Presentation', value:user.mainPresentationOne && user.mainPresentationTwo ? true : false, icon:ContactSupportRoundedIcon } ,{ title:'Business Category', value:user.businessCategory ? true : false, icon:CategoryRoundedIcon }, { title:'Location', value:user.location ? true : false, icon:LocationOnRoundedIcon }, { title:'Shedule', value:user.since && user.until ? true : false, icon:QueryBuilderRoundedIcon }, { title:'Footer', icon:BorderBottomRoundedIcon , value:user.footerTitle && user.footerSectionOne && user.footerSectionTwo && user.footerLastLine ? true : false }, { title:'Social Media', icon:InstagramIcon, value:user.facebookLink && user.instagramLink && user.twitterLink ? true : false } ], 
+
+    route:'/business/?section=business-profile' }, { title:'Products', icon:ShoppingBasketRoundedIcon, 
+
+    items:[ { title:'Quantity published', value:user.products && user.products.length && user.products.length < 10 ? user.products.length : '10+', icon:PublishRoundedIcon },{ title:'Last published', value:user.products.length > 0 && moment( moment.unix( user.products[0].createdAt ).format() ).fromNow(), icon:TimerRoundedIcon }, { title:'Banner Products', value:user.bannerSectionProducts ? true : false, icon:ImageRoundedIcon } ],
+
+     route:'/business/?section=products' } ];
 
     const numbers = [ 0, 1, 2 ];
     
@@ -32,7 +90,7 @@ const Panel = () => {
 
         return ( 
             <Fade in={ true }>
-                <div className='container__all__sections flex flex-col p-2 space-y-10'>
+                <div className={ `container__all__sections flex flex-col p-2 space-y-10 ${ mobileResolution && 'pt-28' }` }>
                     { sections.map( ( section, index ) => (
 
                         <Link 

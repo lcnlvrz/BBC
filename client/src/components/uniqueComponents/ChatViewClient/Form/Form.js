@@ -49,15 +49,15 @@ const Form = ( props ) => {
 
     return (
         <Fade in={ true }>
-            <div className='h-screen flex flex-col items-center justify-center space-y-5 mx-5'>
+            <div className={ `h-screen flex flex-col items-center justify-center ${ mobileResolution ? 'space-y-3' : 'space-y-5' } mx-5` }>
                 <AvatarStatus 
                 status={ true } 
-                spacingBadge={ 5 } 
-                spacingAvatar={ 15 } 
+                spacingBadge={ mobileResolution ? 3 : 6 } 
+                spacingAvatar={ mobileResolution ? 10 : 15 } 
                 souceProfilePhoto={ currentSearch.profilePhoto } 
                 vertical='bottom'
                 horizontal='right'/>
-                <h1 className='font-semibold text-3xl text-center'> 
+                <h1 className={ `font-semibold ${ mobileResolution ? 'text-md' : 'text-3xl' } text-center` }> 
                     { currentSearch.businessName } is waiting for you! 
                 </h1>
                 <Theme color='#000000'>

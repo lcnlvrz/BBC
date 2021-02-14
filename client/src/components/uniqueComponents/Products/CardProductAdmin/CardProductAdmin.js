@@ -11,6 +11,7 @@ import { useUpdateProduct } from '../../../../hooks/useUpdateProduct';
 import AlertAnimation from '../../../reusableComponents/AlertAnimation';
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { useInView } from 'react-intersection-observer';
+import TimeAgoInterval from '../../../reusableComponents/TimeAgoInterval';
 
 const CardProductAdmin = ( props ) => {
 
@@ -35,8 +36,6 @@ const CardProductAdmin = ( props ) => {
     }, [ cancelToken ]);
 
     const parseLastUpdate = moment.unix( product.lastUpdate ).format();
-
-    const lastUpdate = moment( parseLastUpdate ).fromNow();
 
 
     const [currentItemMenu, setCurrentItemMenu ] = useState( 0 );
@@ -288,9 +287,9 @@ const CardProductAdmin = ( props ) => {
                                                         <h3 className='font-light'>
                                                             Last update:    
                                                         </h3>
-                                                        <p className='font-semibold'> 
-                                                        { lastUpdate }
-                                                        </p>
+                                                        <TimeAgoInterval 
+                                                        classes='font-semibold'
+                                                        date={ parseLastUpdate }/>
                                                     </div>
                                                     <ButtonsActions/>
                                                 </div>
