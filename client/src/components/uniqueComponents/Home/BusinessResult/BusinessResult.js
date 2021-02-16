@@ -92,7 +92,7 @@ const BusinessResult = ( props ) => {
                 </div>
                 <div className='flex flex-col items-center'>
                     <div className='flex flex-row items-center space-x-2 element'>
-                        <h3 className='font-semibold truncate'> 
+                        <h3 className='font-semibold truncate text-center'> 
                             <LocationOnRoundedIcon className='text-red-500 mr-2'/>
                            { company.location }
                         </h3>

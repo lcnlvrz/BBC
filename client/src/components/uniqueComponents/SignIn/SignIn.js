@@ -14,6 +14,7 @@ import { signUpLink } from '../../../constants/pathsRouter';
 import { useSignIn } from '../../../hooks/useSignIn';
 import { useFixViewPort } from '../../../hooks/useFixViewport';
 import LoadingAnimation from '../../reusableComponents/LoadingAnimation';
+import { Helmet } from 'react-helmet-async';
 
 const SignIn = () => {
 
@@ -44,6 +45,9 @@ const SignIn = () => {
     return (
         <Fade in={ true }>
             <div className='flex flex-col items-center justify-center h-screen'>
+                <Helmet>
+                    <title> Business Client Connection - Sign-In </title>
+                </Helmet>
                 <img
                 className='h-screen w-screen object-cover backgroundSignUp'
                 alt=''
@@ -59,7 +63,7 @@ const SignIn = () => {
                         />
                     </Link>
                     <p className={ `font-semibold text-center ${ mobileResolution ? 'text-sm' : 'text-lg' }` }> 
-                        { accountCreated === 'true' ? 'Account created successfully. You can sign-in now!' : 'Sign in as soon as possible, the clients are waiting information about your business' }
+                        { accountCreated === 'true' ? 'Account created successfully. You can sign-in now!' : 'The clients are excited to know about your business' }
                     </p>
                     <form 
                     onChange={ (e) => setInput({...input, [ e.target.name ]:e.target.value }) }

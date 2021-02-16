@@ -15,12 +15,15 @@ import AddPhotoAlternateRoundedIcon from '@material-ui/icons/AddPhotoAlternateRo
 import { Fragment } from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { Helmet } from 'react-helmet-async';
+
 
 const Form = ( props ) => {
 
     const { input, setIsFormFillOut, setInput, setImage, image, setIsContinueWithDataFromLS } = props; 
 
     useFixViewPort();
+
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
 
@@ -50,6 +53,9 @@ const Form = ( props ) => {
     return (
         <Fade in={ true }>
             <div className={ `h-screen flex flex-col items-center justify-center ${ mobileResolution ? 'space-y-3' : 'space-y-5' } mx-5` }>
+                <Helmet>
+                    <title> Business Client Connection - Live Chat { currentSearch.business ? `with ${ currentSearch.businessName }` : '' } </title>
+                </Helmet>
                 <AvatarStatus 
                 status={ true } 
                 spacingBadge={ mobileResolution ? 3 : 6 } 

@@ -18,6 +18,7 @@ import RealTimeData from '../components/uniqueComponents/RealTimeData/RealTimeDa
 import BusinessProfile from '../components/uniqueComponents/BusinessProfile';
 import Products from '../components/uniqueComponents/Products';
 import Panel from '../components/uniqueComponents/Panel/Panel';
+import AirMaxRed from '../images/AirMaxRed.jpg';
 
 export const groupOfInputsThirdStepSignUp = ( input, businessName, username, password, repeatPassword ) => {
 
@@ -72,3 +73,24 @@ export const titleSections = [ 'live-chat',
 'business-profile',
 'products',
 'panel' ];
+
+
+export const messagesChatHomePage = [ 
+
+    { isOtherMessage:true, content:{ profilePhoto:'https://t4.ftcdn.net/jpg/02/14/74/61/360_F_214746128_31JkeaP6rU0NzzzdFC4khGkmqc8noe6h.jpg', name:'Richard Vaughan', message:'Hi Nike, i have a problem. Can you solve this?', timeAgo:'five minutes ago' } }, 
+
+    { isOwnMessage:true, content:{ profilePhoto:'https://i.pinimg.com/originals/4d/96/2d/4d962dee72fa76f023d411e20d30690c.jpg', 
+    name:'Nike', 
+    message:'Hi Richard. For sure we can. Tell us about your problem', 
+    timeAgo:'three minutes ago' } }, 
+
+    { isOtherMessage:true, content:{ profilePhoto:'https://t4.ftcdn.net/jpg/02/14/74/61/360_F_214746128_31JkeaP6rU0NzzzdFC4khGkmqc8noe6h.jpg', name:'Richard Vaughan', timeAgo:'two minutes ago', image:AirMaxRed, isMedia:true } }, 
+
+    { isOtherMessage:true, content:{ profilePhoto:'https://t4.ftcdn.net/jpg/02/14/74/61/360_F_214746128_31JkeaP6rU0NzzzdFC4khGkmqc8noe6h.jpg', name:'Richard Vaughan', message:'My shoes was delivered in wrong size. My size is 11, not 9. Can you change it for another right?', timeAgo:'two minutes ago' } }, 
+
+    { isOwnMessage:true, content:{ profilePhoto:'https://i.pinimg.com/originals/4d/96/2d/4d962dee72fa76f023d411e20d30690c.jpg', 
+    name:'Nike', 
+    message:"Sorry about that mistake. No problem, come to our location. We'll wait for you and change it.", 
+    timeAgo:'a minute ago' } }, 
+
+    { isOtherMessage:true, content:{ profilePhoto:'https://t4.ftcdn.net/jpg/02/14/74/61/360_F_214746128_31JkeaP6rU0NzzzdFC4khGkmqc8noe6h.jpg', name:'Richard Vaughan', message:"That's why i love you guys. I'll see you later. Thanks ❤️", timeAgo:'a few seconds ago ' } } ]

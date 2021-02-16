@@ -6,8 +6,6 @@ const AvatarStatus = ( props ) => {
 
     const { status, spacingBadge, spacingAvatar, souceProfilePhoto, vertical, horizontal, isOnlyAvatar } = props;
 
-    console.log( status );
-
     const StyledBadge = badgeOnlineOrOffline( status, spacingBadge );
 
     const avatarSize = avatarSizeChat( spacingAvatar );

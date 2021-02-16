@@ -15,6 +15,7 @@ import AlertAnimation from '../../reusableComponents/AlertAnimation';
 import { useSelector } from 'react-redux';
 import PropagateLoader from "react-spinners/PropagateLoader";
 import ClipLoader from "react-spinners/ClipLoader";
+import { Helmet } from 'react-helmet-async';
 
 const RealTimeData = () => {
 
@@ -48,6 +49,9 @@ const RealTimeData = () => {
         return (
             <Fade in={true}>
                 <div className={ `p-5 space-y-5 ${ mobileResolution ? 'pt-28' : '' }` }>
+                    <Helmet>
+                        <title> Business Client Connection - Real Time Data </title>
+                    </Helmet>
                     <div 
                     style={ defaultTransiton }
                     className='flex flex-row justify-center items-center space-x-5 bg-black text-white rounded-2xl cursor-pointer p-5 hover:bg-white hover:text-black'>

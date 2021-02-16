@@ -21,7 +21,7 @@ const LeftMenu = ( props ) => {
 
     const currentSection = url.searchParams.get( 'section' );
 
-    const [currentOption, setCurrentOption] = useState( 3 );
+    const [currentOption, setCurrentOption] = useState( 0 );
 
     const user = useSelector(state => state.user);
 

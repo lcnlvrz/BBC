@@ -27,6 +27,7 @@ export default function AuthProvider( props ){
     
     const currentSearch = useSelector(state => state.currentSearch);
 
+
     useEffect(() =>{
         
         authUser();

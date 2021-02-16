@@ -20,6 +20,7 @@ import LocationAndSchedule from './LocationAndSchedule';
 import { Link } from 'react-router-dom';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import { useMediaQuery } from 'react-responsive';
+import { Helmet } from 'react-helmet-async';
 
 const BusinessProfile = () => {
 
@@ -74,6 +75,9 @@ const BusinessProfile = () => {
     return (
         <Fade in={ true }>
           <div className={ mobileResolution ? 'pt-28' : '' }>
+            <Helmet>
+              <title> Business Client Connection - Business Profile </title>
+            </Helmet>
             <form
             onSubmit={ (e) => {
               e.preventDefault();

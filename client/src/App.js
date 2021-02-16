@@ -1,7 +1,7 @@
 import './App.css';
 import {
   BrowserRouter as Router,
-  Switch,
+  Switch, Route
 } from "react-router-dom";
 import Home from './components/uniqueComponents/Home';
 import SignUp from './components/uniqueComponents/SignUp';
@@ -12,6 +12,8 @@ import CustomRoute from './CustomRoute/CustomRoute';
 import MyBusiness from './components/uniqueComponents/MyBusiness/MyBusiness';
 import OneProductPage from './components/uniqueComponents/OneProductPage';
 import ChatViewClient from './components/uniqueComponents/ChatViewClient';
+import NotFoundPage from './components/reusableComponents/NotFoundPage';
+
 
 function App() {
 
@@ -49,7 +51,9 @@ function App() {
           condition='notLoggedInSignUp' 
           component={ SignUp } 
           path='/sign-up'/>
-
+          <Route
+          component={ NotFoundPage }
+          />
         </Switch>
       </Router>
     </AuthProvider>

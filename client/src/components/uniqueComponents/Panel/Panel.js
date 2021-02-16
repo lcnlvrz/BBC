@@ -26,6 +26,7 @@ import QueryBuilderRoundedIcon from '@material-ui/icons/QueryBuilderRounded';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import moment from 'moment';
 import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
+import { Helmet } from 'react-helmet-async';
 
 const Panel = () => {
 
@@ -80,9 +81,9 @@ const Panel = () => {
 
     route:'/business/?section=business-profile' }, { title:'Products', icon:ShoppingBasketRoundedIcon, 
 
-    items:[ { title:'Quantity published', value:user.products && user.products.length && user.products.length < 10 ? user.products.length : '10+', icon:PublishRoundedIcon },{ title:'Last published', value:user.products.length > 0 && moment( moment.unix( user.products[0].createdAt ).format() ).fromNow(), icon:TimerRoundedIcon }, { title:'Banner Products', value:user.bannerSectionProducts ? true : false, icon:ImageRoundedIcon } ],
+    items:[ { title:'Quantity published', value:user.products && user.products.length && user.products.length === 10 ? '+10' : user.products.length, icon:PublishRoundedIcon },{ title:'Last published', value:user.products.length > 0 ? moment( moment.unix( user.products[0].createdAt ).format() ).fromNow() : 'Never', icon:TimerRoundedIcon }, { title:'Banner Products', value:user.bannerSectionProducts ? true : false, icon:ImageRoundedIcon } ],
 
-     route:'/business/?section=products' } ];
+    route:'/business/?section=products' } ];
 
     const numbers = [ 0, 1, 2 ];
     
@@ -91,6 +92,9 @@ const Panel = () => {
         return ( 
             <Fade in={ true }>
                 <div className={ `container__all__sections flex flex-col p-2 space-y-10 ${ mobileResolution && 'pt-28' }` }>
+                    <Helmet>
+                        <title> Business Client Connection - Panel </title>
+                    </Helmet>
                     { sections.map( ( section, index ) => (
 
                         <Link 

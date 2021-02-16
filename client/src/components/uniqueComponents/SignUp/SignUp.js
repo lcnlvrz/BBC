@@ -7,6 +7,7 @@ import { Fade } from '@material-ui/core';
 import ThirdStep from './ThirdStep';
 import LoadingAnimation from '../../reusableComponents/LoadingAnimation';
 import { useFixViewPort } from '../../../hooks/useFixViewport';
+import { Helmet } from 'react-helmet-async';
 
 const SignUp = ( ) => {
 
@@ -20,6 +21,9 @@ const SignUp = ( ) => {
         <Fade in={ true }>
             <div 
             className='flex flex-col items-center justify-center h-screen'>
+                <Helmet>
+                    <title> Business Client Connection - Sign-Up </title>
+                </Helmet>
                 <img
                 className='h-screen w-screen object-cover backgroundSignUp'
                 alt=''

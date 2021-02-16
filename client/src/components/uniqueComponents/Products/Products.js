@@ -19,6 +19,7 @@ import BannerSectionProducts from '../BusinessProfile/BannerSectionProducts';
 import { useSearchBusiness } from '../../../hooks/useSearchBusiness';
 import AlertAnimation from '../../reusableComponents/AlertAnimation';
 import PropagateLoader from "react-spinners/PropagateLoader";
+import { Helmet } from 'react-helmet-async';
 
 
 const Products = () => {
@@ -65,6 +66,9 @@ const Products = () => {
     return (
         <Fade in={ true }>
             <div className={ `flex flex-col space-y-10 my-5 ${ mobileResolution && 'pt-28' }` }>
+                <Helmet>
+                    <title> Business Client Connection - Products </title>
+                </Helmet>
                 <form 
                 onChange={ (e) => {
 

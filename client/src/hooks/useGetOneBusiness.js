@@ -13,9 +13,9 @@ export const useGetOneBusiness = () => {
 
         const username = url.searchParams.get( 'username' );
 
-        if ( !username ) return dispatch( setClearSearch() );
+        // if ( !username ) return dispatch( setClearSearch() );
 
-        axiosInstance.get( '/business-by-username', { headers:{ username } } )
+        axiosInstance.get( '/business-by-username', { headers:{ username: username ? username : 'nikeoficial' } } )
         .then( (response) => {
 
             dispatch( setCurrentSearch( response.data.business ) );

@@ -6,6 +6,7 @@ import { Avatar, Fade } from '@material-ui/core';
 import { avatarSizeChat, badgeOnlineOrOffline } from '../../../reusableComponents/Chat/styles';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
+import { Helmet } from 'react-helmet-async';
 
 const BusinessOffline = ( props ) => {
 
@@ -18,6 +19,9 @@ const BusinessOffline = ( props ) => {
     return (
         <Fade in={ true }>
             <div className='h-screen flex flex-col items-center justify-center p-5 space-y-5'>
+                <Helmet>
+                    <title> Business Client Connection - Live Chat { currentSearch.business ? `with ${ currentSearch.businessName }` : '' } </title>
+                </Helmet>
                 <StyledBadge
                 overlap="circle"
                 anchorOrigin={{

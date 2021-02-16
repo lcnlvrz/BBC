@@ -1,4 +1,5 @@
 import React from 'react';
+import DefaultBanner from '../../../images/bannerDefault.png';
 
 const SeparatorBanner = ( props ) => {
 
@@ -13,7 +14,7 @@ const SeparatorBanner = ( props ) => {
             style={{ filter:'brightness(0.6)' }}
             className='h-32 w-full object-cover object-center'
             alt=''
-            src={ bannerPhoto }/>
+            src={ bannerPhoto ? bannerPhoto : DefaultBanner }/>
         </div>
     );
 };

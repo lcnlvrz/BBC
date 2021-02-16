@@ -7,9 +7,9 @@ import './Footer.css';
 const Footer = () => {
 
     const footerItems = [ 
-        { title:'About Us', text:'BBC is an application web that connect business and client for best communiccation. We generate two benefits, one for client and another for the business. All win using our plataform.' }, 
-        { title:'Our Mision', text:'This application was created with the only purpose to help small - medium business to improve there comunication with clients'}, { title:'Origin', text:"The idea originated mainly for the bad service client of business. A lot of them not pick up the telephone when any client call them. Sometimes when one client go to the location on that moment knows when the shop are full, there are'nt stock available, it closed, prices changed, and more things like this. These stuff happens when the communication is not clear. BCC is here to fix that." },
-        { title:'The creator', text:'This application was programmed by Luciano Alvarez, a young argentinian programmer who lives in Tucuman, Argentina who loves create  solutions for  business by programming' } ];
+        { title:'About Us', text:'Business Client Connection is a free web application useful to service as landing page or presentation letter to business. With our platform you can create a business profile, showing to the clients/potential clients what does your business do, presentation, advantages, location, schedule, products/services and more essential information. Besides, we have our major feature which is live chat. ' }, 
+        { title:'Our Mision', text:'This application was created with the only purpose to help small - medium business to improve their conversion ratio offering a business profile where clients can arrive and interact.'}, { title:'Origin', text:"BCC was created mainly for two reasons. First because most of the small-medium business don't have enough money to develop an web application. Second reason because usually social media like  instagram is a little limited and don't allow business to presentate their business well. This application was made only for business and more focus on retail." },
+        { title:'The creator', text:'This application was programmed by Luciano Alvarez, a young argentinian programmer who lives in Tucuman, Argentina and loves develop solutions.' } ];
 
         const [colorLinkedinLogo, setColorLinkedinLogo] = useState( 'c2c2c2' );
 

@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from 'react';
+import React, { Fragment, useRef, useState, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { defaultTransiton } from '../../../constants/styles';
 import HeaderForClient from '../HeaderForClient';
@@ -10,8 +10,16 @@ import { Avatar } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { setCurrentSearch } from '../../../actions/currentSearch';
 import currentSearch from '../../../reducer/currentSearch';
+import NotFoundPage from '../../reusableComponents/NotFoundPage';
+import { Helmet } from 'react-helmet-async';
 
-const OneProductPage = () => {
+const OneProductPage = ( props ) => {
+
+    useEffect(() => {
+
+        window.scrollTo( 0, 0 );
+        
+    }, []);
 
     const dispatch = useDispatch();
 
@@ -90,12 +98,12 @@ const OneProductPage = () => {
 
     };
 
-    const itemsMenu = [ { title:'DESCRIPTION', ref:descriptionItemRef }, { title:'DETAILS', ref:detailItemRef }, { title:'REAL-TIME', ref:liveTimeRef } ];
+    const itemsMenu = [ { title:'DESCRIPTION', ref:descriptionItemRef }, { title:'DETAILS', ref:detailItemRef }, { title:'SPECS', ref:liveTimeRef } ];
 
 
     const itemsText = [ currentProduct.description, currentProduct.details, "DATAA" ];
 
-    if ( !currentProduct.product ) return <h1> The product doesn't exist </h1>
+    if ( !currentProduct.product ) return <NotFoundPage/>
 
     return (
         <Fade in={ true }>
@@ -103,7 +111,10 @@ const OneProductPage = () => {
             <HeaderForClient/>
             <div 
             style={{ height:'90vh' }}
-            className={ `${ !mobileResolution && 'flex items-center justify-center' }` }>
+            className={ `${ !mobileResolution ? 'flex items-center justify-center pt-20' : 'pt-10' } ` }>
+                <Helmet>
+                    <title> Business Client Connection - { currentProduct.product ? currentProduct.title : 'One Product Page' } </title>
+                </Helmet>
                 <div className={ `w-full flex flex-row flex-wrap p-5 justify-evenly ${ mobileResolution ? 'space-y-5' : 'space-x-5' }` }>
                     <div className={ `flex flex-row flex-wrap ${ mobileResolution ? 'space-y-5' : 'space-x-5' } rounded-3xl shadow-2xl h-full w-full` }>
                         <div className={ `${ mobileResolution ? 'w-full' : 'w-80' } one__product__image__container` }>
@@ -139,8 +150,7 @@ const OneProductPage = () => {
                                     </Link>
                                 </div>
                                 <h1 
-                                style={{ height:'100px' }}
-                                className={ `w-full background flex items-end justify-center text-white font-bold text-4xl py-2 ${ !mobileResolution && 'rounded-bl-3xl' } truncate` }> 
+                                className={ `w-full background flex items-end justify-end text-white font-bold text-4xl py-2 ${ !mobileResolution && 'rounded-bl-3xl' } truncate text-center` }> 
                                     ${ currentProduct.price } 
                                     <span className='font-light ml-2 uppercase'> { currentProduct.currency } </span>
                                 </h1>
@@ -152,15 +162,19 @@ const OneProductPage = () => {
                             />
                         </div>
                         <div className={ `${ mobileResolution ? 'w-full' : 'w-80' } second__part flex flex-col space-y-5` }>
-                            <div className={ `${ mobileResolution && 'px-5' }` }>
-                                <h1 
-                                className='uppercase font-bold text-lg'> 
-                                    { currentProduct.title } 
-                                </h1>
-                                <h3 
-                                className='text-gray-300 font-semibold'>
-                                    { currentProduct.subtitle }
-                                </h3>
+                            <div className={ `${ mobileResolution && 'px-5' } flex flex-col` }>
+                                <div className='element'>
+                                    <h1 
+                                    className='uppercase font-bold text-lg truncate'> 
+                                        { currentProduct.title } 
+                                    </h1>
+                                </div>
+                                <div className='element'>
+                                    <h3 
+                                    className='text-gray-300 font-semibold truncate'>
+                                        { currentProduct.subtitle }
+                                    </h3>
+                                </div>
                             </div>
                             <div className={ `flex flex-col space-y-2 ${ mobileResolution ? 'pl-5 pr-5 pb-5' : 'pr-5' }` }>
                                 <div className='flex flex-row justify-between font-semibold text-green-400 
@@ -169,7 +183,7 @@ const OneProductPage = () => {
 
                                         <div 
                                         key={ index }
-                                        className='one__menu__item '>
+                                        className='one__menu__item'>
                                             <h1
                                             style={ defaultTransiton }
                                             onClick={ (e) => handleSelectItem( e ) }
@@ -193,7 +207,7 @@ const OneProductPage = () => {
                                             ?
                                             <Fade in={ true }>
                                                 <p 
-                                                className='font-light text__item__menu'>
+                                                className='font-light text__item__menu break-words'>
                                                     { itemsText[ index ] } 
                                                 </p>
                                             </Fade> 
@@ -202,8 +216,8 @@ const OneProductPage = () => {
                                             &&
                                             <Fade in={ true }>
                                                 <div className='all__realTime__data flex flex-col space-y-3'>
-                                                    <div className='flex flex-row space-x-2'>
-                                                        <h3 className='font-light'> Stock: <span className='font-semibold'> { currentProduct.stock } </span> </h3>
+                                                    <div className='flex flex-row space-x-2 element'>
+                                                        <h3 className='font-light truncate'> Stock: <span className='font-semibold'> { currentProduct.stock } </span> </h3>
                                                     </div>
                                                     <div className='flex flex-row space-x-2 items-center'>
                                                         <h3 className='font-light'>

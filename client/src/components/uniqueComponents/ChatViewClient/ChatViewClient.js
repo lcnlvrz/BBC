@@ -11,6 +11,7 @@ import AvatarStatus from '../../reusableComponents/AvatarStatus.js';
 import { defaultTransiton, fillButton } from '../../../constants/styles';
 import NotFoundImage from '../../../images/notFound.jpg';
 import { Link } from 'react-router-dom';
+import NotFoundPage from '../../reusableComponents/NotFoundPage';
 
 const ChatViewClient = () => {
 
@@ -30,27 +31,7 @@ const ChatViewClient = () => {
 
     if ( !isOnline && !isLoading && currentSearch.business ) return <BusinessOffline currentSearch={ currentSearch } isOnline={ isOnline }/>
 
-    if ( !isLoading && !currentSearch.business ) return (
-
-        <div className='h-screen flex items-center justify-center flex-col'>
-            <img
-            className='w-full h-5/6 object-contain'
-            alt=''
-            src={ NotFoundImage }
-            />
-            <Link 
-            className='bottom-2'
-            to='/'>
-                    <button
-                    style={ defaultTransiton }
-                    className={  fillButton  }
-                    >
-                        Back to Home
-                    </button>
-            </Link>
-        </div>
-
-    );
+    if ( !isLoading && !currentSearch.business ) return <NotFoundPage/>
 
     if ( nameLS && !isLoading && isOnline && !isFormFillOut ) return (
 

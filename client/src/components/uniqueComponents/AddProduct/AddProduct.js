@@ -27,6 +27,7 @@ import AlertAnimation from '../../reusableComponents/AlertAnimation/AlertAnimati
 import FindReplaceRoundedIcon from '@material-ui/icons/FindReplaceRounded';
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { initialStateInputAddProduct } from '../../../constants/content';
+import { Helmet } from 'react-helmet-async';
 
 const AddProduct = () => {
 
@@ -107,6 +108,9 @@ const AddProduct = () => {
         <Fade in={ true }>
             <div 
             className={ mobileResolution && 'pt-28' }>
+                <Helmet>
+                    <title> Business Client Connection - Add Product </title>
+                </Helmet>
                 <form 
                 onChange={ (e) => {
 

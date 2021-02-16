@@ -23,6 +23,7 @@ import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
 import ModalOptions from '../Modal';
 import FindReplaceRoundedIcon from '@material-ui/icons/FindReplaceRounded';
 import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
+import { Helmet } from 'react-helmet-async';
 
 const Chat = ( props ) => {
 
@@ -127,8 +128,15 @@ const Chat = ( props ) => {
     return (
         <Fade in={ true }>
             <div className='h-screen overflow-hidden'>
+                { isClientVision ?  
+                <Helmet>
+                    <title> Business Client Connection - Live Chat { currentSearch.businessName } </title>
+                </Helmet> 
+                :
+                <Helmet>
+                    <title> Business Client Connection - Live Chat </title>
+                </Helmet>}
                 <div className='flex flex-row justify-between items-center'>
-                    
                     <IconButton
                     onClick={ () => {
 
@@ -198,7 +206,7 @@ const Chat = ( props ) => {
                                     />
                                     <div className='bg-white rounded-2xl w-3/4'>
                                         <div className='element w-full'>
-                                            <h3 className='text-black font-semibold pt-2 px-2 text-left truncate'> 
+                                            <h3 className='text-gray-500 font-semibold pt-2 px-2 text-left truncate'> 
                                                 { allMessages[ to.socketID ].fromName }
                                             </h3>
                                         </div>
@@ -206,7 +214,7 @@ const Chat = ( props ) => {
                                         { !message.isMedia 
                                         ?  
 
-                                            <h3 className='font-semibold text-gray-500 pt-2 px-2 text-left break-words'> 
+                                            <h3 className='font-semibold text-black pt-2 px-2 text-left break-words'> 
                                                 { message.message }
                                             </h3> 
                                         : 
@@ -219,7 +227,7 @@ const Chat = ( props ) => {
                                         }
                                         <div className='flex w-full items-end justify-end p-2'>
                                             <TimeAgoInterval
-                                            classes='text-xs'
+                                            classes='text-sm font-light'
                                             date={ message.sentAt }
                                             />
                                         </div>
@@ -236,13 +244,13 @@ const Chat = ( props ) => {
                                 <div className='flex flex-row justify-end items-center space-x-2'>
                                     <div className='bg-white rounded-2xl w-3/4'>
                                         <div className='element w-full'>
-                                            <h3 className='text-black font-semibold pt-2 px-2 text-right truncate'> 
+                                            <h3 className='text-gray-500 font-semibold pt-2 px-2 text-right truncate'> 
                                                 <span className='font-light'>You as</span> { isClientVision ? from : user.businessName }
                                             </h3>
                                         </div>
                                         { !message.isMedia ?  
 
-                                        <h3 className='font-semibold text-gray-500 pt-2 px-2 text-right break-words'> 
+                                        <h3 className='font-semibold text-black pt-2 px-2 text-left break-words'> 
                                             { message.message }
                                         </h3> 
                                         :
@@ -255,7 +263,7 @@ const Chat = ( props ) => {
                                         }
                                         <div className='flex w-full items-start justify-start p-2'>
                                             <TimeAgoInterval
-                                            classes='text-xs'
+                                            classes='text-sm font-light'
                                             date={ message.sentAt }
                                             />
                                         </div>

@@ -6,8 +6,8 @@ import TimerRoundedIcon from '@material-ui/icons/TimerRounded';
 import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRounded';
 import { outlineButton, defaultTransiton } from '../../../../constants/styles';
 import SentimentVerySatisfiedRoundedIcon from '@material-ui/icons/SentimentVerySatisfiedRounded';
-import winWin from '../../../../images/winWin.jpg';
-import ArrowDownwardRoundedIcon from '@material-ui/icons/ArrowDownwardRounded';
+import TrendingUpRoundedIcon from '@material-ui/icons/TrendingUpRounded';
+import ControlCameraRoundedIcon from '@material-ui/icons/ControlCameraRounded';
 
 const Advantages = () => {
 
@@ -16,9 +16,9 @@ const Advantages = () => {
         triggerOnce: true
     });
 
-    const number = [{ title:'DONT LOSE YOUR TIME', bgColor:'bg-gray-200', textColor:'text-black', text:'Before go to any business, search it and look if they can service you a good experience', icon:'time' }, 
-    { title:'FEEL COMFORTABEL', bgColor:'bg-gray-300', textColor:'text-black', icon:'happyFace', text:'Arrive to the business in a good moment and vibes. Dont go there if its full. ' }
-    ,{ title:'FEEL COMFORTABEL', bgColor:'bg-gray-400', textColor:'text-black', icon:'happyFace', text:'Arrive to the business in a good moment and vibes. Dont go there if its full. ' }, { title:'FEEL COMFORTABEL', bgColor:'bg-gray-500', textColor:'text-white', icon:'happyFace', text:'Arrive to the business in a good moment and vibes. Dont go there if its full.', colorIcon:'white' }, { title:'FEEL COMFORTABEL', bgColor:'bg-gray-600', textColor:'text-white', icon:'happyFace', text:'Arrive to the business in a good moment and vibes. Dont go there if its full.', colorIcon:'white' }];
+    const number = [{ title:'IMPROVE YOUR CONVERSION RATIO', bgColor:'bg-gray-200', textColor:'text-black', text:'Target users to your business profile and increase the conversion ratio', icon:'trendingUp' }, 
+    { title:'CLOSE THE SELL EASILY', bgColor:'bg-gray-300', textColor:'text-black', icon:'happyFace', text:'In your business profile there are only essential information. No more repeat the same thing every time' }
+    ,{ title:'100% CONTROL', bgColor:'bg-gray-400', textColor:'text-black', icon:'control', text:'With the admin panel you can manage all of your business. Zero regulation.' }];
 
     return (
         <Grow 
@@ -38,6 +38,12 @@ const Advantages = () => {
                         { number.icon === 'happyFace' && <SentimentVerySatisfiedRoundedIcon style={ { fontSize:'50px', color:number.colorIcon }}/> }
                         { number.icon === 'time' &&
                         <TimerRoundedIcon style={ { fontSize:'50px' } }/>}
+                        { number.icon === 'trendingUp' && <TrendingUpRoundedIcon
+                        style={ { fontSize:'50px', color:number.colorIcon }}
+                        /> }
+                        { number.icon === 'control' && <ControlCameraRoundedIcon
+                         style={ { fontSize:'50px', color:number.colorIcon }}
+                        /> }
                         <div className='whitespace-pre-line pb-5'>
                             <h1 className={ `text-lg font-semibold ${ number.textColor }` }> 
                                 { number.title }

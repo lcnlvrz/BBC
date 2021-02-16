@@ -15,6 +15,8 @@ import { useSelector } from 'react-redux';
 import { Fragment } from 'react';
 import { useSearchBusiness } from '../../../hooks/useSearchBusiness';
 import AlertAnimation from '../../reusableComponents/AlertAnimation';
+import NotFoundPage from '../../reusableComponents/NotFoundPage';
+import { Helmet } from 'react-helmet-async';
 
 const MyBusiness = () => {
 
@@ -23,6 +25,16 @@ const MyBusiness = () => {
     const [products, setProducts] = useState( currentSearch.products );
 
     const { setQuery, cancelToken, notFound, setNotFound, isSearching, setAnotherEndPoint, response } = useSearchBusiness();
+
+    useEffect(() => {
+
+        const url = new URL( window.location.href );
+
+        const scroll = url.searchParams.get( 'scroll' );
+
+        if ( scroll === 'top' ) window.scroll( 0, 0 );
+        
+    }, [])
 
     useEffect(() => {
 
@@ -42,11 +54,16 @@ const MyBusiness = () => {
         
     }, [ response ]);
 
-    if ( !currentSearch.business ) return <h1> The user doesn't exist </h1>
+    if ( !currentSearch.business ) return <NotFoundPage/>
 
     return (
         <Fade in={ currentSearch.business }>
             <div className='pt-10'>
+                <Helmet>
+                    <title> 
+                        Business Client Connection - { currentSearch.business ? `${ currentSearch.businessName } Profile` : 'Business Profile' }   
+                    </title>
+                </Helmet>
                 <HeaderForClient/>
                 <Banner
                 isOpenBusiness={ currentSearch.isOpenBusiness }

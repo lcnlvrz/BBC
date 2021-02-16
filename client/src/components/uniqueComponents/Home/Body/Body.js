@@ -41,7 +41,7 @@ const Body = () => {
         <div className='w-full flex flex-col items-center justify-center p-4'>
             <div className='flex items-center justify-center h-full flex-col space-y-5 w-full'>
                 <h1 
-                className={`font-light ${ mobileResolution ? 'text-lg' : 'text-3xl' } text-center text-gray-400`}> 
+                className={`font-light ${ mobileResolution ? 'text-2xl' : 'text-3xl' } text-center text-gray-400`}> 
                     <span className='text-gray-800 font-bold'>Search</span> whats <span className='text-gray-800 font-bold'> happening </span> in any <span className='text-gray-800 font-bold'>business</span> right now 
                 </h1>
                 <form
