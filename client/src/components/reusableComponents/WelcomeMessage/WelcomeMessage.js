@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import WavingHand from '../../../images/wavingEmoji.png';
-import BCClogo from '../../../images/bccLogo.png';
 import { defaultTransiton, fillButton } from '../../../constants/styles';
 import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';

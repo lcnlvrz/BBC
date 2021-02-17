@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import socket from '../socket/config';
+import moment from 'moment';
 
 
 export const useChatBusiness = () => {
@@ -12,6 +13,14 @@ export const useChatBusiness = () => {
     const [isTyping, setIsTyping] = useState( false );
 
     const [to, setTo] = useState('');
+
+    const [isShowOneChat, setIsShowOneChat] = useState( false );
+
+    const [message, setMessage] = useState('');
+
+    const [media, setMedia] = useState( null );
+
+    const [alert, setAlert] = useState( { type:'', message:'', severity:'' } );
     
     window.onbeforeunload = (e) => {
     
@@ -24,7 +33,6 @@ export const useChatBusiness = () => {
 
     useEffect(() => {
 
-    
         if ( !user.isLoading && user.userID ) {
 
             socket.connect();
@@ -85,6 +93,55 @@ export const useChatBusiness = () => {
 
     }, [ user ]);
 
-    return { allMessages, setAllMessages, socket, isTyping, setIsTyping, to, setTo };
+    const clearChat = () => {
+
+        setIsShowOneChat( false );
+
+        const copyAllMessages = { ...allMessages };
+
+        delete copyAllMessages[ to.socketID ];
+
+        setAllMessages( copyAllMessages );
+
+    };
+
+    const sendMessageBusiness = ( e ) => {
+
+        e.preventDefault();
+
+        if ( !message ) return false;
+
+        setTimeout(() => {
+
+            socket.emit( 'stopTyping', to.socketID );
+            socket.emit( 'sendMessage', { fromName:user.businessName, message, toSocketID:to.socketID, fromSocketID:socket.id, image:user.profilePhoto } );
+
+            setMessage( '' );
+
+            const sentAt = moment().format();
+
+            setAllMessages( { ...allMessages, [ to.socketID ]: {  ...allMessages[ to.socketID ], messages:[ ...allMessages[to.socketID].messages, { message, sentAt, sentBy:socket.id } ]  }  } );
+
+           
+            
+        }, 100);
+
+    };
+
+    const sendMediaBusiness = () => {
+
+        if ( !media ) return setAlert( { type:'empty', message:'The image is empty', severity:'error' } );
+
+        socket.emit( 'media', { toSocketID:to.socketID, media, fromName:user.businessName, image:user.profilePhoto } );
+
+        setMedia( null );
+
+        const sentAt = moment().format();
+
+        setAllMessages( { ...allMessages, [ to.socketID ]: {  ...allMessages[ to.socketID ], messages:[ ...allMessages[to.socketID].messages, { media, sentAt, sentBy:socket.id, isMedia:true } ]  }  } );
+
+    };
+
+    return { allMessages, setAllMessages, socket, isTyping, setIsTyping, to, setTo, isShowOneChat, setIsShowOneChat, clearChat, message, setMessage, sendMessageBusiness, media, setMedia, alert, setAlert, sendMediaBusiness };
 
 };

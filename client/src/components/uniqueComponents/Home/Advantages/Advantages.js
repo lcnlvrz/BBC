@@ -10,13 +10,10 @@ import ControlCameraRoundedIcon from '@material-ui/icons/ControlCameraRounded';
 import { advantagesHome } from '../../../../constants/content';
 
 const Advantages = () => {
-
     
     const [ref, inView] = useInView({
         triggerOnce: true
     });
-
- 
 
     return (
         <Grow 

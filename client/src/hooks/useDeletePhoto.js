@@ -46,8 +46,6 @@ export const useDeletePhoto = () => {
         } )
         .catch( (err) => {
 
-            console.log( err.response );
-
             if ( axiosInstance.isCancel( err ) ) return console.log( 'request canceled by user' );
 
             setIsLoading( false );
@@ -60,7 +58,17 @@ export const useDeletePhoto = () => {
         
     }, [ deletePhoto, dispatch ]);
 
+    useEffect(() => {
 
-    return { isLoading, setDeletePhoto, cancelToken, alertFetch, setAlertFetch };
+        return () => {
+
+            if ( cancelToken ) cancelToken.cancel();
+
+        };
+        
+    }, [ cancelToken ]);
+
+
+    return { isLoading, setDeletePhoto, alertFetch, setAlertFetch };
 
 };

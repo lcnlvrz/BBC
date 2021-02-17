@@ -5,9 +5,9 @@ import AvatarStatus from '../../../../reusableComponents/AvatarStatus.js'
 import { useInView } from 'react-intersection-observer';
 import { Fade } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-
-
-
+import { useDispatch } from 'react-redux';
+import { setCurrentSearch } from '../../../../../actions/currentSearch.js';
+import { demoBusinessProfile } from '../../../../../constants/content.js';
 
 const BusinessProfile = () => {
 
@@ -17,6 +17,8 @@ const BusinessProfile = () => {
         triggerOnce: true,
         delay:200
     });
+
+    const dispatch = useDispatch();
 
     return (
         <Fade in={ inView }>
@@ -65,6 +67,7 @@ const BusinessProfile = () => {
                     </p>
                     <Link to='/search/business/?username=nikeoficial&scroll=top'>
                         <button
+                        onClick={ () => dispatch( setCurrentSearch( demoBusinessProfile ) ) }
                         style={ defaultTransiton }
                         className={ fillButton }
                         >

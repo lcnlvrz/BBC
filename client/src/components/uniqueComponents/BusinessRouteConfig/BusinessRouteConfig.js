@@ -4,7 +4,7 @@ import HeaderMobile from '../HeaderForBusiness/HeaderMobile/HeaderMobile';
 import HeaderForBusiness from '../HeaderForBusiness';
 import { sections, titleSections } from '../../../constants/content';
 import { Fragment } from 'react';
-
+import NotFoundPage from '../../reusableComponents/NotFoundPage';
 
 const BusinessRouteConfig = () => {
 
@@ -28,7 +28,7 @@ const BusinessRouteConfig = () => {
         <Fragment>
             { sectionToRender !== 'live-chat' && <HeaderMobile sectionToRender={ sectionToRender }/> }
             { sections.map( ( section, index ) => section.title === sectionToRender && <section.component key={ index }/> ) }
-            { titleSections.every( ( value ) => value !== sectionToRender ) && <h1> Sorry, but this section doesn't exist </h1> }
+            { titleSections.every( ( value ) => value !== sectionToRender ) && <NotFoundPage/> }
         </Fragment>
     
     );
@@ -38,7 +38,7 @@ const BusinessRouteConfig = () => {
         <HeaderForBusiness sectionToRender={ sectionToRender }>
 
             { sections.map( ( section, index ) => section.title === sectionToRender && <section.component key={ index }/> ) }
-            { titleSections.every( ( value ) => value !== sectionToRender ) && <h1> Sorry, but this section doesn't exist </h1> }
+            { titleSections.every( ( value ) => value !== sectionToRender ) && <NotFoundPage/> }
 
         </HeaderForBusiness>
     

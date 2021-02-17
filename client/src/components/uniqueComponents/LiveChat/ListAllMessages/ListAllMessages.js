@@ -6,7 +6,6 @@ import { defaultTransiton } from '../../../../constants/styles.js';
 import PropagateLoader from "react-spinners/PropagateLoader";
 import HeaderMobile from '../../HeaderForBusiness/HeaderMobile/HeaderMobile.js';
 import TimeAgoInterval from '../../../reusableComponents/TimeAgoInterval/index.js';
-import { Helmet } from 'react-helmet-async';
 
 const ListAllMessages = ( props ) => {
 
@@ -38,9 +37,6 @@ const ListAllMessages = ( props ) => {
     return(
         <div className='h-screen overflow-hidden bg-gray-500'>
             <div className={ `flex flex-row justify-between items-center w-full p-5 bg-gray-600` }>
-                <Helmet>
-                    <title> Business Client Connection - Live Chat </title>
-                </Helmet>
                 <AvatarStatus
                 status={ true }
                 spacingBadge={ 2 }

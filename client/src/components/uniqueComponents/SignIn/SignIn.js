@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import BCClogo from '../../../images/bccLogo.png';
 import Input from '../../reusableComponents/Input';
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
@@ -13,11 +13,20 @@ import { Fade } from '@material-ui/core';
 import { signUpLink } from '../../../constants/pathsRouter';
 import { useSignIn } from '../../../hooks/useSignIn';
 import { useFixViewPort } from '../../../hooks/useFixViewport';
-import { Helmet } from 'react-helmet-async';
+import { useDispatch } from 'react-redux';
+import { setTitle } from '../../../actions/helmetTitle';
 
 const SignIn = () => {
 
     useFixViewPort();
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+
+        dispatch( setTitle( 'Business Client Connection - SignIn' ) );
+        
+    }, [ dispatch ]);
 
     const { isLoading, alertFetch, validateCredentials } = useSignIn();
 
@@ -65,9 +74,6 @@ const SignIn = () => {
     return (
         <Fade in>
             <div className='flex flex-col items-center justify-center h-screen'>
-                <Helmet>
-                    <title> Business Client Connection - Sign-In </title>
-                </Helmet>
                 <img
                 className='h-screen w-screen object-cover backgroundSignUp'
                 alt=''

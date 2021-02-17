@@ -453,61 +453,36 @@ const updateSectionProductsText = ( req, res ) => {
 
 };
 
-const updatePersonalWorking = ( req, res ) => {
+
+const updateRealTimeData = ( req, res ) => {
 
     const data = req.body;
 
-    const { personalWorking } = req.body; 
+    const { clientsInTheShop, personalWorking } = req.body;
 
-    if ( personalWorking < 1 ) return res.status( 422 ).send( { message:'The data provided is invalid' } );
+    if ( clientsInTheShop < 0 || personalWorking < 0 ) return res.status( 422 ).send( { message:'The data provided is less than zero.' } );
 
     const userID = res.locals.userID;
 
     const filter = { _id:userID };
 
-    const lastUpdatePersonalWorking = moment().unix();
+    const lastUpdated = moment().unix();
 
-    const update = { personalWorking, lastUpdatePersonalWorking };
+    const lastUpdatedLessFewSeconds = moment().add( -10, 'seconds' ).unix();
 
-    User.updateOne( filter, update, ( err, updated ) => {
+    const update = { clientsInTheShop, personalWorking, lastUpdatePersonalWorking:lastUpdated, lastUpdateClientsInTheShop:lastUpdatedLessFewSeconds };
 
-        if ( err ) throw err;
-
-        if ( !updated ) return res.status( 404 ).send( { message:"The user doesn't exist" } );
-        
-        res.status( 200 ).send( { message:'Real time updated successfully', newRealTimeInfo:{ ...data, lastUpdatePersonalWorking } } );
-
-    } );
-
-}; 
-
-const updateClientsInTheShop = ( req, res ) => {
-
-    const data = req.body;
-
-    const { clientsInTheShop } = req.body; 
-
-    if ( clientsInTheShop < 1 ) return res.status( 422 ).send( { message:'The data provided is invalid' } );
-
-    const userID = res.locals.userID;
-
-    const filter = { _id:userID };
-
-    const lastUpdateClientsInTheShop = moment().unix();
-
-    const update = { clientsInTheShop, lastUpdateClientsInTheShop };
-
-    User.updateOne( filter, update, ( err, updated ) => {
+    User.findOneAndUpdate( filter, update, ( err, updated ) => {
 
         if ( err ) throw err;
 
-        if ( !updated ) return res.status( 404 ).send( { message:"The user doesn't exist" } );
-        
-        res.status( 200 ).send( { message:'Real time updated successfully', newRealTimeInfo:{ ...data, lastUpdateClientsInTheShop } } );
+        if ( !updated ) res.status( 500 ).send( { message:'Error from server to update the server' } );
+
+        res.status( 200 ).send( { message:'Real time data updated successfully', newRealTimeInfo:data } );
 
     } );
 
-}; 
+}
 
 const getOneBusinessByUsername = ( req, res ) => {
 
@@ -537,4 +512,4 @@ const getOneBusinessByUsername = ( req, res ) => {
 
 
 
-module.exports = { createUser, signInUser, getUserInfo, uploadProfilePhoto, uploadBanner, deleteProfilePhoto, deleteBanner, updateBusinessInfo, updateSocialMedias, getAllBusiness, updateBannerSectionProducts, deleteBannerSectionProducts, updateSectionProductsText, updatePersonalWorking, updateClientsInTheShop, getOneBusinessByUsername };
+module.exports = { createUser, signInUser, getUserInfo, uploadProfilePhoto, uploadBanner, deleteProfilePhoto, deleteBanner, updateBusinessInfo, updateSocialMedias, getAllBusiness, updateBannerSectionProducts, deleteBannerSectionProducts, updateSectionProductsText, getOneBusinessByUsername, updateRealTimeData };

@@ -53,8 +53,6 @@ const updateProduct = ( req, res ) => {
 
     const { data:updateProduct, productID } = req.body;
 
-    console.log( productID );
-
     const validation = productObject.validate( updateProduct );
 
     if ( validation.error ) return res.status( 422 ).send( { message:validation.error } );
@@ -83,8 +81,6 @@ const updateProduct = ( req, res ) => {
 const deleteProduct = ( req, res ) => {
 
     const { productid:productID } = req.headers;
-
-    console.log( req.headers );
 
     if ( !productID ) return res.status( 404 ).send( { message:"The product ID is empty" } );
 

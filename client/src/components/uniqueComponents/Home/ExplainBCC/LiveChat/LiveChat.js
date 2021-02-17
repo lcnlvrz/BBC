@@ -1,21 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { Avatar, IconButton, InputBase } from '@material-ui/core';
-import { makeStyles, withStyles  } from '@material-ui/core/styles';
-import { defaultTransiton } from '../../../../../constants/styles';
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import { useMediaQuery } from 'react-responsive';
 import ArrowBackRoundedIcon from '@material-ui/icons/ArrowBackRounded';
 import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
 import { Fade } from '@material-ui/core';
 import AvatarStatus from '../../../../reusableComponents/AvatarStatus.js';
-import { useInView } from 'react-intersection-observer';
-import AirMaxRed from '../../../../../images/AirMaxRed.jpg';
 import MessageChat from '../../../../reusableComponents/MessageChat';
 import { messagesChatHomePage } from '../../../../../constants/content';
 import { useDelayChat } from '../../../../../hooks/useDelayChat';
 
 const LiveChat = () => {
-    
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 750px )' });
 

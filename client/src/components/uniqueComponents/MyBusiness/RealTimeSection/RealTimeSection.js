@@ -1,7 +1,5 @@
 import React from 'react';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
-import Badge from '@material-ui/core/Badge';
-import Location from '../../../../images/location.jpg';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
 import ChatBubbleRoundedIcon from '@material-ui/icons/ChatBubbleRounded';

@@ -9,7 +9,6 @@ import moment from 'moment';
 import { Avatar } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { setCurrentSearch } from '../../../actions/currentSearch';
-import currentSearch from '../../../reducer/currentSearch';
 import NotFoundPage from '../../reusableComponents/NotFoundPage';
 import { Helmet } from 'react-helmet-async';
 
@@ -110,7 +109,7 @@ const OneProductPage = ( props ) => {
             <Fragment>
             <HeaderForClient/>
             <div 
-            style={{ height:'90vh' }}
+            style={{ height:'100vh' }}
             className={ `${ !mobileResolution ? 'flex items-center justify-center pt-20' : 'pt-10' } ` }>
                 <Helmet>
                     <title> Business Client Connection - { currentProduct.product ? currentProduct.title : 'One Product Page' } </title>

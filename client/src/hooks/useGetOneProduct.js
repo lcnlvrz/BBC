@@ -1,7 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { clearCurrentProduct, setCurrentProduct } from '../actions/currentProduct';
 import axiosInstance from '../api/axiosConfig';
-import { getToken } from '../helpers/getToken';
 
 
 export const useGetOneProduct = () => {

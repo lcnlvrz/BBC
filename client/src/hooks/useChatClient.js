@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import socket from '../socket/config';
+import moment from 'moment';
 
 export const useChatClient = () => {
 
@@ -21,6 +22,12 @@ export const useChatClient = () => {
     const [isTyping, setIsTyping] = useState( false );
 
     const [isContinueWithDataFromLS, setIsContinueWithDataFromLS] = useState( { checked:false, askQuestion:false, isContinue:false } );
+
+    const [message, setMessage] = useState('');
+
+    const [media, setMedia] = useState( null );
+
+    const [alert, setAlert] = useState( { type:'', message:'', severity:'' } );
 
     const currentSearch = useSelector(state => state.currentSearch);
 
@@ -119,6 +126,38 @@ export const useChatClient = () => {
     
     }, [ currentSearch ]);
 
-    return { input, setInput, isFormFillOut, setIsFormFillOut, isOnline, currentSearch, businessToSendMSG, socket, setAllMessages, allMessages, isLoading, image, setImage, isTyping, setIsTyping, isContinueWithDataFromLS, setIsContinueWithDataFromLS };
+    const sendMessageClient = (e) => {
+
+        e.preventDefault();
+
+        socket.emit( 'stopTyping', businessToSendMSG.socketID );
+        socket.emit( 'sendMessage', { fromName:input.completeName, message, toSocketID:businessToSendMSG.socketID, fromSocketID:socket.id, image } );
+
+        setMessage( '' );
+
+        const sentAt = moment().format();
+        if ( allMessages[ businessToSendMSG.socketID ] ) return setAllMessages( { ...allMessages, [ businessToSendMSG.socketID ]: {  ...allMessages[ businessToSendMSG.socketID ], messages:[ ...allMessages[businessToSendMSG.socketID].messages, { message, sentAt, sentBy:socket.id } ]  }  } );
+
+        setAllMessages( { ...allMessages, [ businessToSendMSG.socketID ]:{ fromName:currentSearch.businessName, image:currentSearch.profilePhoto, fromSocketID:businessToSendMSG.socketID, messages:[ { message, sentAt, sentBy:socket.id } ] } } );
+
+    };
+
+    const sendMediaClient = () => {
+
+        if ( !media ) return setAlert( { type:'empty', message:'The image is empty', severity:'error' } );
+
+        socket.emit( 'media', { toSocketID:businessToSendMSG.socketID, media, fromName:input.completeName, image } );
+
+        setMedia( null );
+
+        const sentAt = moment().format();
+
+        if ( allMessages[ businessToSendMSG.socketID ] ) return setAllMessages( { ...allMessages, [ businessToSendMSG.socketID ]: {  ...allMessages[ businessToSendMSG.socketID ], messages:[ ...allMessages[businessToSendMSG.socketID].messages, { media, sentAt, sentBy:socket.id, isMedia:true } ]  }  } );
+                    
+        setAllMessages( { ...allMessages, [ businessToSendMSG.socketID ]:{ fromName:currentSearch.businessName, image:currentSearch.profilePhoto, fromSocketID:businessToSendMSG.socketID, messages:[ { media, sentAt, sentBy:socket.id, isMedia:true } ] } } );
+
+    };
+
+    return { input, setInput, isFormFillOut, setIsFormFillOut, isOnline, currentSearch, businessToSendMSG, socket, setAllMessages, allMessages, isLoading, image, setImage, isTyping, setIsTyping, isContinueWithDataFromLS, setIsContinueWithDataFromLS, message, setMessage, sendMessageClient, sendMediaClient, media, alert, setMedia, setAlert };
 
 };

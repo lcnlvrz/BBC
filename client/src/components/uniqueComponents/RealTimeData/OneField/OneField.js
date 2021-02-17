@@ -9,6 +9,8 @@ const OneField = ( props ) => {
 
     const { item, setIsEditing, setInput, isEditing, input, user, update, isLoading } = props;
 
+    console.log( props );
+
     return (
         <div 
         className='flex flex-col items-center justify-center w-72'>
@@ -41,6 +43,8 @@ const OneField = ( props ) => {
                     onSubmit={ async (e) => {
 
                         e.preventDefault();
+
+                        console.log( input );
 
                         await setIsEditing( { ...isEditing, [ item.id ]:false } );
 

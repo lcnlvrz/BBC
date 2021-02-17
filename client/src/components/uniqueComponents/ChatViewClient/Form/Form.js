@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Fade, IconButton, TextField } from '@material-ui/core';
+import { Fade, TextField } from '@material-ui/core';
 import AvatarStatus from '../../../reusableComponents/AvatarStatus.js';
 import { useSelector } from 'react-redux';
 import Theme from '../../../reusableComponents/Theme/Theme.js';
@@ -10,12 +10,9 @@ import { useFixViewPort } from '../../../../hooks/useFixViewport.js';
 import FileBase64 from 'react-file-base64';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import { useMediaQuery } from 'react-responsive';
-import { KeyboardReturn } from '@material-ui/icons';
 import AddPhotoAlternateRoundedIcon from '@material-ui/icons/AddPhotoAlternateRounded';
-import { Fragment } from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { Helmet } from 'react-helmet-async';
 
 
 const Form = ( props ) => {
@@ -53,9 +50,6 @@ const Form = ( props ) => {
     return (
         <Fade in={ true }>
             <div className={ `h-screen flex flex-col items-center justify-center ${ mobileResolution ? 'space-y-3' : 'space-y-5' } mx-5` }>
-                <Helmet>
-                    <title> Business Client Connection - Live Chat { currentSearch.business ? `with ${ currentSearch.businessName }` : '' } </title>
-                </Helmet>
                 <AvatarStatus 
                 status={ true } 
                 spacingBadge={ mobileResolution ? 3 : 6 } 

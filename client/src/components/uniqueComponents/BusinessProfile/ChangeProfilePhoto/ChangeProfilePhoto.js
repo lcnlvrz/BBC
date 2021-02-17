@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import ModalOptions from '../../../reusableComponents/Modal';
 import { useMediaQuery } from 'react-responsive';
 import { defaultTransiton } from '../../../../constants/styles';
@@ -16,17 +16,7 @@ const ChangeProfilePhoto = ( props ) => {
 
     const { photo, alert, setPhoto, setAlert, isLoading, cancelTokenCloudinary, cancelTokenServer, validatePhoto, uploadPhoto } = usePhoto();
 
-    const { isLoading:isLoadingDeletePhoto, setDeletePhoto, cancelToken, alertFetch, setAlertFetch } = useDeletePhoto();
-
-    useEffect(() => {
-
-        return () => {
-
-            if ( cancelToken ) cancelToken.cancel();
-
-        };
-        
-    }, [ cancelToken ]);
+    const { isLoading:isLoadingDeletePhoto, setDeletePhoto, alertFetch, setAlertFetch } = useDeletePhoto();
 
     const photoPreviewProps = {
 
@@ -75,7 +65,7 @@ const ChangeProfilePhoto = ( props ) => {
                     </li>
                 </ul> 
                 { alert.type && 
-                <AlertAnimation setCloseAlert={ setAlert } severity={ alert.severity } message={ alert.message }/>
+                <AlertAnimation setCloseAlert={ setAlert } {...alert}/>
                 }
                 { alertFetch.type && 
                 <AlertAnimation setCloseAlert={ setAlertFetch } severity={ alertFetch.severity } message={ alertFetch.message }/> }

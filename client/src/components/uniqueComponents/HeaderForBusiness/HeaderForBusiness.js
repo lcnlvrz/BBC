@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import HeaderForClient from '../HeaderForClient';
+import React from 'react';
 import BCClogo from '../../../images/bccLogo.png';
 import LeftMenu from '../../reusableComponents/LeftMenu';
 import { outlineButton } from '../../../constants/styles';

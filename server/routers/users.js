@@ -31,10 +31,8 @@ app.delete( '/delete-bannerSection', [ UserMiddleware.validateToken ], UserContr
 
 app.put( '/title-sectionProducts', [ UserMiddleware.validateToken ], UserController.updateSectionProductsText );
 
-app.put( '/personal-working', [ UserMiddleware.validateToken ], UserController.updatePersonalWorking );
-
-app.put( '/clients-in-shop', [ UserMiddleware.validateToken ], UserController.updateClientsInTheShop );
-
 app.get( '/business-by-username', UserController.getOneBusinessByUsername );
+
+app.put( '/update-real-time-data', [ UserMiddleware.validateToken ], UserController.updateRealTimeData );
 
 module.exports = app;

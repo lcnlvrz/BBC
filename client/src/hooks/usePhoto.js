@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import axiosInstance from '../api/axiosConfig';
 import { getToken } from '../helpers/getToken';
@@ -87,8 +87,6 @@ export const usePhoto = () => {
             } )
             .catch( (err) => {
 
-                console.log( err.response );
-
                 setIsLoading( false );
 
                 if ( axiosInstance.isCancel( err ) ) {
@@ -126,6 +124,7 @@ export const usePhoto = () => {
         } );
 
     };
+
         
 
     return { photo, alert, setPhoto, setAlert, isLoading, cancelTokenCloudinary, cancelTokenServer, validatePhoto, uploadPhoto };

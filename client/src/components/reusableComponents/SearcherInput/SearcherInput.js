@@ -4,7 +4,7 @@ import { defaultTransiton } from '../../../constants/styles';
 
 const SearcherInput = ( props ) => {
 
-    const { placeholder, name, endPoint } = props;
+    const { placeholder, name } = props;
 
     const searcherRef = useRef( null );
 

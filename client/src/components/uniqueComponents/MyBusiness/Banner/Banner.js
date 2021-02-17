@@ -7,7 +7,7 @@ import BannerDefault from '../../../../images/bannerDefault.png';
 
 const Banner = ( props ) => {
 
-    const { profilePhoto, nameBusiness, bannerPhoto, topPositionAvatar, businessCategory, isOpenBusiness } = props;
+    const { profilePhoto, nameBusiness, bannerPhoto, businessCategory, isOpenBusiness } = props;
 
     const StyledBadge = withStyles((theme) => ({
         badge: {

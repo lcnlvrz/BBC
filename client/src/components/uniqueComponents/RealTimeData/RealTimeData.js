@@ -1,14 +1,15 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import TimelineRoundedIcon from '@material-ui/icons/TimelineRounded';
 import { defaultTransiton } from '../../../constants/styles';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
-import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
 import { useUploadRealTimeData } from '../../../hooks/useUploadRealTimeData';
 import AlertAnimation from '../../reusableComponents/AlertAnimation';
 import { useSelector } from 'react-redux';
-import { Helmet } from 'react-helmet-async';
-import OneField from './OneField';
+import { useDispatch } from 'react-redux';  
+import { setTitle } from '../../../actions/helmetTitle';
+import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
+import ButtonSaveChanges from '../../reusableComponents/ButtonSaveChanges';
 
 
 const TitleSection = () => {
@@ -29,21 +30,56 @@ const TitleSection = () => {
 
 };
 
-const Items = ( props ) => {
+const ClientsInTheShop = ( props ) => {
 
-    const { mobileResolution, items, setIsEditing, setInput, isEditing, input, user, update, isLoading } = props;
+    const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
+
+    const { clientsInTheShopRef, input } = props;
+
+    return (
+
+        <div className={ `${ mobileResolution ? 'w-full' : 'w-2/4' }` }>
+            <div className='flex flex-col items-center justify-center'>
+                <PersonRoundedIcon style={{ fontSize:'150px' }}/>
+                <h1 className='font-semibold text-3xl text-center'> 
+                    Clients in the shop
+                </h1>
+                <input
+                className='border-none text-green-400 w-full text-4xl text-center outline-none'
+                ref={ clientsInTheShopRef }
+                name='clientsInTheShop'
+                defaultValue={ input.clientsInTheShop }
+                />
+            </div>
+        </div>
+
+    );
+
+};
+
+const PersonalWorking = ( props ) => {
+
+    const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
+
+    const { personalWorkingRef, input } = props;
 
     return (
 
         <div 
-        className={ `all__items ${ mobileResolution && 'space-y-5' } flex flex-row flex-wrap items-center justify-evenly` }>
-            { items.map( ( item, index ) => {
-
-                const props = { item, setIsEditing, setInput, isEditing, input, user, update, isLoading, key:index };
-
-                return <OneField  { ...props }/>
-
-            } ) }
+        className={ `${ mobileResolution ? 'w-full' : 'w-2/4' } bg-transparent` }>
+            <div className='flex flex-col items-center justify-center'>
+                <WorkRoundedIcon style={{ fontSize:'150px' }}/>
+                <h1 className='font-semibold text-3xl text-center'> 
+                    Personal Working
+                </h1>
+                <input
+                style={{ zIndex:'10000' }}
+                ref={ personalWorkingRef }
+                className='border-none text-green-400 text-4xl text-center outline-none bg-transparent w-full'
+                name='personalWorking'
+                defaultValue={ input.personalWorking }
+                />
+            </div>
         </div>
 
     );
@@ -52,33 +88,74 @@ const Items = ( props ) => {
 
 const RealTimeData = () => {
 
-    const mobileResolution = useMediaQuery({ query:'( max-width: 500px )' });
+    const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
 
     const personalWorkingRef = useRef( null );
     const clientsInTheShopRef = useRef( null );
 
-    const [isEditing, setIsEditing] = useState( { personalWorking:false, clientsInTheShop:false } );
-
-    const { update, alert, isLoading, setAlert } = useUploadRealTimeData();
- 
-    const items = [ { title:'Personal Working Now', icon:WorkRoundedIcon, ref:personalWorkingRef, id:'personalWorking' }, { title:'Clients in the shop Now:', icon:PeopleAltRoundedIcon, ref:clientsInTheShopRef, id:'clientsInTheShop' } ];
+    const { update, alert, isLoading, setAlert, isNewChange, setIsNewChange } = useUploadRealTimeData();
 
     const user = useSelector(state => state.user);
 
     const [input, setInput] = useState( { personalWorking:user.personalWorking, clientsInTheShop:user.clientsInTheShop } );
 
-    const propsItems = { mobileResolution, items, setIsEditing, setInput, isEditing, input, user, update, isLoading };
+    const dispatch = useDispatch();
 
+    useEffect(() => {
+
+        dispatch( setTitle( `Business Client Connection - Real Time Data` ) );
+        
+    }, [ dispatch ]);
+
+    const submitForm = ( e ) => {
+
+        e.preventDefault();
+
+        if ( input.personalWorking !== user.personalWorking || input.clientsInTheShop !== user.clientsInTheShop ) update( input );
+
+    };
+
+    const changeForm = async (e) => {
+
+        await setInput( { ...input, [ e.target.name ]:e.target.value } );
+
+        if ( e.target.name === 'clientsInTheShop' && e.target.value !== user.clientsInTheShop ) {
+            setIsNewChange( true );
+
+        } else if( e.target.value !== user.clientsInTheShop ){
+
+            setIsNewChange( true );
+
+        } else {
+
+            setIsNewChange( false );
+
+        };
+
+        if ( e.target.name === 'clientsInTheShop' ) return clientsInTheShopRef.current.focus();
+
+        personalWorkingRef.current.focus();
+
+
+    };
+
+    const propsClientsShop = { clientsInTheShopRef, input  };
+
+    const propsPersonal = { personalWorkingRef, input };
 
     const DataRealTime = () => {
 
         return (
             <div className={ `p-5 space-y-5 ${ mobileResolution ? 'pt-28' : '' }` }>
-                <Helmet>
-                    <title> Business Client Connection - Real Time Data </title>
-                </Helmet>
-                <TitleSection/>
-                <Items {...propsItems}/>
+                    <TitleSection/>
+                    <form 
+                    onSubmit={ (e) => submitForm(e) }
+                    onChange={ (e) => changeForm(e) }
+                    className={ `${ mobileResolution ? 'space-y-10 flex-col' : 'space-x-5 flex-row' } flex` }>
+                        <ClientsInTheShop {...propsClientsShop}/>
+                        <PersonalWorking {...propsPersonal}/>
+                    { isNewChange && <ButtonSaveChanges isNewChange={ isNewChange } isLoading={ isLoading }/> }
+                </form>
                 { alert.type && <AlertAnimation setCloseAlert={ setAlert } { ...alert }/> }
             </div>
         );

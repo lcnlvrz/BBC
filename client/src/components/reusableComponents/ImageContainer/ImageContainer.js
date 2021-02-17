@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useMediaQuery } from 'react-responsive';
 import './ImageContainer.css';
-import Fade from '@material-ui/core/Fade';
-import { Paper } from '@material-ui/core';
 import Grow from '@material-ui/core/Grow';
 
 const ImageContainer = ( props ) => {
@@ -30,13 +28,13 @@ const ImageContainer = ( props ) => {
             <Grow 
             ref={ ref }
             in={ inView }>
-                    <img 
-                    style={{ opacity:opacity, height:heightPX }}
-                    onLoad={ () => setIsImageLoaded( true ) }
-                    className={ `w-full my-2 object-contain` }
-                    alt={ altDescription }
-                    src={ src }
-                    /> 
+                <img 
+                style={{ opacity:opacity, height:heightPX }}
+                onLoad={ () => setIsImageLoaded( true ) }
+                className={ `w-full my-2 object-contain` }
+                alt={ altDescription }
+                src={ src }
+                /> 
             </Grow>   
         </div>
     );

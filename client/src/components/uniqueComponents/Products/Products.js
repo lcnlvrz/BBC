@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import InputSearcher from '../../reusableComponents/SearcherInput';
 import { useMediaQuery } from 'react-responsive';
 import Fade from '@material-ui/core/Fade';
@@ -10,8 +10,9 @@ import BannerSectionProducts from '../BusinessProfile/BannerSectionProducts';
 import { useSearchBusiness } from '../../../hooks/useSearchBusiness';
 import AlertAnimation from '../../reusableComponents/AlertAnimation';
 import PropagateLoader from "react-spinners/PropagateLoader";
-import { Helmet } from 'react-helmet-async';
 import { Fragment } from 'react';
+import { useDispatch } from 'react-redux';
+import { setTitle } from '../../../actions/helmetTitle';
 
 
 
@@ -124,24 +125,25 @@ const Products = () => {
 
     const classesParentDiv = `flex flex-col space-y-10 my-5 ${ mobileResolution && 'pt-28' }`;
 
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+
+        dispatch( setTitle( `Business Client Connection - Products` ) );
+        
+    }, [ dispatch ]);
+
     return (
         <Fade in>
             <div className={ classesParentDiv }>
-                <Helmet>
-                    <title> Business Client Connection - Products </title>
-                </Helmet>
                 <ProductsSearcher { ...propsProductSearcher }/>
                 <BannerSectionProducts { ...propsBannerProducts }/>
                 <h1 className='font-semibold text-center'> 
                     *Click Over Text to Change Information* 
                 </h1>
-
                 <Content {...propsContent}/>
-
                 { isChangePhoto && <ChangeProfilePhoto {...propsChangePhoto}/> }
-
                 { notFound.type && <AlertAnimation setCloseAlert={ setNotFound } { ...notFound }/>  }
-                
             </div>
         </Fade>
     );

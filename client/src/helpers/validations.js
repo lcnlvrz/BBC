@@ -62,8 +62,6 @@ export const validatePassword = ( password ) => {
 
 export const validateName = ( name ) => {
 
-    console.log( name );
-
     const regexName = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*$/;
 
     const valueAfterValidation = regexName.test( name );

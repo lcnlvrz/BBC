@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { createMuiTheme, ThemeProvider, } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { IconButton, InputAdornment } from '@material-ui/core';
@@ -13,7 +13,7 @@ const Input = ( props ) => {
     const { label , value, variant, isFullWidth, name, color, required, type = 'texr', refInput, StartIcon, maxLength, isPassword, conditions, alert, indexInput, placeholder, isThirdStep } = props;
 
 
-    const [theme, setTheme] = useState( { muitheme:createMuiTheme({
+    const [ theme ] = useState( { muitheme:createMuiTheme({
         palette: {
           primary: {
 

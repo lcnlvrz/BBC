@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { defaultTransiton, fillButton, textAreaDefaultProps } from '../../../constants/styles';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import Input from '../../reusableComponents/Input';
@@ -19,10 +19,9 @@ import { useUploadProduct } from '../../../hooks/useUploadProduct';
 import AlertAnimation from '../../reusableComponents/AlertAnimation/AlertAnimation';
 import FindReplaceRoundedIcon from '@material-ui/icons/FindReplaceRounded';
 import PropagateLoader from "react-spinners/PropagateLoader";
-import { Helmet } from 'react-helmet-async';
-import { Fragment } from 'react';
 import Theme from '../../reusableComponents/Theme';
-
+import { useDispatch } from 'react-redux';  
+import { setTitle } from '../../../actions/helmetTitle';
 
 const PreviewImage = ( props ) => {
 
@@ -240,18 +239,26 @@ const AddProduct = () => {
     const propsInputs = { imageRef, onChangeInputFile, input, setInput, defaultInputProps };
 
     const propsImagePlaceHolder = { input, isLoading, imagePreview, setInput, alert };
+
+    const classNameForm = `container__add__product flex ${ mobileResolution ? 'flex-col space-y-5 items-center justify-center' : 'flex-row flex-wrap items-start justify-evenly space-x-5' } px-5 py-5`;
+
+    
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+
+        dispatch( setTitle( `Business Client Connection - Add Product` ) );
+        
+    }, [ dispatch ]);
                     
     return (
         <Fade in>
             <div 
             className={ mobileResolution ? 'pt-28' : '' }>
-                <Helmet>
-                    <title> Business Client Connection - Add Product </title>
-                </Helmet>
                 <form 
                 onChange={ (e) => onChangeForm(e) }
                 onSubmit={ (e) => uploadProduct( input, e ) }
-                className={ `container__add__product flex ${ mobileResolution ? 'flex-col space-y-5 items-center justify-center' : 'flex-row flex-wrap items-start justify-evenly space-x-5' } px-5 py-5` }>
+                className={ classNameForm }>
                     <ImagePlaceHolderAndButton {...propsImagePlaceHolder}/>
                     <Inputs {...propsInputs}/>
                     { mobileResolution &&  <ButtonPublishProduct isLoading={ isLoading }/> }

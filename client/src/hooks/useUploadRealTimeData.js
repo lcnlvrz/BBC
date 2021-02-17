@@ -12,6 +12,8 @@ export const useUploadRealTimeData = () => {
 
     const [alert, setAlert] = useState( { type:'', message:'', severity:'' } );
 
+    const [isNewChange, setIsNewChange] = useState( false );
+
     const dispatch = useDispatch();
 
     const update = ( data ) => {
@@ -20,7 +22,7 @@ export const useUploadRealTimeData = () => {
 
         if ( !token ) return setAlert( { type:'invalidToken', message:"The token isn't valid", severity:'error' } );
 
-        const { personalWorking:personalWorkingString, clientsInTheShop:clientsInTheShopString, fieldChanged } = data;
+        const { personalWorking:personalWorkingString, clientsInTheShop:clientsInTheShopString } = data;
 
         const personalWorking = Number( personalWorkingString );
 
@@ -29,7 +31,7 @@ export const useUploadRealTimeData = () => {
         const isValidPersonalWorking = Number.isInteger(  personalWorking  );
         const isValidClientsInTheShop = Number.isInteger( clientsInTheShop );
 
-        if ( !isValidClientsInTheShop || clientsInTheShop < 1 || !isValidPersonalWorking || personalWorking < 1 ) return setAlert( { type:'NaN', message:'The quantity have to be numbers more than 0', severity:'error' } );
+        if ( !isValidClientsInTheShop || clientsInTheShop < 0 || !isValidPersonalWorking || personalWorking < 0 ) return setAlert( { type:'NaN', message:'The values only can be positive numbers', severity:'error' } );
 
         const cancelTokenFunction = axiosInstance.CancelToken.source();
 
@@ -37,22 +39,19 @@ export const useUploadRealTimeData = () => {
 
         setIsLoading( true );
 
-        let endPoint = '';
-
-        if ( fieldChanged === 'clientsInTheShop' ) endPoint = '/clients-in-shop';
-
-        if ( fieldChanged === 'personalWorking' ) endPoint = '/personal-working';
-
-        axiosInstance.put( endPoint, { personalWorking, clientsInTheShop }, { headers:{ authorization:token } } )
+        axiosInstance.put( '/update-real-time-data', { personalWorking, clientsInTheShop }, { headers:{ authorization:token } } )
         .then( response => {
             
             dispatch( updateRealTimeData( response.data.newRealTimeInfo ) );
             setIsLoading( false );
+            setIsNewChange( false );
             setAlert( { message:'Data updated successfully', severity:'success', type:'OK' } );
             
 
         } )
         .catch( err => {
+
+            console.log( err.response );
 
             if ( axiosInstance.isCancel( err ) ) return console.log( 'Request canceled by user' );
 
@@ -70,6 +69,6 @@ export const useUploadRealTimeData = () => {
         
     }, [ cancelToken ]);
 
-    return { alert, setAlert, isLoading, update };
+    return { alert, setAlert, isLoading, update, isNewChange, setIsNewChange };
 
 };

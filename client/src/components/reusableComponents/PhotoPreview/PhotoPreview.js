@@ -10,8 +10,6 @@ const PhotoPreview = ( props ) => {
 
     const { setPhoto, mobileResolution, photo, isLoading, uploadPhoto, cancelTokenCloudinary, cancelTokenServer, endPoint } = props;
 
-    console.log( props );
-
     useEffect(() => {
 
         return () => {

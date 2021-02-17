@@ -24,8 +24,6 @@ const CustomRoute = ( props ) => {
                     );
                 case 'notLoggedIn':
 
-                    console.log( user.condition );
-
                     return setReturnedRoute(
 
                         !user.condition ? 

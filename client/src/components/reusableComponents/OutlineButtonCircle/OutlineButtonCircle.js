@@ -3,7 +3,7 @@ import { defaultTransiton, outlineButton } from '../../../constants/styles';
 
 const OutlineButtonCircle = ( props ) => {
 
-    const { textButton, textColor } = props;
+    const { textButton } = props;
 
     return (
         <button

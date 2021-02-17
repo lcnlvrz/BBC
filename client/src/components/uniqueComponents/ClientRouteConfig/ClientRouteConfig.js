@@ -28,8 +28,6 @@ const ClientRouteConfig = () => {
         
     }, [ user, history ]);
 
-    console.log( window.location.href );
-
     if ( !page ) return <Home/>
 
     if ( page === 'sign-in' ) return <SignIn/>

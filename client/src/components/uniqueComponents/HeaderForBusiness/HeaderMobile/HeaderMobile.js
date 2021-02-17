@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import BCClogo from '../../../../images/bccLogo.png';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
-import { Avatar, Fade, IconButton } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 import LeftMenu from '../../../reusableComponents/LeftMenu';
-import { outlineButton } from '../../../../constants/styles';
 import { Fragment } from 'react';
 
 const HeaderMobile = (props) => {
@@ -53,7 +50,7 @@ const HeaderMobile = (props) => {
     if ( isOnlyButton ) return <ButtonDrawer/>
 
     return (
-      <header className='p-5 flex flex-row w-full justify-between items-center fixed top-0 bg-white z-30'>
+      <header className='p-5 flex flex-row overflow-hidden w-full justify-between items-center fixed top-0 bg-white z-30'>
         <ButtonDrawer/>
         <img 
         className='w-20'

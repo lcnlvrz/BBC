@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../MyBusiness/MyBusiness.css';
 import { Fade, InputBase, TextareaAutosize } from '@material-ui/core';
 import { textAreaDefaultProps } from '../../../constants/styles';
@@ -12,7 +12,9 @@ import Footer from './Footer';
 import ButtonSaveChanges from '../../reusableComponents/ButtonSaveChanges';
 import LocationAndSchedule from './LocationAndSchedule';
 import { useMediaQuery } from 'react-responsive';
-import { Helmet } from 'react-helmet-async';
+import { useDispatch } from 'react-redux';  
+import { setTitle } from '../../../actions/helmetTitle';
+
 
 
 const TextAreaPresentation = ( props ) => {
@@ -83,14 +85,17 @@ const BusinessProfile = () => {
 
     const classesContainerContentExceptBanner = 'mt-28 flex items-center justify-center flex-col space-y-5';
 
-  
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+
+        dispatch( setTitle( `Business Client Connection - Real Time Data` ) );
+        
+    }, [ dispatch ]);
 
     return (
       <Fade in>
         <div className={ mobileResolution ? 'pt-28' : '' }>
-          <Helmet>
-            <title> Business Client Connection - Business Profile </title>
-          </Helmet>
           <form
           onSubmit={ (e) => uploadBusinessInformation( input, e ) }
           onChange={ (e) => onChangeForm( e ) }

@@ -1,4 +1,4 @@
-import { Avatar, Fade } from '@material-ui/core';
+import { Avatar } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { defaultTransiton } from '../../../constants/styles';
@@ -15,7 +15,7 @@ const LeftMenu = ( props ) => {
 
     const dispatch = useDispatch();
 
-    const { width, setChangeSection } = props;
+    const { width } = props;
 
     const url = new URL( window.location.href );
 
