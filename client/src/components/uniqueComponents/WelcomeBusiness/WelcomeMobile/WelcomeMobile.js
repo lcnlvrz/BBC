@@ -2,8 +2,6 @@ import React from 'react'
 import WelcomeMessage from '../../../reusableComponents/WelcomeMessage';
 import HeaderMobile from '../../HeaderForBusiness/HeaderMobile/HeaderMobile';
 
-
-
 const WelcomeMobile = () => {
 
     return (

@@ -11,7 +11,6 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import PublicRoundedIcon from '@material-ui/icons/PublicRounded';
-import { useSelector } from 'react-redux';
 import LiveChat from '../components/uniqueComponents/LiveChat';
 import AddProduct from '../components/uniqueComponents/AddProduct';
 import RealTimeData from '../components/uniqueComponents/RealTimeData/RealTimeData';
@@ -19,6 +18,21 @@ import BusinessProfile from '../components/uniqueComponents/BusinessProfile';
 import Products from '../components/uniqueComponents/Products';
 import Panel from '../components/uniqueComponents/Panel/Panel';
 import AirMaxRed from '../images/AirMaxRed.jpg';
+import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
+import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
+import ImageRoundedIcon from '@material-ui/icons/ImageRounded';
+import ContactSupportRoundedIcon from '@material-ui/icons/ContactSupportRounded';
+import BorderBottomRoundedIcon from '@material-ui/icons/BorderBottomRounded';
+import TimerRoundedIcon from '@material-ui/icons/TimerRounded';
+import CategoryRoundedIcon from '@material-ui/icons/CategoryRounded';
+import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
+import QueryBuilderRoundedIcon from '@material-ui/icons/QueryBuilderRounded';
+import PublishRoundedIcon from '@material-ui/icons/PublishRounded';
+import moment from 'moment';
+import TitleRoundedIcon from '@material-ui/icons/TitleRounded';
+import SubtitlesRoundedIcon from '@material-ui/icons/SubtitlesRounded';
+import AttachMoneyRoundedIcon from '@material-ui/icons/AttachMoneyRounded';
+import FormatListNumberedRoundedIcon from '@material-ui/icons/FormatListNumberedRounded';
 
 export const groupOfInputsThirdStepSignUp = ( input, businessName, username, password, repeatPassword ) => {
 
@@ -55,7 +69,7 @@ export const textAreaBusinessProfileContentFooterFunction = ( input ) => {
 
 export const textAreaBusinessProfileContentMainFunction = ( input ) => {
 
-    return [ { name:'mainPresentationOne', placeholder:'Tell us about your bussiness 🤔', value:input.mainPresentationOne }, { name:'mainPresentationTwo', placeholder:'More presentation...', value:input.mainPresentationTwo } ];
+    return [ { name:'mainPresentationOne', placeholder:'Tell us about your bussiness 🤔', value:input.mainPresentationOne, className:'outline-none w-full text-center border rounded-2xl p-5 text-semibold text-2xl resize-none' }, { name:'mainPresentationTwo', placeholder:'More presentation...', value:input.mainPresentationTwo, className:'outline-none w-full text-center border rounded-2xl p-5 text-semibold text-2xl resize-none' } ];
 
 };
 
@@ -93,4 +107,66 @@ export const messagesChatHomePage = [
     message:"Sorry about that mistake. No problem, come to our location. We'll wait for you and change it.", 
     timeAgo:'a minute ago' } }, 
 
-    { isOtherMessage:true, content:{ profilePhoto:'https://t4.ftcdn.net/jpg/02/14/74/61/360_F_214746128_31JkeaP6rU0NzzzdFC4khGkmqc8noe6h.jpg', name:'Richard Vaughan', message:"That's why i love you guys. I'll see you later. Thanks ❤️", timeAgo:'a few seconds ago ' } } ]
+    { isOtherMessage:true, content:{ profilePhoto:'https://t4.ftcdn.net/jpg/02/14/74/61/360_F_214746128_31JkeaP6rU0NzzzdFC4khGkmqc8noe6h.jpg', name:'Richard Vaughan', message:"That's why i love you guys. I'll see you later. Thanks ❤️", timeAgo:'a few seconds ago ' } } 
+];
+
+
+export const productTextExampleHomePage = [ "In 2016, Nike released a new and improved version of the famous “Back to the Future” shoe. Each pair advanced Adaptive Fit technology, also known as “power laces,” which can sense the wearer's motion and loosen or tighten accordingly.", "In 2016, Nike released a new and improved version of the famous “Back to the Future” shoe. Each pair advanced Adaptive Fit technology, also known as “power laces,” which can sense the wearer's motion and loosen or tighten accordingly.", "DATAA" ];
+
+
+export const advantagesHome = [{ title:'IMPROVE YOUR CONVERSION RATIO', bgColor:'bg-gray-200', textColor:'text-black', text:'Target users to your business profile and increase the conversion ratio', icon:'trendingUp' }, 
+{ title:'CLOSE THE SELL EASILY', bgColor:'bg-gray-300', textColor:'text-black', icon:'happyFace', text:'In your business profile there are only essential information. No more repeat the same thing every time' }
+,{ title:'100% CONTROL', bgColor:'bg-gray-400', textColor:'text-black', icon:'control', text:'With the admin panel you can manage all of your business. Zero regulation.' }];
+
+
+export const footerContent = [ 
+
+    { title:'About Us', text:'Business Client Connection is a free web application useful to service as landing page or presentation letter to business. With our platform you can create a business profile, showing to the clients/potential clients what does your business do, presentation, advantages, location, schedule, products/services and more essential information. Besides, we have our major feature which is live chat. ' }, 
+    { title:'Our Mision', text:'This application was created with the only purpose to help small - medium business to improve their conversion ratio offering a business profile where clients can arrive and interact.'}, 
+    { title:'Origin', text:"BCC was created mainly for two reasons. First because most of the small-medium business don't have enough money to develop an web application. Second reason because usually social media like  instagram is a little limited and don't allow business to presentate their business well. This application was made only for business and more focus on retail." },
+    { title:'The creator', text:'This application was programmed by Luciano Alvarez, a young argentinian programmer who lives in Tucuman, Argentina and loves develop solutions.' } 
+
+];
+
+export const returnAdminPanelSections = ( user, lastUpdateRealTime ) => {
+
+    return [ { title:'Real-Time Data',
+
+    items:[ { title:'Personal Working now', value:user.personalWorking ? user.personalWorking : 0, icon:WorkRoundedIcon }, { title:'Clients in the shop', value:user.clientsInTheShop ? user.clientsInTheShop : 0, icon:PeopleAltRoundedIcon }, 
+    { title:'Last update', value:lastUpdateRealTime, icon:TimerRoundedIcon } ], 
+    
+    icon:TimelineRoundedIcon, route:'/business/?section=real-time-data' }, 
+    { title:'Business Profile', icon:BusinessRoundedIcon, 
+    
+    items:[ { title:'Banner', value:user.banner ? true : false, icon:ImageRoundedIcon }, { title:'Presentation', value:user.mainPresentationOne && user.mainPresentationTwo ? true : false, icon:ContactSupportRoundedIcon }, { title:'Profile Photo', value:user.profilePhoto ? true : false, icon:AccountCircleRoundedIcon }, { title:'Presentation', value:user.mainPresentationOne && user.mainPresentationTwo ? true : false, icon:ContactSupportRoundedIcon } ,{ title:'Business Category', value:user.businessCategory ? true : false, icon:CategoryRoundedIcon }, { title:'Location', value:user.location ? true : false, icon:LocationOnRoundedIcon }, { title:'Shedule', value:user.since && user.until ? true : false, icon:QueryBuilderRoundedIcon }, { title:'Footer', icon:BorderBottomRoundedIcon , value:user.footerTitle && user.footerSectionOne && user.footerSectionTwo && user.footerLastLine ? true : false }, { title:'Social Media', icon:InstagramIcon, value:user.facebookLink && user.instagramLink && user.twitterLink ? true : false } ], 
+    
+    route:'/business/?section=business-profile' }, { title:'Products', icon:ShoppingBasketRoundedIcon, 
+    
+    items:[ { title:'Quantity published', value:user.products && user.products.length && user.products.length === 10 ? '+10' : user.products.length, icon:PublishRoundedIcon },{ title:'Last published', value:user.products.length > 0 ? moment( moment.unix( user.products[0].createdAt ).format() ).fromNow() : 'Never', icon:TimerRoundedIcon }, { title:'Banner Products', value:user.bannerSectionProducts ? true : false, icon:ImageRoundedIcon } ],
+    
+    route:'/business/?section=products' } ];
+
+};
+
+
+export const returnInputPropsAddProducts = (input) => {
+
+    return [ { maxLenght:200 , value:input.title , StartIcon:TitleRoundedIcon, name:'title', label:'Title'}, { maxLenght:200 , value:input.subtitle, StartIcon:SubtitlesRoundedIcon, name:'subtitle', label:'Subtitle'}, { maxLenght:100, value:input.price, StartIcon:AttachMoneyRoundedIcon, name:'price', label:'Price'}, { maxLenght:500, value:input.category, StartIcon:CategoryRoundedIcon, name:'category', label:'Category'}, { maxLenght:500, value:input.stock, StartIcon:FormatListNumberedRoundedIcon, name:'stock', label:'Stock'} ];
+
+};
+
+export const returnDefaultInputPropsAddProduct = ( productRef, alert ) => {
+
+    return {
+
+        required:true,
+        isFullWidth:true,
+        alert,
+        type:'text',
+        color:'#000000',
+        variant:'outlined',
+        refInput:productRef
+
+    };
+
+};

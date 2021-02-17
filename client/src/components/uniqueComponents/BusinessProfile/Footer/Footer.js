@@ -1,17 +1,15 @@
 import React from 'react'
-import { socialsMedia, textAreaBusinessProfileContentFooterFunction, textAreaBusinessProfileContentMainFunction } from '../../../../constants/content';
+import { socialsMedia, textAreaBusinessProfileContentFooterFunction } from '../../../../constants/content';
 import Badge from '@material-ui/core/Badge';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import { textAreaDefaultProps } from '../../../../constants/styles';
-import { Avatar, Fade, TextareaAutosize } from '@material-ui/core';
+import { TextareaAutosize } from '@material-ui/core';
 
 const Footer = ( props ) => {
 
-
-    const { setIsNewChange, input, setIsChangeSocialMediaLinks, socialMediaLinks } = props;
+    const { input, setIsChangeSocialMediaLinks, socialMediaLinks } = props;
 
     const textAreaBusinessProfileContentFooter = textAreaBusinessProfileContentFooterFunction( input );
-
 
     return (
         <footer 
@@ -45,14 +43,14 @@ const Footer = ( props ) => {
             <div className='footer__questions text-white flex flex-row justify-between space-x-5'>
                 { textAreaBusinessProfileContentFooter.map( ( textarea, index ) => (
 
-                <TextareaAutosize
-                { ...textAreaDefaultProps }
-                key={ index }
-                className='bg-transparent text-white resize-none w-full outline-none'
-                name={ textarea.name }
-                placeholder={ textarea.placeholder }
-                defaultValue={ textarea.value }
-                />
+                    <TextareaAutosize
+                    { ...textAreaDefaultProps }
+                    key={ index }
+                    className='bg-transparent text-white resize-none w-full outline-none'
+                    name={ textarea.name }
+                    placeholder={ textarea.placeholder }
+                    defaultValue={ textarea.value }
+                    />
 
                 ) ) }
             </div>

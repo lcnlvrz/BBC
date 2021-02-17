@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react'
 import { useMediaQuery } from 'react-responsive';
 import { defaultTransiton } from '../../../../../constants/styles';
-import OneProductPage from '../../../OneProductPage/OneProductPage';
 import { Avatar, Fade } from '@material-ui/core';
 import { Fragment } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { productTextExampleHomePage } from '../../../../../constants/content';
+import { parentDivClasses, titleAndTextSection } from './classes';
 
 
 const Product = () => {
@@ -77,20 +78,18 @@ const Product = () => {
 
     };
 
-    const itemsText = [ "In 2016, Nike released a new and improved version of the famous “Back to the Future” shoe. Each pair advanced Adaptive Fit technology, also known as “power laces,” which can sense the wearer's motion and loosen or tighten accordingly.", "In 2016, Nike released a new and improved version of the famous “Back to the Future” shoe. Each pair advanced Adaptive Fit technology, also known as “power laces,” which can sense the wearer's motion and loosen or tighten accordingly.", "DATAA" ];
-
 
     return (
         <Fade in={ inView }>
             <div 
-            ref={ ref }
-            className={ `w-full ${ mobileResolution ? 'flex-col space-y-10' : 'flex-row' } items-center justify-evenly flex flex-wrap pt-0 px-5 ` }>
-                <div className={ `left_part text-center space-y-5 ${ mobileResolution ? 'w-full' : 'w-2/4' }` }>
+            ref={ ref } 
+            className={ parentDivClasses }>
+                <div className={ `${ titleAndTextSection } ${ mobileResolution ? 'w-full' : 'w-2/4'  }` }>
                     <h1 className='font-semibold text-4xl text-green-400'> 
                         PRETTY, UNLIMITED AND FRIENDLY SHOWCASE
                     </h1>
                     <p className={ `${ !mobileResolution ? 'mx-10' : ''  } font-light text-2xl ` }>
-                    Show to the users what does your business have or do to solve/satisfy their needs. Product, price, description, and stock. All these information in one card.
+                        Show to the users what does your business have or do to solve/satisfy their needs. Product, price, description, and stock. All these information in one card.
                     </p>
                 </div>
                 <div className={ `right_part ${ mobileResolution ? 'w-full' : 'w-2/4' }` }>
@@ -164,7 +163,7 @@ const Product = () => {
                                             ) ) }
                                         </div>
                                         <div>
-                                            { itemsText.map( ( item, index ) => (
+                                            { productTextExampleHomePage.map( ( item, index ) => (
 
                                                 <Fragment
                                                 key={ index }
@@ -176,7 +175,7 @@ const Product = () => {
                                                     <Fade in={ true }>
                                                         <p 
                                                         className='font-light text__item__menu'>
-                                                            { itemsText[ index ] } 
+                                                            { productTextExampleHomePage } 
                                                         </p>
                                                     </Fade> 
                                                     :

@@ -11,22 +11,40 @@ const SecondStep = ( props ) => {
 
     const { userData, setUserData, setSteps } = props;
 
-    const { alertFetch, setData, isLoading, isSuccess, initialColorInput, inputEmailRef } = useValidOTP();
+    const { alertFetch, validOTP, isLoading, isSuccess, initialColorInput, inputEmailRef } = useValidOTP();
 
     const [input, setInput] = useState( { code:'' } );
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
 
+    const inputProps = {
+
+        alert,
+        maxLength: 4,
+        StartIcon: VpnKeyRoundedIcon,
+        refInput: inputEmailRef,
+        type:'text',
+        required: true,
+        label:'Code',
+        value: input.code,
+        name:'code',
+        color: initialColorInput,
+        isFullWidth: true,
+        variant:'outlined'
+
+    };
+
     useEffect(() => {
 
         if ( isSuccess.fetched && isSuccess.success ) {
 
-            setUserData( { ...userData, otp:input.code } );
+            setUserData( credentials => ({ ...credentials, otp:input.code }) )
             setSteps( { firstStep:false, secondeStep:false, thirdStep:true } );
 
         };
         
     }, [ input, isSuccess, setUserData, setSteps ]);
+    
 
     return (
         <div 
@@ -38,29 +56,9 @@ const SecondStep = ( props ) => {
             </p>
             <form 
             onChange={ (e) => setInput({ code:e.target.value }) }
-            onSubmit={ (e) => { 
-
-                e.preventDefault();
-
-                setData( { ...input, ...userData } );
-
-                
-            } }
+            onSubmit={ (e) => validOTP( { ...input, ...userData }, e ) }
             className='space-y-4 w-full flex flex-col'>
-                <Input
-                alert={ alert }
-                maxLength={ 4 }
-                StartIcon={ VpnKeyRoundedIcon }
-                refInput={ inputEmailRef }
-                type='text'
-                required={ true }
-                label='Code'
-                value={ input.code }
-                name='code'
-                color={ initialColorInput }
-                isFullWidth={ true }
-                variant='outlined'
-                />
+                <Input { ...inputProps }/>
                 { alertFetch.type && 
                 <div className='flex flex-row text-left space-x-2 items-center'>
                     <ErrorRoundedIcon className='text-red-500'/>

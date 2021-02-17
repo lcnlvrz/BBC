@@ -10,8 +10,6 @@ const LocationAndSchedule = ( props ) => {
 
     const { since, until, location, setInput } = props;
 
-    console.log( since, until );
-
     const addressInputRef = useRef( null );
 
     useEffect(() => {
@@ -53,6 +51,22 @@ const LocationAndSchedule = ( props ) => {
           },
         },
     });
+
+    const propsDefault = {
+
+        id:"time",
+        required:true,
+        className:'outline-none',
+        type:"time",
+        InputLabelProps:{
+        shrink: true,
+        },
+        inputProps:{
+        step: 300
+        }
+    };
+
+    const sinceAndUntil = [ { name:'since', label:'Since', value:since }, { name:'until', label:'Until', value:until } ];
       
 
     return (
@@ -83,35 +97,13 @@ const LocationAndSchedule = ( props ) => {
                 <div className='flex flex-row space-x-10'>
                 <ThemeProvider 
                 theme={ clockTheme }>
-                    <TextField
-                    id="time"
-                    required
-                    className='outline-none'
-                    name="since"
-                    label="Since"
-                    type="time"
-                    value={ since }
-                    InputLabelProps={{
-                    shrink: true,
-                    }}
-                    inputProps={{
-                    step: 300, // 5 min
-                    }}
-                    />
-                    <TextField
-                    id="time"
-                    name='until'
-                    label="Until"
-                    required
-                    type="time"
-                    value={ until }
-                    InputLabelProps={{
-                    shrink: true,
-                    }}
-                    inputProps={{
-                    step: 300
-                    }}
-                    />
+                    { sinceAndUntil.map( ( input, index ) => {
+
+                        const props = { ...input, ...propsDefault, key:index };
+
+                        return <TextField {...props}/>
+
+                    } ) }
                 </ThemeProvider>
                 </div>
             </div>

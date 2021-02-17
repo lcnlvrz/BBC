@@ -1,7 +1,5 @@
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
 import { Fade } from '@material-ui/core';
 const Questions = () => {
 
@@ -10,7 +8,6 @@ const Questions = () => {
         delay:300
     });
 
-    console.log( inView );
 
     return (
         <Fade in={ inView }>

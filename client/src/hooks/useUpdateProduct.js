@@ -101,6 +101,15 @@ export const useUpdateProduct = () => {
         
     }, [ data, dispatch, productID, indexProduct, action ]);
 
-    return { alert, setAlert, setData, setProductID, isLoading, cancelToken, setIndexProduct, setAction };
+    useEffect(() => {
+
+
+        return () => { if ( cancelToken ) cancelToken.cancel() };
+
+        
+        
+    }, [ cancelToken ]);
+
+    return { alert, setAlert, setData, setProductID, isLoading, setIndexProduct, setAction };
 
 };

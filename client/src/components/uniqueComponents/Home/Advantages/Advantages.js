@@ -3,11 +3,11 @@ import { useInView } from 'react-intersection-observer';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import TimerRoundedIcon from '@material-ui/icons/TimerRounded';
-import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRounded';
-import { outlineButton, defaultTransiton } from '../../../../constants/styles';
+import { defaultTransiton } from '../../../../constants/styles';
 import SentimentVerySatisfiedRoundedIcon from '@material-ui/icons/SentimentVerySatisfiedRounded';
 import TrendingUpRoundedIcon from '@material-ui/icons/TrendingUpRounded';
 import ControlCameraRoundedIcon from '@material-ui/icons/ControlCameraRounded';
+import { advantagesHome } from '../../../../constants/content';
 
 const Advantages = () => {
 
@@ -16,9 +16,7 @@ const Advantages = () => {
         triggerOnce: true
     });
 
-    const number = [{ title:'IMPROVE YOUR CONVERSION RATIO', bgColor:'bg-gray-200', textColor:'text-black', text:'Target users to your business profile and increase the conversion ratio', icon:'trendingUp' }, 
-    { title:'CLOSE THE SELL EASILY', bgColor:'bg-gray-300', textColor:'text-black', icon:'happyFace', text:'In your business profile there are only essential information. No more repeat the same thing every time' }
-    ,{ title:'100% CONTROL', bgColor:'bg-gray-400', textColor:'text-black', icon:'control', text:'With the admin panel you can manage all of your business. Zero regulation.' }];
+ 
 
     return (
         <Grow 
@@ -29,7 +27,7 @@ const Advantages = () => {
             <Paper
             style={{ boxShadow:'none' }}
             >
-            { number.map( ( number, index ) => (
+            { advantagesHome.map( ( number, index ) => (
 
                     <div 
                     key={ index }

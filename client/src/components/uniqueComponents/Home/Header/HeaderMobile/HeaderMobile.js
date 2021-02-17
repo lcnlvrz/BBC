@@ -1,8 +1,5 @@
 import React from 'react'
 import logoBBC from '../../../../../images/bccLogo.png';
-import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
-import { IconButton } from '@material-ui/core';
-import MenuRight from '../MenuRight';
 import { Link } from 'react-router-dom';
 import OutlineButtonCircle from '../../../../reusableComponents/OutlineButtonCircle';
 

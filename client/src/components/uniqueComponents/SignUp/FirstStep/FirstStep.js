@@ -14,21 +14,11 @@ const FirstStep = ( props ) => {
 
     const { setSteps, setUserData } = props;
 
-    const { alertFetch, initialColorInput, isLoading, cancelToken, isSuccess, setData, inputEmailRef } = useSendOTP();
+    const { alertFetch, initialColorInput, isLoading, isSuccess, inputEmailRef, validateAndSendCode } = useSendOTP();
 
     const [input, setInput] = useState( { email:'' } );
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
-
-    useEffect(() => {
-
-        return () => {
-
-            if ( cancelToken ) cancelToken.cancel();
-
-        };
-
-    }, [ cancelToken ]);
 
     useEffect(() => {
 
@@ -41,16 +31,28 @@ const FirstStep = ( props ) => {
         
     }, [ isSuccess, setSteps, input.email, setUserData ]);
 
+    const inputProps = {
+
+        alert,
+        StartIcon:EmailRoundedIcon,
+        refInput:inputEmailRef,
+        type:'text',
+        required:true,
+        label:'Email',
+        value:input.email,
+        name:'email',
+        color:initialColorInput,
+        isFullWidth:true,
+        variant:'outlined'
+
+    };
+
     return (
         <div 
         style={{ overflow:'hidden' }}
         className='text-center flex flex-col items-center justify-center w-3/4 bg-white rounded p-5 space-y-10 absolute'>
             <Link to='/'>
-                <img 
-                className='w-28'
-                alt=''
-                src={BCClogo}
-                />
+                <img className='w-28' alt='' src={BCClogo}/>
             </Link>
             <p className={ `font-semibold text-center ${ mobileResolution ? 'text-sm' : 'text-lg' }` }> 
                 By having a BCC account, you can create a perfil business and change everything.
@@ -60,23 +62,11 @@ const FirstStep = ( props ) => {
             onSubmit={ (e) => { 
 
                 e.preventDefault();
-                setData( input );
+                validateAndSendCode( input );
 
             } }
             className='space-y-4 w-full flex flex-col'>
-                <Input
-                alert={ alert }
-                StartIcon={ EmailRoundedIcon }
-                refInput={ inputEmailRef }
-                type='text'
-                required={ true }
-                label='Email'
-                value={ input.email }
-                name='email'
-                color={ initialColorInput }
-                isFullWidth={ true }
-                variant='outlined'
-                />
+                <Input { ...inputProps }/>
                 { alertFetch.type && 
                 <div className='flex flex-row text-left space-x-2'>
                     <ErrorRoundedIcon className='text-red-500'/>

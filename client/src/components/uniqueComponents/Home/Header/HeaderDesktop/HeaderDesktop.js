@@ -1,6 +1,4 @@
 import React from 'react';
-// import { defaultTransiton } from '../../../../../constants';
-import { defaultTransiton } from '../../../../../constants/styles';
 import OutlineButtonCircle from '../../../../reusableComponents/OutlineButtonCircle';
 import logoBBC from '../../../../../images/bccLogo.png';
 import { Link } from 'react-router-dom';

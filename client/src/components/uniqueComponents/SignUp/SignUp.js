@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './SignUp.css';
 import BackGroundImage from '../../../images/background.jpg';
 import FirstStep from './FirstStep';
 import SecondStep from './SecondStep';
 import { Fade } from '@material-ui/core';
 import ThirdStep from './ThirdStep';
-import LoadingAnimation from '../../reusableComponents/LoadingAnimation';
 import { useFixViewPort } from '../../../hooks/useFixViewport';
 import { Helmet } from 'react-helmet-async';
 

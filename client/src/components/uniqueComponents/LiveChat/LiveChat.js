@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Fade } from '@material-ui/core';
 import { useChatBusiness } from '../../../hooks/useChatBusiness';
 import ListAllMessages from './ListAllMessages';
 import Chat from '../../reusableComponents/Chat/Chat';
-import { Link } from 'react-router-dom';
-import LeftMenu from '../../reusableComponents/LeftMenu';
 import { useSelector } from 'react-redux';
 import ImageChatExample from '../../../images/chatExampleImg.png';
 

@@ -4,12 +4,7 @@ import { makeStyles, withStyles  } from '@material-ui/core/styles';
 import { defaultTransiton } from '../../../../../constants/styles';
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import { useMediaQuery } from 'react-responsive';
-import { useSelector } from 'react-redux';
-import { Fragment } from 'react';
 import ArrowBackRoundedIcon from '@material-ui/icons/ArrowBackRounded';
-import { useHistory } from 'react-router-dom';
-import moment from 'moment';
-import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
 import { Fade } from '@material-ui/core';
 import AvatarStatus from '../../../../reusableComponents/AvatarStatus.js';
@@ -17,72 +12,19 @@ import { useInView } from 'react-intersection-observer';
 import AirMaxRed from '../../../../../images/AirMaxRed.jpg';
 import MessageChat from '../../../../reusableComponents/MessageChat';
 import { messagesChatHomePage } from '../../../../../constants/content';
+import { useDelayChat } from '../../../../../hooks/useDelayChat';
 
 const LiveChat = () => {
     
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 750px )' });
 
-    const [ref, inView] = useInView({
-        triggerOnce: true,
-        delay:200
-    });
-
-    const [refChat, inViewChat] = useInView({
-        triggerOnce: true,
-        delay:200
-    });
-
-    const contentMessage = useRef( null );
-
-    const [messages, setMessages] = useState( {} );
-
-    useEffect(() => {
-
-        for (let i = 0; i < 6; i++) {
-            
-            setMessages( messages => ({ ...messages, [ `${ i }Message` ]:false }) );
-            
-        };
-
-    }, []);
-
-    const scrollToLastMessage = () => {
-
-        contentMessage.current.scroll({ top: contentMessage.current.scrollHeight, behavior: 'smooth' }); 
-
-    };
-
-
-    useEffect(() => {
-
-        if ( inViewChat ) {
-
-            let i = 0
-
-            const interval = setInterval(() => {
-
-                if ( i === 6 ) clearInterval( interval );
-                     
-                setMessages( message => ({ ...message, [ `${ i }Message`]:true  }) );
-                scrollToLastMessage();
-                i = i + 1;
-                    
-            }, 1000);
-
-            return () => { clearInterval( interval ) };  
-
-        };
-
-        
-    }, [ inViewChat ]);
-
-
+    const { messages, contentMessageRef, refChat, refParentContainer, inViewParentContainer } = useDelayChat();
 
     return (
-        <Fade in={ inView }>
+        <Fade in={ inViewParentContainer }>
             <div 
-            ref={ ref }
+            ref={ refParentContainer }
             className='container__explain__section'>
                 <div className={ `flex flex-row flex-wrap justify-evenly items-center p-5 ${ mobileResolution ? 'space-y-10' : '' }` }>
                     <div className={ `${ mobileResolution ? 'w-full' : 'w-2/4' } text-center space-y-5` }>
@@ -137,7 +79,7 @@ const LiveChat = () => {
                                     </IconButton> 
                                 </div>
                                 <div 
-                                ref={ contentMessage }
+                                ref={ contentMessageRef }
                                 style={{ height: '400px' }}
                                 className='all__messages bg-gray-200 flex-1 overflow-auto flex-col justify-between flex'>
                                     { messagesChatHomePage.map( ( message, index ) => (

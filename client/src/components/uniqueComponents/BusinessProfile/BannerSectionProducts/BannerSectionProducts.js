@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from 'react';
+import React,{ useState } from 'react';
 import { IconButton } from '@material-ui/core';
 import AddPhotoAlternateRoundedIcon from '@material-ui/icons/AddPhotoAlternateRounded';
 import { defaultTransiton } from '../../../../constants/styles';
@@ -12,19 +12,7 @@ const BannerSectionProducts = ( props ) => {
 
     const [input, setInput] = useState( bannerSectionProductsText );
 
-    const { cancelToken, setData, isLoading, alert, setAlert } = useUpdateSectionText();
-
-    const [isNewChange, setIsNewChange] = useState( false );
-
-    useEffect(() => {
-
-        return () => {
-
-            if ( cancelToken ) return cancelToken.cancel();
-
-        };
-        
-    }, [ cancelToken ]);
+    const { update, isLoading, alert, setAlert, isNewChange, setIsNewChange } = useUpdateSectionText();
 
     if ( bannerSectionProducts ) return (
 
@@ -39,13 +27,7 @@ const BannerSectionProducts = ( props ) => {
                 style={{ fontSize:'50px' }}/>
                 </IconButton>
                 <form
-                onSubmit={ (e) => {
-
-                    e.preventDefault();
-
-                    setData( input ); 
-
-                } }
+                onSubmit={ (e) => update( input, e ) }
                 onChange={ (e) => {
 
                     setInput( e.target.value );
@@ -68,9 +50,9 @@ const BannerSectionProducts = ( props ) => {
                 style={{ outline:'none' }}
                 onClick={ () => setIsChangePhoto( { endPoint:'/banner-section', endPointDelete:'/delete-bannerSection' } ) }
                 >
-                <AddPhotoAlternateRoundedIcon 
-                className='text-green-300 hover:text-green-500'
-                style={{ fontSize:'50px', transition: "all .15s ease" }}/>
+                    <AddPhotoAlternateRoundedIcon 
+                    className='text-green-300 hover:text-green-500'
+                    style={{ fontSize:'50px', transition: "all .15s ease" }}/>
                 </IconButton> 
             </div> 
             <img
@@ -78,14 +60,7 @@ const BannerSectionProducts = ( props ) => {
             className='w-full max-h-full object-cover h-60' 
             src={ bannerSectionProducts }
             alt=''/>
-            { 
-                alert.type 
-                && 
-                <AlertAnimation 
-                setCloseAlert={ setAlert } 
-                message={ alert.message } 
-                severity={ alert.severity }/> 
-            }
+            { alert.type && <AlertAnimation setCloseAlert={ setAlert } { ...alert }/> }
         </div>
     );
 

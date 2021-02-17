@@ -9,7 +9,7 @@ const ThirdStep = ( props ) => {
 
     const { userData } = props;
 
-    const { isLoading, alertFetch, setData } = useSignUp();
+    const { isLoading, alertFetch, validateAndSignUp } = useSignUp();
 
     const [input, setInput] = useState( { businessName:'', username:'', password:'', repeatPassword:'' } );
 
@@ -20,44 +20,42 @@ const ThirdStep = ( props ) => {
 
     const inputsSignUp = groupOfInputsThirdStepSignUp( input, businessName, username, password, repeatPassword );
 
+
     return (
         <div 
         style={{ overflow:'hidden' }}
         className='text-center flex flex-col items-center justify-center w-3/4 bg-white rounded p-5 space-y-10 absolute'>
             <form
-            onSubmit={ (e) => {
-
-                e.preventDefault();
-
-                setData( { ...input, ...userData } );
-
-            } }
+            onSubmit={ (e) => validateAndSignUp( { ...input, ...userData }, e ) }
             className='space-y-5 w-full flex flex-col'
             onChange={ (e) => setInput({ ...input, [ e.target.name ]:e.target.value }) }
             >
-                { inputsSignUp.map( ( input, index ) => (
+                { inputsSignUp.map( ( input, index ) => {
 
-                    <Input
-                    isThirdStep={ true }
-                    indexInput={ index }
-                    alert={ alertFetch }
-                    conditions={ input.conditions }
-                    key={ index }
-                    maxLength={ input.maxLength }
-                    StartIcon={ input.startIcon }
-                    isPassword={ input.isPassword }
-                    refInput={ input.refInput }
-                    type={ input.type }
-                    required={ true }
-                    label={ input.label }
-                    value={ input.value }
-                    name={ input.name }
-                    color='#000000'
-                    isFullWidth={ true }
-                    variant='outlined' 
-                    />
+                    const props = {
+                    isThirdStep:true,
+                    indexInput:index,
+                    alert:alertFetch,
+                    conditions:input.conditions,
+                    key:index,
+                    maxLength:input.maxLength,
+                    StartIcon:input.startIcon,
+                    isPassword:input.isPassword,
+                    refInput:input.refInput,
+                    type:input.type,
+                    required:true,
+                    label:input.label,
+                    value:input.value,
+                    name:input.name,
+                    color:'#000000',
+                    isFullWidth:true,
+                    variant:'outlined' 
 
-                ) ) }
+                    };
+
+                    return <Input { ...props }/>
+
+                } ) }
                 { alertFetch.type === 'general' &&  
                 <p className='font-semibold text-red-500'> 
                     { alert.alertFetch } 

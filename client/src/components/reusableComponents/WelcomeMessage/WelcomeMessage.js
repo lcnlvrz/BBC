@@ -9,7 +9,7 @@ import { Fade } from '@material-ui/core';
 
 const WelcomeMessage = ( props ) => {
 
-    const { padding, emojiWidth, welcomeWidth } = props;
+    const { padding, emojiWidth } = props;
 
     
     const [ref, inView] = useInView({
@@ -23,7 +23,7 @@ const WelcomeMessage = ( props ) => {
         >
             <div 
             ref={ ref }
-            className={ `w-full right__part ${ padding }` }>
+            className={ `w-full right__part ${ padding } pt-20` }>
                 <div 
                 style={{ height:'70vh' }}
                 className='flex items-center flex-col justify-center space-y-4 text-center welcome__message__container'>

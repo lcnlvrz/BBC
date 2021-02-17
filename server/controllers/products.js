@@ -125,7 +125,7 @@ const getProductsByQuery = ( req, res ) => {
 
     const queryPattern = new RegExp( '^'+query );
 
-    const regex =  { $regex:queryPattern, $options:[ 'i', 'x' ] }
+    const regex =  { $regex:queryPattern, $options:[ 'i'] }
 
     const filter = { $or:[ { title:regex }, { category:regex } ], userID };
 

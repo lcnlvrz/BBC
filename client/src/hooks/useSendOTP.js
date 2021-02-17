@@ -8,8 +8,6 @@ export const useSendOTP = ( ) => {
 
     const [initialColorInput, setInitialColorInput] = useState('#000000');
 
-    const [data, setData] = useState( null );
-
     const [isLoading, setIsLoading] = useState( false );
 
     const [cancelToken, setCancelToken] = useState( null );
@@ -18,11 +16,9 @@ export const useSendOTP = ( ) => {
 
     const inputEmailRef = useRef( null );
 
-    useEffect(() => {
+    const validateAndSendCode = ( data ) => {
 
-        if ( data ) {
-
-            setInitialColorInput( '#000000' );
+        setInitialColorInput( '#000000' );
             setAlertFetch( { type:'', message:'' } );
 
             const isValid = emailValidator.validate( data.email );
@@ -59,12 +55,20 @@ export const useSendOTP = ( ) => {
                 setIsSuccess( { fetched:true, success:false } );
 
             } );
+    };
+
+    
+    useEffect(() => {
+
+        return () => {
+
+            if ( cancelToken ) cancelToken.cancel();
 
         };
-                
-    }, [ data ]);
 
-    return { alertFetch, initialColorInput, isLoading, cancelToken, isSuccess, setData, inputEmailRef };
+    }, [ cancelToken ]);
+
+    return { alertFetch, initialColorInput, isLoading, cancelToken, isSuccess, inputEmailRef, validateAndSendCode };
 
     
 };

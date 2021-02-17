@@ -7,51 +7,57 @@ export const useSignUp = () => {
 
     const history = useHistory();
 
-    const [data, setData] = useState( null );
-
     const [isLoading, setIsLoading] = useState( false );
 
     const [alertFetch, setAlertFetch] = useState( { type:'', message:'' } );
 
+    const [cancelToken, setCancelToken] = useState( null );
+
+    const validateAndSignUp = ( data, e ) => {
+
+        e.preventDefault();
+
+        const { businessName, username, password, repeatPassword, email, otp } = data;
+
+        const isFormValid = preSubmitCreateAccount( data, setAlertFetch );
+
+        if ( !isFormValid ) return false;
+
+        const objectUser = { businessName, username, password, repeatPassword, email, otp };
+
+        setIsLoading( true );
+
+        const cancelTokenInstance = axiosInstance.CancelToken.source();
+
+        setCancelToken( cancelTokenInstance );
+
+        axiosInstance.post( '/user', objectUser, { cancelToken:cancelTokenInstance.token } )
+        .then( () => history.push( '/sign-in/?account__created=true' ) )
+        .catch( (err) => {
+
+            if ( axiosInstance.isCancel( err ) ) return console.log( 'Request canceled' );
+
+            setIsLoading( false );
+            
+            if ( err.response.data.errorCode ) return setAlertFetch( { type:err.response.data.errorCode, message:err.response.data.message } );
+
+            setAlertFetch( { type:'general', message:'Error from server' } );
+
+        } );
+
+
+    };
+
     useEffect(() => {
 
-        if ( data ) {
+        return () => {
 
-            const { businessName, username, password, repeatPassword, email, otp } = data;
+            if ( cancelToken ) cancelToken.cancel();
 
-            const isFormValid = preSubmitCreateAccount( data, setAlertFetch );
+        };
+        
+    }, [ cancelToken ]);
 
-            if ( !isFormValid ) return false;
-
-            const objectUser = { businessName, username, password, repeatPassword, email, otp };
-
-            setIsLoading( true );
-
-            axiosInstance.post( '/user', objectUser )
-            .then( (response) => {
-
-                setIsLoading( false );
-
-                history.push( '/sign-in/?account__created=true' );
-
-
-            } )
-            .catch( (err) => {
-
-                setIsLoading( false );
-
-                if ( axiosInstance.isCancel( err ) ) return console.log( 'Request canceled' );
-
-                if ( err.response.data.errorCode ) return setAlertFetch( { type:err.response.data.errorCode, message:err.response.data.message } );
-
-                setAlertFetch( { type:'general', message:'Error from server' } );
-
-            } );
-
-        };  
-                
-    }, [ data, history ]);
-
-    return { isLoading, alertFetch, setData };
+    return { isLoading, alertFetch, validateAndSignUp };
 
 };

@@ -13,50 +13,54 @@ export const useSignIn = ( ) => {
 
     const [alertFetch, setAlertFetch] = useState( { type:'', message:'' } );
 
-    const [data, setData] = useState( null );
-
     const [cancelToken, setCancelToken] = useState( null );
+
+    const validateCredentials = ( data ) => {
+
+        const isFormValid = preSubmitSignIn( data, setAlertFetch );
+
+        if ( !isFormValid ) return false;
+
+        const tokenToCancel = axiosInstance.CancelToken.source();
+
+        setCancelToken( tokenToCancel );
+
+        setIsLoading( true );
+
+        axiosInstance.post( '/sign-in', data, { cancelToken:tokenToCancel.token } )
+        .then( (response) => {
+
+            setIsLoading( false );
+
+            localStorage.setItem( 'token', response.data.token );
+
+            dispatch( setUser( response.data.userData ) );
+
+        } )
+        .catch( (err) => {
+
+            if ( axiosInstance.isCancel( err )) return console.log( 'request canceled' );
+
+            setIsLoading( false );
+
+            setAlertFetch( { type:'user', message:err.response.data.message } );
+
+            
+        } );
+
+    };
 
     useEffect(() => {
 
-        if ( data ) {
-            
-            const isFormValid = preSubmitSignIn( data, setAlertFetch );
+        return () => {
 
-            if ( !isFormValid ) return false;
-
-            const tokenToCancel = axiosInstance.CancelToken.source();
-
-            setCancelToken( tokenToCancel );
-
-            setIsLoading( true );
-
-            axiosInstance.post( '/sign-in', data, { cancelToken:tokenToCancel.token } )
-            .then( (response) => {
-
-                setIsLoading( false );
-
-                localStorage.setItem( 'token', response.data.token );
-
-                dispatch( setUser( response.data.userData ) );
-
-            } )
-            .catch( (err) => {
-
-                setIsLoading( false );
-
-                if ( axiosInstance.isCancel( err )) return console.log( 'request canceled' );
-
-                setAlertFetch( { type:'user', message:err.response.data.message } );
-  
-                
-            } );
+            if ( cancelToken ) cancelToken.cancel();
 
         };
+         
+    }, [ cancelToken ]);
+    
 
-        
-    }, [ dispatch, data ]);
-
-    return { alertFetch, isLoading, cancelToken, setData };
+    return { alertFetch, isLoading, validateCredentials };
 
 };

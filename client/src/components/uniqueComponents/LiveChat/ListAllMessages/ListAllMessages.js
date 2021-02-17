@@ -1,11 +1,8 @@
 import React from 'react';
-import { Avatar, Fade } from '@material-ui/core';
+import { Avatar } from '@material-ui/core';
 import AvatarStatus from '../../../reusableComponents/AvatarStatus.js';
 import { useSelector } from 'react-redux';
-import MessageRoundedIcon from '@material-ui/icons/MessageRounded';
 import { defaultTransiton } from '../../../../constants/styles.js';
-import moment from 'moment';
-import { Fragment } from 'react';
 import PropagateLoader from "react-spinners/PropagateLoader";
 import HeaderMobile from '../../HeaderForBusiness/HeaderMobile/HeaderMobile.js';
 import TimeAgoInterval from '../../../reusableComponents/TimeAgoInterval/index.js';
@@ -18,6 +15,25 @@ const ListAllMessages = ( props ) => {
     const user = useSelector(state => state.user);
 
     const messagesKeys = Object.keys( allMessages );
+
+    const onClickMessage = ( client ) => {
+
+        if ( !isShowOneChat )  setIsShowOneChat( true );
+
+        if ( to.socketID !== client ) {
+
+            const clientSocketID = allMessages[ client ].fromSocketID;
+
+            setTo( { socketID:clientSocketID } );
+
+            setAllMessages( { ...allMessages, [ clientSocketID ]:{ ...allMessages[ clientSocketID ], viewed:{ quantity:0, doubleCheck:true } } } );
+
+            socket.emit( 'notificateMessagesViewedToClient', clientSocketID );
+            socket.emit( 'notificateMessagesNotViewedToClient', to.socketID );
+
+        };
+
+    };
 
     return(
         <div className='h-screen overflow-hidden bg-gray-500'>
@@ -46,25 +62,7 @@ const ListAllMessages = ( props ) => {
                 {  messagesKeys.length > 0 ? messagesKeys.map( ( client, index ) => (
 
                     <div 
-                    onClick={ () => {
-
-                        if ( !isShowOneChat )  setIsShowOneChat( true );
-
-                        if ( to.socketID !== client ) {
-
-                            const clientSocketID = allMessages[ client ].fromSocketID;
-
-                            setTo( { socketID:clientSocketID } );
-
-                            setAllMessages( { ...allMessages, [ clientSocketID ]:{ ...allMessages[ clientSocketID ], viewed:{ quantity:0, doubleCheck:true } } } );
-
-                            socket.emit( 'notificateMessagesViewedToClient', clientSocketID );
-                            socket.emit( 'notificateMessagesNotViewedToClient', to.socketID );
-
-                        };
-                        
-
-                    } }
+                    onClick={ () => onClickMessage( client ) }
                     key={ index }
                     style={ defaultTransiton }
                     className='one__user flex flex-row space-x-2 items-center hover:bg-gray-700 cursor-pointer  p-5'>

@@ -1,137 +1,147 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import InputSearcher from '../../reusableComponents/SearcherInput';
-import ProductCard from '../../reusableComponents/ProductCard';
 import { useMediaQuery } from 'react-responsive';
-import { defaultTransiton } from '../../../constants/styles';
-import HeaderForClient from '../HeaderForClient';
 import Fade from '@material-ui/core/Fade';
 import '../OneProductPage/OneProductPage.css';
-import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRounded';
-import { Fragment } from 'react';
-import { IconButton, TextareaAutosize } from '@material-ui/core';
 import ChangeProfilePhoto from '../BusinessProfile/ChangeProfilePhoto/ChangeProfilePhoto';
-import RemoveCircleRoundedIcon from '@material-ui/icons/RemoveCircleRounded';
-import ImageRoundedIcon from '@material-ui/icons/ImageRounded';
 import { useSelector } from 'react-redux';
 import CardProductAdmin from './CardProductAdmin';
-import ButtonSaveChanges from '../../reusableComponents/ButtonSaveChanges/ButtonSaveChanges';
 import BannerSectionProducts from '../BusinessProfile/BannerSectionProducts';
 import { useSearchBusiness } from '../../../hooks/useSearchBusiness';
 import AlertAnimation from '../../reusableComponents/AlertAnimation';
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { Helmet } from 'react-helmet-async';
+import { Fragment } from 'react';
+
+
+
+const Content = ( props ) => {
+
+    const { products, isSearching } = props;
+
+    const ProductsCard = () => {
+
+       if ( products.length > 0 && !isSearching ) return (
+
+            products.map( ( product, index ) => {
+
+                const props = { index, key:product._id, product };
+
+                return <CardProductAdmin {...props}/>
+
+            }) 
+
+       );
+
+    };
+
+    const WarningNoProducts = () => {
+
+        return (
+
+            <div 
+            style={{ height:'70vh' }}
+            className='flex items-center justify-center px-5'>
+                <h1 className='font-semibold text-3xl text-center text-green-400'> 
+                Nothing here, add one product to see something 😊 
+                </h1> 
+            </div>
+
+        );
+
+    };
+
+    const SpinerLoader = () => {
+
+        return (
+
+            <div className='w-full text-center'>
+                <PropagateLoader/>
+            </div>
+
+        );
+
+    };
+
+    return (
+
+        <Fragment>
+
+            { products.length > 0 && !isSearching && <ProductsCard/> }
+            
+            { products.length === 0 && !isSearching && <WarningNoProducts/> }
+            
+            { isSearching && <SpinerLoader/> }
+            
+        </Fragment>
+
+    );
+
+};
+
+const ProductsSearcher = ( props ) => {
+
+    const { setQuery, setAnotherEndPoint, user } = props;
+
+    return (
+
+        <form 
+        onChange={ (e) => {
+        setQuery( e.target.value );
+        setAnotherEndPoint( { route:'/one-product', userID:user.userID } );
+        } }
+        className='px-5'>
+            <InputSearcher
+            name='query'
+            placeholder='Search products here!'
+            />
+        </form>
+
+    );
+
+};
 
 
 const Products = () => {
 
     const user = useSelector(state => state.user);
 
-    const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
+    const { bannerSectionProductsText, bannerSectionProducts } = user;
 
-    const [isOpenChangePhoto, setIsOpenChangePhoto] = useState( false );
+    const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
 
     const [isChangePhoto, setIsChangePhoto] = useState( false );
 
-    const [products, setProducts] = useState( [] );
+    const { setQuery, notFound, setNotFound, isSearching, setAnotherEndPoint, products } = useSearchBusiness();
 
-    const { setQuery, cancelToken, notFound, setNotFound, isSearching, setAnotherEndPoint, response } = useSearchBusiness();
+    const propsProductSearcher = { setQuery, setAnotherEndPoint, user };
 
-    useEffect(() => {
+    const propsContent = { products, isSearching };
 
-        if ( response.length > 0 ) setProducts( response );
-        
-    }, [ response ]);
+    const propsBannerProducts = { bannerSectionProductsText, bannerSectionProducts, setIsChangePhoto };
 
-    useEffect(() => {
-        
-        if ( !user.isLoading ) {
+    const propsChangePhoto = { setCloseModal:setIsChangePhoto, ...isChangePhoto };
 
-            setProducts( user.products );
+    const classesParentDiv = `flex flex-col space-y-10 my-5 ${ mobileResolution && 'pt-28' }`;
 
-        };
-        
-    }, [ user ]);
-
-
-    useEffect(() => {
-
-        return () => {
-
-            if ( cancelToken ) cancelToken.cancel();
-
-        };
-        
-    }, [ cancelToken ]);
- 
     return (
-        <Fade in={ true }>
-            <div className={ `flex flex-col space-y-10 my-5 ${ mobileResolution && 'pt-28' }` }>
+        <Fade in>
+            <div className={ classesParentDiv }>
                 <Helmet>
                     <title> Business Client Connection - Products </title>
                 </Helmet>
-                <form 
-                onChange={ (e) => {
-
-                    setQuery( e.target.value );
-                    setAnotherEndPoint( { route:'/one-product', userID:user.userID } );
-
-                } }
-                className='px-5'>
-                    <InputSearcher
-                    name='query'
-                    placeholder='Search products here!'
-                    />
-                </form>
-                <BannerSectionProducts
-                bannerSectionProductsText={ user.bannerSectionProductsText }
-                bannerSectionProducts={ user.bannerSectionProducts }
-                setIsChangePhoto={ setIsChangePhoto }/>
-
+                <ProductsSearcher { ...propsProductSearcher }/>
+                <BannerSectionProducts { ...propsBannerProducts }/>
                 <h1 className='font-semibold text-center'> 
                     *Click Over Text to Change Information* 
                 </h1>
 
-                { 
-                    products.length > 0 && !isSearching ? products.map( ( product, index ) => (
+                <Content {...propsContent}/>
 
+                { isChangePhoto && <ChangeProfilePhoto {...propsChangePhoto}/> }
 
-                        <CardProductAdmin
-                        index={ index }
-                        key={ product._id } 
-                        product={ product }/>
-
-                    ) ) 
-                    :
-                    products.length > 0 && !isSearching ?
-                    <div 
-                    style={{ height:'70vh' }}
-                    className='flex items-center justify-center px-5'>
-                        <h1 className='font-semibold text-3xl text-center text-green-400'> 
-                        Nothing here, add one product to see something 😊 
-                        </h1> 
-                    </div>
-                    :
-                    <div className='w-full text-center'>
-                        <PropagateLoader/>
-                    </div>
-                }
-
-                { isOpenChangePhoto && <ChangeProfilePhoto setCloseModal={ setIsOpenChangePhoto }/> }
-
-                { 
-                  isChangePhoto 
-                  && 
-                  <ChangeProfilePhoto 
-                  setCloseModal={ setIsChangePhoto }
-                  endPointDelete={ isChangePhoto.endPointDelete }
-                  endPoint={ isChangePhoto.endPoint }
-                  />  
-                }
-                { 
-                    notFound.type 
-                    && 
-                    <AlertAnimation setCloseAlert={ setNotFound } message={ notFound.message } severity={ notFound.severity }/> 
-                }
+                { notFound.type && <AlertAnimation setCloseAlert={ setNotFound } { ...notFound }/>  }
+                
             </div>
         </Fade>
     );

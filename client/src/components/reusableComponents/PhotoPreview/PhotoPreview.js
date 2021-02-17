@@ -4,12 +4,13 @@ import ModalOptions from '../Modal';
 import PublishRoundedIcon from '@material-ui/icons/PublishRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import PropagateLoader from "react-spinners/PropagateLoader";
+import { Fragment } from 'react';
 
 const PhotoPreview = ( props ) => {
 
-    const { setPhoto, mobileResolution, photo, isLoading, setUpload, cancelTokenCloudinary, cancelTokenServer, endPoint } = props;
+    const { setPhoto, mobileResolution, photo, isLoading, uploadPhoto, cancelTokenCloudinary, cancelTokenServer, endPoint } = props;
 
-    console.log( endPoint );
+    console.log( props );
 
     useEffect(() => {
 
@@ -19,11 +20,9 @@ const PhotoPreview = ( props ) => {
 
             if ( cancelTokenServer ) cancelTokenServer.cancel();
 
-            setUpload( { isStartFetch:false, endPoint:'' } );
-
         };
        
-    }, [ cancelTokenCloudinary, cancelTokenServer, setUpload ]);
+    }, [ cancelTokenCloudinary, cancelTokenServer ]);
 
 
     return (
@@ -35,9 +34,9 @@ const PhotoPreview = ( props ) => {
                 alt=''/> 
                 <div className='flex flex-row items-center justify-center w-full space-x-10'>
                     { !isLoading ?
-                    <> 
+                    <Fragment> 
                         <IconButton
-                        onClick={ () => setUpload( { isStartFetch:true, endPoint } ) }
+                        onClick={ () => uploadPhoto( endPoint ) }
                         style={{ outline:'none' }}
                         >
                             <PublishRoundedIcon
@@ -52,11 +51,12 @@ const PhotoPreview = ( props ) => {
                             className='text-red-500'
                             /> 
                         </IconButton> 
-                    </>
+                    </Fragment>
                     :
                     <div className='my-5'>
                         <PropagateLoader/>
-                    </div>}
+                    </div>
+                    }
                 </div> 
             </div>
         </ModalOptions>

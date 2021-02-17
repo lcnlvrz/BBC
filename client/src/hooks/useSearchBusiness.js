@@ -1,26 +1,21 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosConfig';
 import { useDispatch } from 'react-redux';
-import { getToken } from '../helpers/getToken';
+import { useSelector } from 'react-redux';
 
 export const useSearchBusiness = () => {
 
     const dispatch = useDispatch();
+    const user = useSelector(state => state.user);
 
     const [query, setQuery] = useState( '' );
-
     const [isLoading, setIsLoading] = useState( false );
-
     const [cancelToken, setCancelToken] = useState( null );
-
     const [isSearching, setIsSearching] = useState( false );
-
     const [business, setBusiness] = useState( [] );
-
     const [response, setResponse] = useState( [] );
-
     const [anotherEndPoint, setAnotherEndPoint] = useState( { route:'', userID:'' } );
-
+    const [products, setProducts] = useState( [] );
     const [notFound, setNotFound] = useState( false );
 
     useEffect(() => {
@@ -85,6 +80,28 @@ export const useSearchBusiness = () => {
         
     }, [ query, dispatch, anotherEndPoint ]);
 
-    return { setQuery, isLoading, setIsLoading, cancelToken, query, business, notFound, setNotFound, isSearching, setAnotherEndPoint, response };
+    useEffect(() => {
+
+        if ( response.length > 0 ) setProducts( response );
+        
+    }, [ response ]);
+
+    useEffect(() => {
+        
+        if ( !user.isLoading ) {
+
+            setProducts( user.products );
+
+        };
+        
+    }, [ user ]);
+
+    useEffect(() => {
+
+        return () => { if ( cancelToken ) cancelToken.cancel() }
+
+    }, [ cancelToken ]);
+
+    return { setQuery, isLoading, setIsLoading, cancelToken, query, business, notFound, setNotFound, isSearching, setAnotherEndPoint, response, products };
 
 };

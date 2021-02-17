@@ -10,7 +10,7 @@ import { focusInputLastCharacter } from '../../../helpers/input';
 const Input = ( props ) => {
 
 
-    const { label, value, variant, isFullWidth, name, color, required, type, refInput, StartIcon, maxLength, isPassword, conditions, alert, indexInput, placeholder, isThirdStep } = props;
+    const { label , value, variant, isFullWidth, name, color, required, type = 'texr', refInput, StartIcon, maxLength, isPassword, conditions, alert, indexInput, placeholder, isThirdStep } = props;
 
 
     const [theme, setTheme] = useState( { muitheme:createMuiTheme({

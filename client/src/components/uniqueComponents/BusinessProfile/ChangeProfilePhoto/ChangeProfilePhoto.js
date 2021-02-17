@@ -14,7 +14,7 @@ const ChangeProfilePhoto = ( props ) => {
 
     const mobileResolution = useMediaQuery({ query:'( max-width: 700px )' });
 
-    const { photo, alert, setData, setPhoto, setAlert, setUpload, isLoading, cancelTokenCloudinary, cancelTokenServer } = usePhoto();
+    const { photo, alert, setPhoto, setAlert, isLoading, cancelTokenCloudinary, cancelTokenServer, validatePhoto, uploadPhoto } = usePhoto();
 
     const { isLoading:isLoadingDeletePhoto, setDeletePhoto, cancelToken, alertFetch, setAlertFetch } = useDeletePhoto();
 
@@ -28,9 +28,20 @@ const ChangeProfilePhoto = ( props ) => {
         
     }, [ cancelToken ]);
 
+    const photoPreviewProps = {
+
+        setPhoto, 
+        mobileResolution,
+        photo,
+        isLoading,
+        uploadPhoto,
+        cancelTokenCloudinary,
+        cancelTokenServer,
+        endPoint
+
+    };
 
     return (
-        <>
         <ModalOptions setCloseModal={ setCloseModal }>
             <div className={ `bg-white rounded-2xl h-auto ${ mobileResolution ? 'w-3/4' : 'w-2/4' } p-5 outline-none` }>
                 <ul className='text-center space-y-5'>
@@ -44,24 +55,20 @@ const ChangeProfilePhoto = ( props ) => {
                     <hr/>
                     { !isLoadingDeletePhoto 
                     ?  
-                    <li 
-                    onClick={ () => setDeletePhoto( { isStartDelete:true, endPoint:endPointDelete } ) }
-                    style={ defaultTransiton }
-                    className='cursor-pointer font-semibold text-lg text-red-300 hover:text-red-400'> 
-                        Delete Photo 
-                    </li> 
+                        <li 
+                        onClick={ () => setDeletePhoto( { isStartDelete:true, endPoint:endPointDelete } ) }
+                        style={ defaultTransiton }
+                        className='cursor-pointer font-semibold text-lg text-red-300 hover:text-red-400'> 
+                            Delete Photo 
+                        </li> 
                     :
-                    <div className='py-4'>
-                        <PropagateLoader/>
-                    </div>
+                        <div className='py-4'>
+                            <PropagateLoader/>
+                        </div>
                     }
                     <hr/>
                     <li 
-                    onClick={ () => {
-
-                        setCloseModal( false );
-
-                    } }
+                    onClick={ () => setCloseModal( false ) }
                     style={ defaultTransiton }
                     className='cursor-pointer font-semibold text-lg text-gray-300 hover:text-gray-400'> 
                         Cancel 
@@ -74,26 +81,15 @@ const ChangeProfilePhoto = ( props ) => {
                 <AlertAnimation setCloseAlert={ setAlertFetch } severity={ alertFetch.severity } message={ alertFetch.message }/> }
                 <input
                 key={ Date.now() }
-                onChange={ (e) => setData( e.target.files[0] ) }
+                onChange={ (e) => validatePhoto( e.target.files[0] ) }
                 className='hidden'
                 accept="image/*"
                 id="profile-photo"
                 type="file"
                 />
+                { photo.file && <PhotoPreview  { ...photoPreviewProps }/> }
             </div>
         </ModalOptions> 
-        { photo.file &&  
-        <PhotoPreview 
-        setPhoto={ setPhoto } 
-        mobileResolution={ mobileResolution } 
-        photo={ photo } 
-        isLoading={ isLoading } 
-        setUpload={ setUpload } 
-        cancelTokenCloudinary={ cancelTokenCloudinary } 
-        cancelTokenServer={ cancelTokenServer } endPoint={ endPoint }/> }
-        </>
-        
-
     );
 };
 

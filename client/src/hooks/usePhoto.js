@@ -10,111 +10,89 @@ export const usePhoto = () => {
 
     const dispatch = useDispatch();
 
-    const [photo, setPhoto] = useState( { tempURL:null, file:null } );
+    const initialStatePhoto = { tempURL:null, file:null };
+
+    const [photo, setPhoto] = useState( initialStatePhoto );
 
     const [alert, setAlert] = useState( { type:'', message:'' } );
 
     const [isLoading, setIsLoading] = useState( false );
-
-    const [data, setData] = useState( null );
-
-    const [upload, setUpload] = useState( { isStartFetch:false, endPoint:'' } );
 
     const [token, setToken] = useState( null );
 
     const [cancelTokenCloudinary, setCancelTokenCloudinary] = useState( null );
 
     const [cancelTokenServer, setCancelTokenServer] = useState( null );
-    
 
-    useEffect(() => {
+    const validatePhoto = ( data ) => {
 
-        if ( data ) {
+        const token = getToken();
 
-            const token = getToken();
+        if ( !token ) return false;
 
-            if ( !token ) return false;
+        setToken( token );
 
-            setToken( token );
+        setAlert( { type:'', message:'' } );
 
-            setAlert( { type:'', message:'' } );
+        if ( data.size > 1000000 ) return setAlert( { type:'image', message:'Image so heavy. Try with one less size', severity:'error' } );
 
-            if ( data.size > 1000000 ) return setAlert( { type:'image', message:'Image so heavy. Try with one less size', severity:'error' } );
+        const tempURL = URL.createObjectURL( data );
 
-            const tempURL = URL.createObjectURL( data );
+        setPhoto( { tempURL, file:data } );
 
-            setPhoto( { tempURL, file:data } );
+    };
 
-        };
-        
-    }, [ data ]);
+    const uploadPhoto = ( endPoint ) => {
 
+        const formData = new FormData();
 
-    useEffect(() => {
+        formData.append( 'file', photo.file );
+        formData.append( 'upload_preset', 'lvpkg390' );
 
-        if ( upload.isStartFetch ) {
+        setIsLoading( true );
 
-            const formData = new FormData();
+        const sourceToken = axios.CancelToken.source();
 
-            formData.append( 'file', data );
-            formData.append( 'upload_preset', 'lvpkg390' );
+        setCancelTokenCloudinary( sourceToken );
 
-            setIsLoading( true );
+        axios.post( 'https://api.cloudinary.com/v1_1/lcnlvrz/image/upload', formData, { cancelToken:sourceToken.token })
+        .then( (response) => {
 
-            const sourceToken = axios.CancelToken.source();
+            const { secure_url } = response.data;
 
-            setCancelTokenCloudinary( sourceToken );
+            const sourceTokenServer = axiosInstance.CancelToken.source();
 
-            axios.post( 'https://api.cloudinary.com/v1_1/lcnlvrz/image/upload', formData, { cancelToken:sourceToken.token })
-            .then( (response) => {
+            setCancelTokenServer( sourceTokenServer );
 
-                const { secure_url } = response.data;
+            axiosInstance.put( endPoint, { url:secure_url }, { headers:{ authorization:token }, cancelToken:sourceTokenServer.token } )
+            .then( () => {
 
-                const sourceTokenServer = axiosInstance.CancelToken.source();
+                if ( endPoint === '/profile-photo' ) dispatch( setProfilePhoto( secure_url ) );
 
-                setCancelTokenServer( sourceTokenServer );
+                if ( endPoint === '/banner' ) dispatch( setBanner( secure_url ) );
 
-                axiosInstance.put( upload.endPoint, { url:secure_url }, { headers:{ authorization:token }, cancelToken:sourceTokenServer.token } )
-                .then( (response) => {
+                if ( endPoint === '/banner-section' ) dispatch( updateBannerSectionProducts( secure_url ) ); 
+                
+                setPhoto( initialStatePhoto );
 
-                    setIsLoading( false );
+                setIsLoading( false );
 
-                    setAlert( { type:'image', severity:'success', message:'Profile photo updated successfully' } );
-
-                    if ( upload.endPoint === '/profile-photo' ) dispatch( setProfilePhoto( secure_url ) );
-
-                    if ( upload.endPoint === '/banner' ) dispatch( setBanner( secure_url ) );
-
-                    if ( upload.endPoint === '/banner-section' ) dispatch( updateBannerSectionProducts( secure_url ) );
-
-                    
-
-                } )
-                .catch( (err) => {
-
-                    setIsLoading( false );
-
-                    if ( axiosInstance.isCancel( err ) ) {
-
-                        setAlert( { type:'image', severity:'error', message:'You canceled the operation' } );
-                        setPhoto({ tempURL:null, file:null });
-
-
-                    } else {
-
-                        setAlert( { type:'image', severity:'error', message:'Error from server to save photo' } );
-                    };           
-                } );
-        
+                setAlert( { type:'image', severity:'success', 
+                message:`
+                ${ endPoint === '/profile-photo' ? 'Profile photo updated successfully' : '' } 
+                ${ endPoint === '/banner' ? 'Banner updated successfully' : '' } 
+                ${ endPoint === '/banner-section' ? 'Banner section updated successfully' : '' }
+                `});
 
             } )
             .catch( (err) => {
 
+                console.log( err.response );
+
                 setIsLoading( false );
 
-                if ( axios.isCancel( err ) ) {
+                if ( axiosInstance.isCancel( err ) ) {
 
-                    console.log( 'Request canceled' );
                     setAlert( { type:'image', severity:'error', message:'You canceled the operation' } );
                     setPhoto({ tempURL:null, file:null });
 
@@ -122,19 +100,34 @@ export const usePhoto = () => {
                 } else {
 
                     setAlert( { type:'image', severity:'error', message:'Error from server to save photo' } );
-
-                };
-
-
+                };           
             } );
+    
 
-        };
+        } )
+        .catch( (err) => {
 
+            setIsLoading( false );
+
+            if ( axios.isCancel( err ) ) {
+
+                console.log( 'Request canceled' );
+                setAlert( { type:'image', severity:'error', message:'You canceled the operation' } );
+                setPhoto({ tempURL:null, file:null });
+
+
+            } else {
+
+                setAlert( { type:'image', severity:'error', message:'Error from server to save photo' } );
+
+            };
+
+
+        } );
+
+    };
         
-    }, [ token, dispatch, upload, data ]);
 
-
-
-    return { photo, alert, setData, setPhoto, setAlert, setUpload, isLoading, cancelTokenCloudinary, cancelTokenServer };
+    return { photo, alert, setPhoto, setAlert, isLoading, cancelTokenCloudinary, cancelTokenServer, validatePhoto, uploadPhoto };
 
 };

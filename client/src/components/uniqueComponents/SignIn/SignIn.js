@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import BCClogo from '../../../images/bccLogo.png';
 import Input from '../../reusableComponents/Input';
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
@@ -13,24 +13,13 @@ import { Fade } from '@material-ui/core';
 import { signUpLink } from '../../../constants/pathsRouter';
 import { useSignIn } from '../../../hooks/useSignIn';
 import { useFixViewPort } from '../../../hooks/useFixViewport';
-import LoadingAnimation from '../../reusableComponents/LoadingAnimation';
 import { Helmet } from 'react-helmet-async';
 
 const SignIn = () => {
 
     useFixViewPort();
 
-    const { isLoading, cancelToken, alertFetch, setData } = useSignIn();
-
-    useEffect(() => {
-
-        return () => {
-
-            if ( cancelToken ) cancelToken.cancel();
-
-        };
-        
-    }, [ cancelToken ]);
+    const { isLoading, alertFetch, validateCredentials } = useSignIn();
 
     const [input, setInput] = useState( { emailOrUsername:'', password:'' } );
 
@@ -42,8 +31,39 @@ const SignIn = () => {
 
     const passwordRef = useRef( null );
 
+    const inputEmailProps = {
+
+        alert:alert,
+        StartIcon:PersonRoundedIcon,
+        type:'text',
+        required:true,
+        label:'Email or Username',
+        value:input.emailOrUsername,
+        name:'emailOrUsername',
+        color:'#000000',
+        isFullWidth:true,
+        variant:'outlined'
+    };
+
+    const inputPasswordProps = {
+
+        refInput:passwordRef,
+        alert:alert,
+        StartIcon:VpnKeyRoundedIcon,
+        isPassword:true,
+        type:'password',
+        required:true,
+        label:'Password',
+        value:input.password,
+        name:'password',
+        color:'#000000',
+        isFullWidth:true,
+        variant:'outlined'
+
+    };
+
     return (
-        <Fade in={ true }>
+        <Fade in>
             <div className='flex flex-col items-center justify-center h-screen'>
                 <Helmet>
                     <title> Business Client Connection - Sign-In </title>
@@ -53,51 +73,25 @@ const SignIn = () => {
                 alt=''
                 src={BackGroundImage}/>
                 <div 
-                style={{ overflow:'hidden' }}
+                style={{ overflow:'hidden' }} 
                 className='text-center flex flex-col items-center justify-center w-3/4 bg-white rounded p-5 space-y-10 absolute'>
                     <Link to='/'>
-                        <img 
-                        className='w-28'
-                        alt=''
-                        src={BCClogo}
-                        />
+                        <img className='w-28' alt='' src={BCClogo}/>
                     </Link>
-                    <p className={ `font-semibold text-center ${ mobileResolution ? 'text-sm' : 'text-lg' }` }> 
+                    <p className={ `font-semibold text-center ${ mobileResolution ? 'text-sm' : 'text-lg' } ${ accountCreated ? 'text-green-500' : '' } ` }> 
                         { accountCreated === 'true' ? 'Account created successfully. You can sign-in now!' : 'The clients are excited to know about your business' }
                     </p>
                     <form 
                     onChange={ (e) => setInput({...input, [ e.target.name ]:e.target.value }) }
                     onSubmit={ (e) => {
+
                         e.preventDefault();
-                        setData( input );
+                        validateCredentials( input );
+
                     } }
                     className='space-y-4 w-full flex flex-col'>
-                        <Input
-                        alert={ alert }
-                        StartIcon={ PersonRoundedIcon }
-                        type='text'
-                        required={ true }
-                        label='Email or Username'
-                        value={ input.emailOrUsername }
-                        name='emailOrUsername'
-                        color='#000000'
-                        isFullWidth={ true }
-                        variant='outlined'
-                        />
-                        <Input
-                        refInput={ passwordRef }
-                        alert={ alert }
-                        StartIcon={ VpnKeyRoundedIcon }
-                        isPassword={ true }
-                        type='password'
-                        required={ true }
-                        label='Password'
-                        value={ input.password }
-                        name='password'
-                        color='#000000'
-                        isFullWidth={ true }
-                        variant='outlined'
-                        />
+                        <Input { ...inputEmailProps }/>
+                        <Input { ...inputPasswordProps }/>
                         { alertFetch.type && 
                         <div className='flex flex-row text-left space-x-2'>
                             <ErrorRoundedIcon className='text-red-500'/>
