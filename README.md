@@ -23,7 +23,8 @@ It's free and opensource. If you want to use it, just do it.
 
 ##App in Production
 For sure BCC is already running on the web. You can check it out in the next link:
-[MIT](https://businessclientconnection.netlify.app/)
+
+[Business Client Connection WEB](https://businessclientconnection.netlify.app/)
 
 
 ## Contributing
